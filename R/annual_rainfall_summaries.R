@@ -16,7 +16,7 @@ annual_rainfall_summaries <- function(station_id,
                                                     "end_season",
                                                     "length_season")) {
   df <- data.frame(station_id = rep(station_id, each = 30),
-                   year = rep(1991:2020, 2),
-                   seasonal_rainfall = stats::rnorm(60, 400, 70))
+                   year = rep(1991:2020, 2))
+  df$seasonal_rainfall <- df$year/3
   return(df)
 }
