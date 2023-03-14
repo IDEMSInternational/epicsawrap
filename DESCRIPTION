@@ -17,4 +17,4 @@ Imports:
     rpicsa
 Remotes:
     IDEMSInternational/epicsadata,
-    IDEMSInternational/rpicsa,
+    IDEMSInternational/rpicsa
