@@ -5,12 +5,15 @@
 \title{Annual Rainfall Summaries}
 \usage{
 annual_rainfall_summaries(
+  country,
   station_id,
   summaries = c("seasonal_rainfall", "seasonal_raindays", "start_rains", "end_season",
     "length_season")
 )
 }
 \arguments{
+\item{country}{\code{character(1)} The country code of the data.}
+
 \item{station_id}{\code{character} The id's of the stations to analyse. Either a
 single value or a vector.}
 
@@ -23,5 +26,5 @@ A data frame with yearly summaries.
 Annual Rainfall Summaries
 }
 \examples{
-annual_rainfall_summaries(station_id = "1357")
+# annual_rainfall_summaries(country = "zm", station_id = "01122")
 }
