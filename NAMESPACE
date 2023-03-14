@@ -2,5 +2,6 @@
 
 export("%>%")
 export(annual_rainfall_summaries)
+export(gcs_auth_file)
 importFrom(epicsadata,gcs_auth_file)
 importFrom(magrittr,"%>%")
