@@ -2,7 +2,9 @@
 
 export("%>%")
 export(annual_rainfall_summaries)
+export(annual_temperature_summaries)
 export(gcs_auth_file)
+export(setup)
 export(station_metadata)
 importFrom(epicsadata,gcs_auth_file)
 importFrom(magrittr,"%>%")
