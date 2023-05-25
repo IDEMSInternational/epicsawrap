@@ -16,7 +16,7 @@ annual_temperature_summaries <- function(country,
                                                        "mean_tmax")) {
   
   # TODO Once implemented
-  # daily <- epicsadata::get_daily_data(country = country, 
+  # daily <- epicsadata::run_daily_data(country = country, 
   #                                     station_id = station_id)
   # annual <- rpicsa::annual_temperature(daily, date_time = "date", rain = "rain",
   #                                      year = "year", station = "station",
