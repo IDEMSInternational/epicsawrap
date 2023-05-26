@@ -20,17 +20,11 @@ annual_rainfall_summaries <- function(country,
                                       summaries = c("annual_rain", # total rain days and annual rainfall
                                                     "start_rains",
                                                     "end_rains")
-                                      # TODO: add in 
-                                      # ("seasonal_rainfall",
-                                      # "seasonal_raindays",
+                                      # TODO: add in ("seasonal_rainfall", "seasonal_raindays")
                                       ) {
   # cheaper to not save this and to just call it?
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
-  
-  definitions <- epicsadata::get_definitions_data(def_data = def_data, summaries = summaries)
-  definitions <- purrr::map(.x = summaries, .f = ~ definitions[[.x]])
-  names(definitions) <- summaries
-  # epicsadata::get_definitions_data()
+  definitions <- definitions(country = country, station_id = station_id, summaries = summaries)
   summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$station))
   if ("annual_rain" %in% summaries){
     annual_rain <- rpicsa::annual_rain(daily, date_time = "date", rain = "rain", year = "year", station = "station",
@@ -45,7 +39,8 @@ annual_rainfall_summaries <- function(country,
     summary_data <- dplyr::full_join(summary_data, annual_rain)
   }
   if ("start_rains" %in% summaries){
-    start_rains <- rpicsa::start_rains(daily, date_time = "date", station = "station", year = "year", rain = "rain", doy = "doy",
+    start_rains <- rpicsa::start_rains(daily, date_time = "date", station = "station", year = "year", rain = "rain", 
+                               #doy = "doy", # todo: sort doy issues about it being calculated
                                        threshold  = definitions$start_rains$threshold,
                                        start_day  = definitions$start_rains$start_day,
                                        end_day = definitions$start_rains$end_day,
@@ -65,7 +60,7 @@ annual_rainfall_summaries <- function(country,
     summary_data <- dplyr::full_join(summary_data, start_rains)
   }
   if ("end_rains" %in% summaries){
-    end_rains <- rpicsa::end_rains(daily, date_time = "date", station = "station", year = "year", rain = "rain", doy = "doy",
+    end_rains <- rpicsa::end_rains(daily, date_time = "date", station = "station", year = "year", rain = "rain", #doy = "doy",
                                start_day  = definitions$end_rains$start_day,
                                end_day = definitions$end_rains$end_day,
                                output = definitions$end_rains$output,
@@ -73,8 +68,6 @@ annual_rainfall_summaries <- function(country,
                              min_rainfall = definitions$end_rains$min_rainfall)
     summary_data <- dplyr::full_join(summary_data, end_rains)
   }
-  
-  
   list_return <- NULL
   # anything defined in the json to go in here
   # and to be returned in that format (e.g. dataframe, list of lists, etc)
