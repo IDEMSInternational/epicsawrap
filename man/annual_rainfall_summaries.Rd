@@ -7,8 +7,7 @@
 annual_rainfall_summaries(
   country,
   station_id,
-  summaries = c("seasonal_rainfall", "seasonal_raindays", "start_rains", "end_season",
-    "length_season")
+  summaries = c("annual_rain", "start_rains", "end_rains")
 )
 }
 \arguments{
@@ -23,8 +22,10 @@ single value or a vector.}
 A data frame with yearly summaries.
 }
 \description{
-Annual Rainfall Summaries
+A table containing all the annual rainfall summaries for PICSA
+e.g. start of rain, total rainfall, number of rain days, end of season.
+One row per year/station and one column per summary.
 }
 \examples{
-# annual_rainfall_summaries(country = "zm", station_id = "01122")
+annual_rainfall_summaries(country = "zm", station_id = "01122", summaries = "annual_rain")
 }

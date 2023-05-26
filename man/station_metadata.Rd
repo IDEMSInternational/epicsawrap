@@ -9,6 +9,12 @@ station_metadata(country)
 \arguments{
 \item{country}{\code{character(1)} The country code of the data.}
 }
+\value{
+TODO
+}
 \description{
 Get Station Metadata
+}
+\examples{
+# TODO
 }

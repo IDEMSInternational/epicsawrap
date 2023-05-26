@@ -4,10 +4,10 @@
 #' @param countries `character(1)` The set of countries to create directories
 #'   for.
 #'
-#' @return
+#' @return TODO
 #' @export
 #'
-#' @examples
+#' @examples #TODO
 setup <- function(dir, countries = c("mw", "zm")) {
   if (!dir.exists(dir)) dir.create(dir)
   setwd(dir)

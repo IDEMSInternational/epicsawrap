@@ -2,10 +2,10 @@
 #'
 #' @param country `character(1)` The country code of the data.
 #'
-#' @return
+#' @return TODO
 #' @export
 #'
-#' @examples
+#' @examples # TODO
 station_metadata <- function(country) {
   epicsadata::station_metadata(country)
 }

@@ -12,6 +12,12 @@ setup(dir, countries = c("mw", "zm"))
 \item{countries}{\code{character(1)} The set of countries to create directories
 for.}
 }
+\value{
+TODO
+}
 \description{
 Setup directories
+}
+\examples{
+#TODO
 }
