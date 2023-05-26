@@ -3,6 +3,7 @@
 export("%>%")
 export(annual_rainfall_summaries)
 export(annual_temperature_summaries)
+export(definitions)
 export(gcs_auth_file)
 export(setup)
 export(station_metadata)
