@@ -24,6 +24,7 @@ annual_rainfall_summaries <- function(country,
                                       ) {
   # cheaper to not save this and to just call it?
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+  daily$year <- as.integer(daily$year)
   definitions <- definitions(country = country, station_id = station_id, summaries = summaries)
   summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$station))
   if ("annual_rain" %in% summaries){
@@ -72,6 +73,6 @@ annual_rainfall_summaries <- function(country,
   # anything defined in the json to go in here
   # and to be returned in that format (e.g. dataframe, list of lists, etc)
   list_return[[1]] <- c(definitions)
-  list_return[[2]] <- summary_data %>% mutate(year = as.integer(year))
+  list_return[[2]] <- summary_data
   return(list_return) # return a list with in it the metadata and the data itself
 }

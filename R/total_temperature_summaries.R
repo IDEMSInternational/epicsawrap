@@ -19,6 +19,11 @@ total_temperature_summaries <- function(country,
                                         to = c("annual", "monthly")) {
   to <- match.arg(to)
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+  daily$year <- as.integer(daily$year)
+  if ("month" %in% names(daily)){
+    daily$month <- forcats::as_factor(daily$month) # what about reordering this further if we didn't have it in order at the start?
+    daily$month <- as.integer(daily$month) 
+  } 
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
   
   # even though we can have tmax and tmin defined together, it's being done this way 
