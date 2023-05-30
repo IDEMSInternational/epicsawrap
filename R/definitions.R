@@ -12,5 +12,6 @@ definitions <- function(country, station_id, summaries){
   definition_data <- epicsadata::get_definitions_data(country = country, station_id = station_id)
   definition_data <- purrr::map(.x = summaries, .f = ~ definition_data[[.x]])
   names(definition_data) <- summaries
+  definition_data[sapply(definition_data, is.null)] <- NULL
   return(definition_data)
 }
