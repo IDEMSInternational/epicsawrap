@@ -1,4 +1,4 @@
-#' monthly Temperature Summaries
+#' Monthly Temperature Summaries
 #'
 #' @param country `character(1)` The country code of the data.
 #' @param station_id `character` The id's of the stations to analyse. Either a

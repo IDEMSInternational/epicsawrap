@@ -24,6 +24,7 @@ annual_rainfall_summaries <- function(country,
                                       ) {
   # cheaper to not save this and to just call it?
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+  daily$year <- as.integer(daily$year)
   definitions <- definitions(country = country, station_id = station_id, summaries = summaries)
   summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$station))
   if ("annual_rain" %in% summaries){

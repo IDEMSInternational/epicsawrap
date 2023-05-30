@@ -2,7 +2,7 @@
 % Please edit documentation in R/monthly_temperature_summaries.R
 \name{monthly_temperature_summaries}
 \alias{monthly_temperature_summaries}
-\title{monthly Temperature Summaries}
+\title{Monthly Temperature Summaries}
 \usage{
 monthly_temperature_summaries(
   country,
@@ -22,7 +22,7 @@ single value or a vector.}
 A data frame with monthly summaries.
 }
 \description{
-monthly Temperature Summaries
+Monthly Temperature Summaries
 }
 \examples{
 # monthly_temperature_summaries(country = "zm", station_id = "16") # made a fake "16" json definitions data
