@@ -25,5 +25,6 @@ A data frame with yearly summaries.
 Annual Temperature Summaries
 }
 \examples{
-# annual_temperature_summaries(country = "zm", station_id = "01122")
+# annual_temperature_summaries(country = "zm", station_id = "16") # made a fake "16" json definitions data
+# because it contains temperature data. 
 }
