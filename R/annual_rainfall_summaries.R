@@ -72,6 +72,6 @@ annual_rainfall_summaries <- function(country,
   # anything defined in the json to go in here
   # and to be returned in that format (e.g. dataframe, list of lists, etc)
   list_return[[1]] <- c(definitions)
-  list_return[[2]] <- summary_data
+  list_return[[2]] <- summary_data %>% mutate(year = as.integer(year))
   return(list_return) # return a list with in it the metadata and the data itself
 }
