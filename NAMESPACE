@@ -3,6 +3,7 @@
 export("%>%")
 export(annual_rainfall_summaries)
 export(annual_temperature_summaries)
+export(crop_success_probabilities)
 export(definitions)
 export(gcs_auth_file)
 export(monthly_temperature_summaries)
