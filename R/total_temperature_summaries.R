@@ -7,7 +7,6 @@
 #' @param to `character` Whether this is for annual or monthly summaries
 #'
 #' @return A data frame with either annual or monthly summaries.
-#' @export
 #'
 #' @examples
 #' # total_temperature_summaries(country = "zm", station_id = "16") # made a fake "16" json definitions data
