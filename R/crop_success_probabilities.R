@@ -19,7 +19,7 @@ crop_success_probabilities <- function(country,
   if ("station_name" %in% names(daily)) daily$station <- daily$station_name # temp until we don't hard code in the columns call
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
   # TODO: call sor/eor if it is already run?
-  season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "end_rains"))
+  season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "end_rains")) # end rains or end season?
   summary_crops <- rpicsa::crops_definitions(data = daily,
                                              date_time  = "date",
                                              station = "station",
