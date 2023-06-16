@@ -15,7 +15,6 @@ crop_success_probabilities <- function(country,
                                         station_id,
                                         summaries = c("crops_success")) {
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
-  daily$year <- as.integer(daily$year)
   if ("station_name" %in% names(daily)) daily$station <- daily$station_name # temp until we don't hard code in the columns call
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
   # TODO: call sor/eor if it is already run?
@@ -32,7 +31,6 @@ crop_success_probabilities <- function(country,
                                              season_data = season_data[[2]],
                                              start_day = "start_rain",
                                              end_day = "end_rain")
-  
   list_return <- NULL
   list_return[[1]] <- c(definitions)
   list_return[[2]] <- summary_crops
