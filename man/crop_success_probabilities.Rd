@@ -11,8 +11,6 @@ crop_success_probabilities(country, station_id)
 
 \item{station_id}{\code{character} The id's of the stations to analyse. Either a
 single value or a vector.}
-
-\item{summaries}{\code{character} The names of the summaries to produce.}
 }
 \value{
 A list containing the definitions and a data frame with probability summaries.

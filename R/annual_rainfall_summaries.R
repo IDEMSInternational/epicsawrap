@@ -13,9 +13,9 @@
 #' @export
 #'
 #' @examples
-#' annual_rainfall_summaries(country = "zm", station_id = "01122", summaries = "annual_rain")
-#' annual_rainfall_summaries(country = "zm", station_id = "16", 
-#'                           summaries = c("start_rains", "end_rains", "annual_rain", "seasonal_length")) #, "end_season"))
+#' #annual_rainfall_summaries(country = "zm", station_id = "01122", summaries = "annual_rain")
+#' #annual_rainfall_summaries(country = "zm", station_id = "16", 
+#' #                          summaries = c("start_rains", "end_rains", "annual_rain", "seasonal_length")) #, "end_season"))
 annual_rainfall_summaries <- function(country,
                                       station_id, 
                                       # for now, just one summary: annual_rain
