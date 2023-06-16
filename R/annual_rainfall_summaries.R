@@ -19,7 +19,8 @@ annual_rainfall_summaries <- function(country,
                                       # for now, just one summary: annual_rain
                                       summaries = c("annual_rain", # total rain days and annual rainfall
                                                     "start_rains",
-                                                    "end_rains")
+                                                    "end_rains",
+                                                    "end_season")
                                       # TODO: add in ("seasonal_rainfall", "seasonal_raindays")
                                       ) {
   # cheaper to not save this and to just call it?
@@ -69,6 +70,18 @@ annual_rainfall_summaries <- function(country,
                              interval_length = definitions$end_rains$interval_length,
                              min_rainfall = definitions$end_rains$min_rainfall)
     summary_data <- dplyr::full_join(summary_data, end_rains)
+  }
+  if ("end_season" %in% summaries){
+    end_season <- rpicsa::end_season(daily, date_time = "date", station = "station", year = "year", rain = "rain", #doy = "doy",
+                                   start_day  = definitions$end_season$start_day,
+                                   end_day = definitions$end_season$end_day,
+                                   output = definitions$end_season$output,
+                                   capacity = definitions$end_season$capacity,
+                                   water_balance_max = definitions$end_season$water_balance_max,
+                                   evaporation = definitions$end_season$evaporation, # this is a character
+                                   evaporation_value = definitions$end_season$evaporation_value,
+                                   evaporation_variable = definitions$end_season$evaporation_variable) # todo: evaporation variable as a variable
+    summary_data <- dplyr::full_join(summary_data, end_season)
   }
   list_return <- NULL
   # anything defined in the json to go in here
