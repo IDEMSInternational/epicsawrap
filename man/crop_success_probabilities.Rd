@@ -4,7 +4,7 @@
 \alias{crop_success_probabilities}
 \title{Probability Crop Tables}
 \usage{
-crop_success_probabilities(country, station_id, summaries = c("crops_success"))
+crop_success_probabilities(country, station_id)
 }
 \arguments{
 \item{country}{\code{character(1)} The country code of the data.}
@@ -21,5 +21,10 @@ A list containing the definitions and a data frame with probability summaries.
 The probabilities of crop success for given planting maturity lengths, seasonal total rainfall requirements, and planting dates. It is not required that the start of the rains occurs on or before the planting date.
 }
 \examples{
-# TODO
+#
+#library(epicsawrap)
+#library(tidyverse)
+#epicsawrap::setup(dir = getwd())
+#epicsawrap::gcs_auth_file(file = "C:/Users/lclem/Downloads/e-picsa-e630400792e7.json")
+#crop_success_probabilities(country = "zm", station_id = "16")
 }

@@ -19,5 +19,10 @@ A list containing the definitions and a data frame with probability summaries.
 The probabilities of the start of the rains occurring on or before a set of specified days.
 }
 \examples{
-# TODO
+#
+#library(epicsawrap)
+#library(tidyverse)
+#epicsawrap::setup(dir = getwd())
+#epicsawrap::gcs_auth_file(file = "C:/Users/lclem/Downloads/e-picsa-e630400792e7.json")
+#season_start_probabilities(country = "zm", station_id = "16")
 }

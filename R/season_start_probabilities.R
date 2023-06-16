@@ -8,7 +8,12 @@
 #' @return A list containing the definitions and a data frame with probability summaries.
 #' @export
 #'
-#' @examples # TODO
+#' @examples #
+#' #library(epicsawrap)
+#' #library(tidyverse)
+#' #epicsawrap::setup(dir = getwd())
+#' #epicsawrap::gcs_auth_file(file = "C:/Users/lclem/Downloads/e-picsa-e630400792e7.json")
+#' #season_start_probabilities(country = "zm", station_id = "16")
 season_start_probabilities <- function(country,
                                        station_id) {
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
