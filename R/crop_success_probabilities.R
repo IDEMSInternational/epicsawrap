@@ -1,6 +1,5 @@
 #' Probability Crop Tables
-#' 
-#' @description The probabilities of crop success for given planting maturity lengths, seasonal total rainfall requirements, and planting dates. It is not required that the start of the rains occurs on or before the planting date.
+#' @description The probabilities of crop success for given planting maturity lengths, seasonal total rainfall requirements, and planting dates.
 #'
 #' @param country `character(1)` The country code of the data.
 #' @param station_id `character` The id's of the stations to analyse. Either a
@@ -10,13 +9,17 @@
 #' @return A list containing the definitions and a data frame with probability summaries.
 #' @export
 #'
-#' @examples # TODO
+#' @examples #
+#' #library(epicsawrap)
+#' #library(tidyverse)
+#' #epicsawrap::setup(dir = getwd())
+#' #epicsawrap::gcs_auth_file(file = "C:/Users/lclem/Downloads/e-picsa-e630400792e7.json")
+#' #crop_success_probabilities(country = "zm", station_id = "16")
 crop_success_probabilities <- function(country,
-                                        station_id,
-                                        summaries = c("crops_success")) {
+                                       station_id) {
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   if ("station_name" %in% names(daily)) daily$station <- daily$station_name # temp until we don't hard code in the columns call
-  definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
+  definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "crops_success")
   # TODO: call sor/eor if it is already run?
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "end_rains")) # end rains or end season?
   summary_crops <- rpicsa::crops_definitions(data = daily,
@@ -32,7 +35,7 @@ crop_success_probabilities <- function(country,
                                              start_day = "start_rain",
                                              end_day = "end_rain")
   list_return <- NULL
-  list_return[[1]] <- c(definitions)
+  list_return[[1]] <- c(season_data[[1]], definitions)
   list_return[[2]] <- summary_crops
   return(list_return)
 }
