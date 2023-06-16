@@ -15,5 +15,5 @@ monthly_temperature_summaries <- function(country,
                                          station_id,
                                          summaries = c("mean_tmin",
                                                        "mean_tmax")) {
-  return(epicsawrap:::total_temperature_summaries(country = country, station_id = station_id, summaries = summaries, to = "monthly"))
+  return(epicsawrap::total_temperature_summaries(country = country, station_id = station_id, summaries = summaries, to = "monthly"))
 }
