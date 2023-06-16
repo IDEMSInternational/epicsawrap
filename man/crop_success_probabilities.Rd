@@ -18,7 +18,7 @@ single value or a vector.}
 A list containing the definitions and a data frame with probability summaries.
 }
 \description{
-The probabilities of crop success for given planting maturity lengths, seasonal total rainfall requirements, and planting dates. It is not required that the start of the rains occurs on or before the planting date.
+The probabilities of crop success for given planting maturity lengths, seasonal total rainfall requirements, and planting dates.
 }
 \examples{
 #

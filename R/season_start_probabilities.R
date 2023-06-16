@@ -1,5 +1,5 @@
 #' Season start date probabilities
-#' @description The probabilities of the start of the rains occurring on or before a set of specified days.
+#' @description A table containing the probabilities of the season starting on or before a set of particular dates.
 #'
 #' @param country `character(1)` The country code of the data.
 #' @param station_id `character` The id's of the stations to analyse. Either a

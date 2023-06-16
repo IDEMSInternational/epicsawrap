@@ -16,7 +16,7 @@ single value or a vector.}
 A list containing the definitions and a data frame with probability summaries.
 }
 \description{
-The probabilities of the start of the rains occurring on or before a set of specified days.
+A table containing the probabilities of the season starting on or before a set of particular dates.
 }
 \examples{
 #

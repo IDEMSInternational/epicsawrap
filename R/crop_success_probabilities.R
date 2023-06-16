@@ -1,6 +1,5 @@
 #' Probability Crop Tables
-#' 
-#' @description The probabilities of crop success for given planting maturity lengths, seasonal total rainfall requirements, and planting dates. It is not required that the start of the rains occurs on or before the planting date.
+#' @description The probabilities of crop success for given planting maturity lengths, seasonal total rainfall requirements, and planting dates.
 #'
 #' @param country `character(1)` The country code of the data.
 #' @param station_id `character` The id's of the stations to analyse. Either a
@@ -17,7 +16,7 @@
 #' #epicsawrap::gcs_auth_file(file = "C:/Users/lclem/Downloads/e-picsa-e630400792e7.json")
 #' #crop_success_probabilities(country = "zm", station_id = "16")
 crop_success_probabilities <- function(country,
-                                        station_id) {
+                                       station_id) {
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   if ("station_name" %in% names(daily)) daily$station <- daily$station_name # temp until we don't hard code in the columns call
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "crops_success")
