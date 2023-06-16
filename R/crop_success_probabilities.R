@@ -4,7 +4,6 @@
 #' @param country `character(1)` The country code of the data.
 #' @param station_id `character` The id's of the stations to analyse. Either a
 #'   single value or a vector.
-#' @param summaries `character` The names of the summaries to produce.
 #'
 #' @return A list containing the definitions and a data frame with probability summaries.
 #' @export

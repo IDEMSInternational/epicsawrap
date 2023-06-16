@@ -12,8 +12,11 @@ RoxygenNote: 7.2.3
 Depends: 
     R (>= 2.10)
 Imports: 
+    dplyr,
     epicsadata,
+    forcats,
     magrittr,
+    purrr,
     rpicsa
 Remotes:
     IDEMSInternational/epicsadata,
