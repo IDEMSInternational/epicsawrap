@@ -7,7 +7,8 @@
 annual_rainfall_summaries(
   country,
   station_id,
-  summaries = c("annual_rain", "start_rains", "end_rains")
+  summaries = c("annual_rain", "start_rains", "end_rains", "end_season", "seasonal_rain",
+    "seasonal_length")
 )
 }
 \arguments{
@@ -28,4 +29,6 @@ One row per year/station and one column per summary.
 }
 \examples{
 annual_rainfall_summaries(country = "zm", station_id = "01122", summaries = "annual_rain")
+annual_rainfall_summaries(country = "zm", station_id = "16", 
+                          summaries = c("start_rains", "end_rains", "annual_rain", "seasonal_length")) #, "end_season"))
 }
