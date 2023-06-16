@@ -12,11 +12,10 @@
 #'
 #' @examples # TODO
 crop_success_probabilities <- function(country,
-                                        station_id,
-                                        summaries = c("crops_success")) {
+                                        station_id) {
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   if ("station_name" %in% names(daily)) daily$station <- daily$station_name # temp until we don't hard code in the columns call
-  definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
+  definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "crops_success")
   # TODO: call sor/eor if it is already run?
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "end_rains")) # end rains or end season?
   summary_crops <- rpicsa::crops_definitions(data = daily,
@@ -32,7 +31,7 @@ crop_success_probabilities <- function(country,
                                              start_day = "start_rain",
                                              end_day = "end_rain")
   list_return <- NULL
-  list_return[[1]] <- c(definitions)
+  list_return[[1]] <- c(season_data[[1]], definitions)
   list_return[[2]] <- summary_crops
   return(list_return)
 }
