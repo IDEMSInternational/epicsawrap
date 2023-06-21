@@ -26,7 +26,9 @@ season_start_probabilities <- function(country,
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains"))
   if (is.null(start_dates)){
     start_dates <- as.numeric(definitions$season_start_probabilities$specified_day)
-  } 
+  } else {
+    definitions$season_start_probabilities$specified_day <- start_dates
+  }
   summary_probabilities <- rpicsa::probability_season_start(data = season_data[[2]],
                                                               station = "station",
                                                               start_rains = "start_rain",

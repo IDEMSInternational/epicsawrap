@@ -4,13 +4,28 @@
 \alias{crop_success_probabilities}
 \title{Probability Crop Tables}
 \usage{
-crop_success_probabilities(country, station_id)
+crop_success_probabilities(
+  country,
+  station_id,
+  planting_dates = NULL,
+  water_requirements = NULL,
+  crop_length = NULL,
+  start_before_season = NULL
+)
 }
 \arguments{
 \item{country}{\code{character(1)} The country code of the data.}
 
 \item{station_id}{\code{character} The id's of the stations to analyse. Either a
 single value or a vector.}
+
+\item{planting_dates}{\code{numeric} Vector containing planting dates requirements.}
+
+\item{water_requirements}{\code{numeric} Vector containing water requirements requirements.}
+
+\item{crop_length}{\code{numeric} Vector containing seasonal crop length requirements.}
+
+\item{start_before_season}{\code{logical} A logical value indicating whether to check the start day condition (default is \code{TRUE}).}
 }
 \value{
 A list containing the definitions and a data frame with probability summaries.
@@ -25,4 +40,7 @@ The probabilities of crop success for given planting maturity lengths, seasonal 
 #epicsawrap::setup(dir = getwd())
 #epicsawrap::gcs_auth_file(file = "C:/Users/lclem/Downloads/e-picsa-e630400792e7.json")
 #crop_success_probabilities(country = "zm", station_id = "16")
+
+# or some can be defined in the dialog
+#crop_success_probabilities(country = "zm", station_id = "16", water_requirements = c(100, 300, 800))
 }
