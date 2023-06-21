@@ -18,6 +18,14 @@ crop_success_probabilities(
 
 \item{station_id}{\code{character} The id's of the stations to analyse. Either a
 single value or a vector.}
+
+\item{plant_days}{\code{character} Vector containing a list of seasonal total rainfall requirements.}
+
+\item{plant_lengths}{\code{character} Vector containing a list of seasonal total rainfall requirements.}
+
+\item{start_check}{\code{logical} A logical value indicating whether to check the start day condition (default is \code{TRUE}).}
+
+\item{season_data}{The data frame containing the seasonal data.}
 }
 \value{
 A list containing the definitions and a data frame with probability summaries.

@@ -4,6 +4,10 @@
 #' @param country `character(1)` The country code of the data.
 #' @param station_id `character` The id's of the stations to analyse. Either a
 #'   single value or a vector.
+#' @param plant_days \code{character} Vector containing a list of seasonal total rainfall requirements.
+#' @param plant_lengths \code{character} Vector containing a list of seasonal total rainfall requirements.
+#' @param start_check \code{logical} A logical value indicating whether to check the start day condition (default is `TRUE`).
+#' @param season_data The data frame containing the seasonal data.
 #'
 #' @return A list containing the definitions and a data frame with probability summaries.
 #' @export
