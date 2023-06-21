@@ -4,7 +4,14 @@
 \alias{crop_success_probabilities}
 \title{Probability Crop Tables}
 \usage{
-crop_success_probabilities(country, station_id)
+crop_success_probabilities(
+  country,
+  station_id,
+  planting_dates = NULL,
+  water_requirements = NULL,
+  crop_length = NULL,
+  start_before_season = NULL
+)
 }
 \arguments{
 \item{country}{\code{character(1)} The country code of the data.}
@@ -25,4 +32,7 @@ The probabilities of crop success for given planting maturity lengths, seasonal 
 #epicsawrap::setup(dir = getwd())
 #epicsawrap::gcs_auth_file(file = "C:/Users/lclem/Downloads/e-picsa-e630400792e7.json")
 #crop_success_probabilities(country = "zm", station_id = "16")
+
+# or some can be defined in the dialog
+#crop_success_probabilities(country = "zm", station_id = "16", water_requirements = c(100, 300, 800))
 }
