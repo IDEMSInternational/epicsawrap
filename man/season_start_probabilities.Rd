@@ -4,13 +4,15 @@
 \alias{season_start_probabilities}
 \title{Season start date probabilities}
 \usage{
-season_start_probabilities(country, station_id)
+season_start_probabilities(country, station_id, start_dates = NULL)
 }
 \arguments{
 \item{country}{\code{character(1)} The country code of the data.}
 
 \item{station_id}{\code{character} The id's of the stations to analyse. Either a
 single value or a vector.}
+
+\item{start_dates}{\code{numeric} A vector of start dates (in doy format) to calculate the probabilities of the season starting on or before.}
 }
 \value{
 A list containing the definitions and a data frame with probability summaries.
@@ -25,4 +27,6 @@ A table containing the probabilities of the season starting on or before a set o
 #epicsawrap::setup(dir = getwd())
 #epicsawrap::gcs_auth_file(file = "C:/Users/lclem/Downloads/e-picsa-e630400792e7.json")
 #season_start_probabilities(country = "zm", station_id = "16")
+# or you can manually define
+#season_start_probabilities(country = "zm", station_id = "16", start_dates = c(10, 20, 100))
 }

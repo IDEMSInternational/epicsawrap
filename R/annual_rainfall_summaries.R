@@ -36,7 +36,7 @@ annual_rainfall_summaries <- function(country,
   daily$year <- as.integer(daily$year)
   if ("station_name" %in% names(daily)) daily$station <- daily$station_name # temp until we don't hard code in the columns call
   definitions <- definitions(country = country, station_id = station_id, summaries = summaries)
-  summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$station))
+summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$station))
   if ("annual_rain" %in% summaries){
     annual_rain <- rpicsa::annual_rain(daily, date_time = "date", rain = "rain", year = "year", station = "station",
                                        # how does it know the names of these from the daily_data? Is it always the same?
