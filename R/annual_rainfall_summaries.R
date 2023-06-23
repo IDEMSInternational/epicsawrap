@@ -136,7 +136,6 @@ summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$st
       season_length <- rpicsa::seasonal_length(summary_data = summary_data, start_date = "start_rain", end_date = "end_rain", 
                                                data = daily, date_time = "date", station = "station", year = "year", rain = "rain")
     }
-    return(season_length)
     summary_data <- dplyr::full_join(summary_data, season_length)
   }
   list_return <- NULL
