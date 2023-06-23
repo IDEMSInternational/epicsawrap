@@ -55,7 +55,7 @@ summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$st
                                        threshold  = definitions$start_rains$threshold,
                                        start_day  = definitions$start_rains$start_day,
                                        end_day = definitions$start_rains$end_day,
-                                       output = definitions$start_rains$output,
+                                       output = "doy",
                                        total_rainfall = as.logical(definitions$start_rains$total_rainfall),
                                        over_days = definitions$start_rains$over_days,
                                        amount_rain = definitions$start_rains$amount_rain,
@@ -74,7 +74,7 @@ summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$st
     end_rains <- rpicsa::end_rains(daily, date_time = "date", station = "station", year = "year", rain = "rain", #doy = "doy",
                                    start_day  = definitions$end_rains$start_day,
                                    end_day = definitions$end_rains$end_day,
-                                   output = definitions$end_rains$output,
+                                   output = "doy",
                                    interval_length = definitions$end_rains$interval_length,
                                    min_rainfall = definitions$end_rains$min_rainfall)
     summary_data <- dplyr::full_join(summary_data, end_rains)
@@ -83,7 +83,7 @@ summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$st
     end_season <- rpicsa::end_season(daily, date_time = "date", station = "station", year = "year", rain = "rain", #doy = "doy",
                                      start_day  = definitions$end_season$start_day,
                                      end_day = definitions$end_season$end_day,
-                                     output = definitions$end_season$output,
+                                     output = "doy",
                                      capacity = definitions$end_season$capacity,
                                      water_balance_max = definitions$end_season$water_balance_max,
                                      evaporation = definitions$end_season$evaporation, # this is a character
