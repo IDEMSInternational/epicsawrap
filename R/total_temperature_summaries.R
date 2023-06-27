@@ -108,7 +108,6 @@ total_temperature_summaries <- function(country,
     summary_data$month <- forcats::as_factor(summary_data$month) # what about reordering this further if we didn't have it in order at the start?
     summary_data$month <- as.integer(summary_data$month) 
   } 
-  summary_data <- summary_data %>% dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~as.integer(.)))
   list_return <- NULL
   list_return[[1]] <- c(definitions)
   list_return[[2]] <- summary_data

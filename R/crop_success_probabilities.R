@@ -68,7 +68,6 @@ crop_success_probabilities <- function(country,
                                              season_data = season_data[[2]],
                                              start_day = "start_rain",
                                              end_day = "end_rain")
-  summary_crops <- summary_crops %>% dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~as.integer(.)))
   # convert all numeric to integers
   list_return <- NULL
   list_return[[1]] <- c(season_data[[1]], definitions)

@@ -25,7 +25,7 @@ season_start_probabilities <- function(country,
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "season_start_probabilities")
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains"))
   if (is.null(start_dates)){
-    start_dates <- as.numeric(definitions$season_start_probabilities$specified_day)
+    start_dates <- definitions$season_start_probabilities$specified_day
   } else {
     definitions$season_start_probabilities$specified_day <- start_dates
   }
@@ -33,8 +33,7 @@ season_start_probabilities <- function(country,
                                                               station = "station",
                                                               start_rains = "start_rain",
                                                               doy_format = "doy_366", # we calculate this in the start_rain summaries?
-                                                              specified_day = start_dates)
-  summary_probabilities <- summary_probabilities %>% dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~as.integer(.)))
+                                                              specified_day = as.integer(start_dates))
   list_return <- NULL
   list_return[[1]] <- c(season_data[[1]], definitions)
   list_return[[2]] <- summary_probabilities

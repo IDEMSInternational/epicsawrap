@@ -15,7 +15,7 @@
 #' @examples
 #' #annual_rainfall_summaries(country = "zm", station_id = "01122", summaries = "annual_rain")
 #' #annual_rainfall_summaries(country = "zm", station_id = "16", 
-#' #                          summaries = c("start_rains", "end_rains", "annual_rain", "seasonal_length")) #, "end_season"))
+#' #                          summaries = c("start_rains", "end_rains", "annual_rain", "seasonal_rain")) #, "end_season"))
 annual_rainfall_summaries <- function(country,
                                       station_id, 
                                       # for now, just one summary: annual_rain
@@ -36,7 +36,7 @@ annual_rainfall_summaries <- function(country,
   daily$year <- as.integer(daily$year)
   if ("station_name" %in% names(daily)) daily$station <- daily$station_name # temp until we don't hard code in the columns call
   definitions <- definitions(country = country, station_id = station_id, summaries = summaries)
-summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$station))
+  summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$station))
   if ("annual_rain" %in% summaries){
     annual_rain <- rpicsa::annual_rain(daily, date_time = "date", rain = "rain", year = "year", station = "station",
                                        # how does it know the names of these from the daily_data? Is it always the same?
@@ -69,6 +69,7 @@ summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$st
                                        max_rain = definitions$start_rains$max_rain,
                                        period_max_dry_days = definitions$start_rains$period_max_dry_days)
     summary_data <- dplyr::full_join(summary_data, start_rains)
+    summary_data$start_rain <- as.integer(summary_data$start_rain)
   }
   if ("end_rains" %in% summaries){
     end_rains <- rpicsa::end_rains(daily, date_time = "date", station = "station", year = "year", rain = "rain", #doy = "doy",
@@ -78,6 +79,7 @@ summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$st
                                    interval_length = definitions$end_rains$interval_length,
                                    min_rainfall = definitions$end_rains$min_rainfall)
     summary_data <- dplyr::full_join(summary_data, end_rains)
+    summary_data$end_rain <- as.integer(summary_data$end_rain)
   }
   if ("end_season" %in% summaries){
     end_season <- rpicsa::end_season(daily, date_time = "date", station = "station", year = "year", rain = "rain", #doy = "doy",
@@ -90,6 +92,7 @@ summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$st
                                      evaporation_value = definitions$end_season$evaporation_value,
                                      evaporation_variable = definitions$end_season$evaporation_variable) # todo: evaporation variable as a variable
     summary_data <- dplyr::full_join(summary_data, end_season)
+    summary_data$end_season <- as.integer(summary_data$end_season)
   }
   if ("seasonal_rain" %in% summaries){
     present_values <- c("start_rains", "end_rains", "end_season") %in% summaries
@@ -138,7 +141,6 @@ summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$st
     }
     summary_data <- dplyr::full_join(summary_data, season_length)
   }
-summary_data <- summary_data %>% dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~as.integer(.)))
   list_return <- NULL
   # anything defined in the json to go in here
   # and to be returned in that format (e.g. dataframe, list of lists, etc)
