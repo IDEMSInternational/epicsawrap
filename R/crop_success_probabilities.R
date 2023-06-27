@@ -20,7 +20,7 @@
 #' #crop_success_probabilities(country = "zm", station_id = "16")
 #' 
 #' # or some can be defined in the dialog
-#' #crop_success_probabilities(country = "zm", station_id = "16", water_requirements = c(100, 300, 800))
+#' #x <- crop_success_probabilities(country = "zm", station_id = "16", water_requirements = c(100, 300, 800))
 #' 
 #' # or all can be defined in the dialog
 #' #crop_success_probabilities(country = "zm", station_id = "16", water_requirements = c(100, 300, 800),
@@ -37,17 +37,17 @@ crop_success_probabilities <- function(country,
   # TODO: call sor/eor if it is already run?
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "end_rains")) # end rains or end season?
   if (is.null(crop_length)){
-    crop_length <- as.numeric(definitions$crops_success$plant_lengths)
+    crop_length <- as.integer(definitions$crops_success$plant_lengths)
   } else {
     definitions$crops_success$plant_lengths <- crop_length
   }
   if (is.null(water_requirements)){
-    water_requirements <- as.numeric(definitions$crops_success$rain_totals)
+    water_requirements <- as.integer(definitions$crops_success$rain_totals)
   } else {
     definitions$crops_success$rain_totals <- water_requirements
   }
   if (is.null(planting_dates)) {
-    planting_dates <- as.numeric(definitions$crops_success$plant_days)
+    planting_dates <- as.integer(definitions$crops_success$plant_days)
   } else {
     definitions$crops_success$plant_days <- planting_dates
   }
@@ -61,13 +61,15 @@ crop_success_probabilities <- function(country,
                                              station = "station",
                                              year = "year",
                                              rain = "rain",
-                                             rain_totals = water_requirements,
-                                             plant_days = planting_dates,
-                                             plant_lengths = crop_length,
+                                             rain_totals = as.integer(water_requirements),
+                                             plant_days = as.integer(planting_dates),
+                                             plant_lengths = as.integer(crop_length),
                                              start_check = start_before_season,
                                              season_data = season_data[[2]],
                                              start_day = "start_rain",
                                              end_day = "end_rain")
+  summary_crops <- summary_crops %>% dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~as.integer(.)))
+  # convert all numeric to integers
   list_return <- NULL
   list_return[[1]] <- c(season_data[[1]], definitions)
   list_return[[2]] <- summary_crops

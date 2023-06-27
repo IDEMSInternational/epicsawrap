@@ -34,6 +34,7 @@ season_start_probabilities <- function(country,
                                                               start_rains = "start_rain",
                                                               doy_format = "doy_366", # we calculate this in the start_rain summaries?
                                                               specified_day = start_dates)
+  summary_probabilities <- summary_probabilities %>% dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~as.integer(.)))
   list_return <- NULL
   list_return[[1]] <- c(season_data[[1]], definitions)
   list_return[[2]] <- summary_probabilities
