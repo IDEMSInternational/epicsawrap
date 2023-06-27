@@ -138,6 +138,7 @@ summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$st
     }
     summary_data <- dplyr::full_join(summary_data, season_length)
   }
+summary_data <- summary_data %>% dplyr::mutate(dplyr::across(dplyr::where(is.numeric), ~as.integer(.)))
   list_return <- NULL
   # anything defined in the json to go in here
   # and to be returned in that format (e.g. dataframe, list of lists, etc)

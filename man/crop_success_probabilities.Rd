@@ -42,7 +42,7 @@ The probabilities of crop success for given planting maturity lengths, seasonal 
 #crop_success_probabilities(country = "zm", station_id = "16")
 
 # or some can be defined in the dialog
-#crop_success_probabilities(country = "zm", station_id = "16", water_requirements = c(100, 300, 800))
+#x <- crop_success_probabilities(country = "zm", station_id = "16", water_requirements = c(100, 300, 800))
 
 # or all can be defined in the dialog
 #crop_success_probabilities(country = "zm", station_id = "16", water_requirements = c(100, 300, 800),
