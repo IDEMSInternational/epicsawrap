@@ -21,6 +21,10 @@
 #' 
 #' # or some can be defined in the dialog
 #' #crop_success_probabilities(country = "zm", station_id = "16", water_requirements = c(100, 300, 800))
+#' 
+#' # or all can be defined in the dialog
+#' #crop_success_probabilities(country = "zm", station_id = "16", water_requirements = c(100, 300, 800),
+#' #                           crop_length = c(100, 150), planting_dates = c(90, 100, 110))
 crop_success_probabilities <- function(country,
                                        station_id,
                                        planting_dates = NULL,
