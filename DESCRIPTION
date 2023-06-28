@@ -17,6 +17,7 @@ Imports:
     forcats,
     magrittr,
     purrr,
+    rlang,
     rpicsa
 Remotes:
     IDEMSInternational/epicsadata,
