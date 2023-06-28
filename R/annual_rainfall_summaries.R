@@ -11,7 +11,7 @@
 #'
 #' @return A data frame with yearly summaries.
 #' @export
-#'
+#' @importFrom rlang :=
 #' @examples
 #' #annual_rainfall_summaries(country = "zm", station_id = "01122", summaries = "annual_rain")
 #' #annual_rainfall_summaries(country = "zm", station_id = "16", 
@@ -34,11 +34,14 @@ annual_rainfall_summaries <- function(country,
   # cheaper to not save this and to just call it?
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   daily$year <- as.integer(daily$year)
-  if ("station_name" %in% names(daily)) daily$station <- daily$station_name # temp until we don't hard code in the columns call
+  data_names <- epicsadata::data_definitions(station_id = station_id)
   definitions <- definitions(country = country, station_id = station_id, summaries = summaries)
-  summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$station))
+  summary_data <- expand.grid(year = unique(daily[[data_names$year]]), 
+                              station = unique(daily[[data_names$station]]))
+  names(summary_data) <- c(data_names$year, data_names$station)
   if ("annual_rain" %in% summaries){
-    annual_rain <- rpicsa::annual_rain(daily, date_time = "date", rain = "rain", year = "year", station = "station",
+    annual_rain <- rpicsa::annual_rain(daily, date_time = data_names$date, rain = data_names$rain, 
+                                       year = data_names$year,  station = data_names$station, 
                                        # how does it know the names of these from the daily_data? Is it always the same?
                                        total_rain = as.logical(definitions$annual_rain$total_rain),
                                        n_rain = as.logical(definitions$annual_rain$n_rain),
@@ -50,7 +53,7 @@ annual_rainfall_summaries <- function(country,
     summary_data <- dplyr::full_join(summary_data, annual_rain)
   }
   if ("start_rains" %in% summaries){
-    start_rains <- rpicsa::start_rains(daily, date_time = "date", station = "station", year = "year", rain = "rain", 
+    start_rains <- rpicsa::start_rains(daily, date_time = data_names$date, station = data_names$station,  year = data_names$year,  rain = data_names$rain,
                                        #doy = "doy", # todo: sort doy issues about it being calculated
                                        threshold  = definitions$start_rains$threshold,
                                        start_day  = definitions$start_rains$start_day,
@@ -72,7 +75,7 @@ annual_rainfall_summaries <- function(country,
     summary_data$start_rain <- as.integer(summary_data$start_rain)
   }
   if ("end_rains" %in% summaries){
-    end_rains <- rpicsa::end_rains(daily, date_time = "date", station = "station", year = "year", rain = "rain", #doy = "doy",
+    end_rains <- rpicsa::end_rains(daily, date_time = data_names$date, station = data_names$station,  year = data_names$year,  rain = data_names$rain, #doy = "doy",
                                    start_day  = definitions$end_rains$start_day,
                                    end_day = definitions$end_rains$end_day,
                                    output = "doy",
@@ -82,7 +85,7 @@ annual_rainfall_summaries <- function(country,
     summary_data$end_rain <- as.integer(summary_data$end_rain)
   }
   if ("end_season" %in% summaries){
-    end_season <- rpicsa::end_season(daily, date_time = "date", station = "station", year = "year", rain = "rain", #doy = "doy",
+    end_season <- rpicsa::end_season(daily, date_time = data_names$date, station = data_names$station,  year = data_names$year,  rain = data_names$rain, #doy = "doy",
                                      start_day  = definitions$end_season$start_day,
                                      end_day = definitions$end_season$end_day,
                                      output = "doy",
@@ -100,7 +103,7 @@ annual_rainfall_summaries <- function(country,
     if ((length(present_values[present_values]) == 3) || (identical(present_values, c(TRUE, FALSE, TRUE)))){ # if all 3 or sr and es in
       warning("Performing seasonal_rain with end_season") # end_rain might be present too
       season_rain <- rpicsa::seasonal_rain(summary_data = summary_data, start_date = "start_rain", end_date = "end_season", 
-                                           daily, date_time = "date", station = "station", year = "year", rain = "rain", #doy = "doy",
+                                           daily, date_time = data_names$date, station = data_names$station,  year = data_names$year,  rain = data_names$rain, #doy = "doy",
                                            total_rain = as.logical(definitions$seasonal_rain$total_rain),
                                            n_rain = as.logical(definitions$seasonal_rain$n_rain),
                                            rain_day = definitions$seasonal_rain$rain_day,
@@ -113,7 +116,7 @@ annual_rainfall_summaries <- function(country,
     if (identical(present_values, c(TRUE, TRUE, FALSE))){
       # run it but with end_rain
       season_rain <- rpicsa::seasonal_rain(summary_data = summary_data, start_date = "start_rain", end_date = "end_rain", 
-                                           daily, date_time = "date", station = "station", year = "year", rain = "rain", #doy = "doy",
+                                           daily, date_time = data_names$date, station = data_names$station,  year = data_names$year,  rain = data_names$rain, #doy = "doy",
                                            total_rain = as.logical(definitions$seasonal_rain$total_rain),
                                            n_rain = as.logical(definitions$seasonal_rain$n_rain),
                                            rain_day = definitions$seasonal_rain$rain_day,
@@ -132,12 +135,12 @@ annual_rainfall_summaries <- function(country,
       # all present
       warning("Performing seasonal_length with end_season") # end_rain might be present too
       season_length <- rpicsa::seasonal_length(summary_data = summary_data, start_date = "start_rain", end_date = "end_season", 
-                                               data = daily, date_time = "date", station = "station", year = "year", rain = "rain")
+                                               data = daily, date_time = data_names$date, station = data_names$station,  year = data_names$year,  rain = data_names$rain)
     }
     if (identical(present_values, c(TRUE, TRUE, FALSE))){
       # run it but with end_rain
       season_length <- rpicsa::seasonal_length(summary_data = summary_data, start_date = "start_rain", end_date = "end_rain", 
-                                               data = daily, date_time = "date", station = "station", year = "year", rain = "rain")
+                                               data = daily, date_time = data_names$date, station = data_names$station,  year = data_names$year,  rain = data_names$rain)
     }
     summary_data <- dplyr::full_join(summary_data, season_length)
   }
