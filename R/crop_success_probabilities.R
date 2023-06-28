@@ -32,9 +32,8 @@ crop_success_probabilities <- function(country,
                                        crop_length = NULL,
                                        start_before_season = NULL) {
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
-  if ("station_name" %in% names(daily)) daily$station <- daily$station_name # temp until we don't hard code in the columns call
-  definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "crops_success")
-  # TODO: call sor/eor if it is already run?
+  #definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "crops_success")
+  data_names <- epicsadata::data_definitions(station_id = station_id)
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "end_rains")) # end rains or end season?
   if (is.null(crop_length)){
     crop_length <- as.integer(definitions$crops_success$plant_lengths)
@@ -57,10 +56,10 @@ crop_success_probabilities <- function(country,
     definitions$crops_success$start_check <- start_before_season
   }
   summary_crops <- rpicsa::crops_definitions(data = daily,
-                                             date_time  = "date",
-                                             station = "station",
-                                             year = "year",
-                                             rain = "rain",
+                                             date_time  = data_names["date"],
+                                             station = data_names["station"],
+                                             year = data_names["year"],
+                                             rain = data_names["rain"],
                                              rain_totals = as.integer(water_requirements),
                                              plant_days = as.integer(planting_dates),
                                              plant_lengths = as.integer(crop_length),
@@ -68,6 +67,7 @@ crop_success_probabilities <- function(country,
                                              season_data = season_data[[2]],
                                              start_day = "start_rain",
                                              end_day = "end_rain")
+  print("A")
   # convert all numeric to integers
   list_return <- NULL
   list_return[[1]] <- c(season_data[[1]], definitions)

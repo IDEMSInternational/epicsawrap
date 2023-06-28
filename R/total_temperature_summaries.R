@@ -17,13 +17,16 @@ total_temperature_summaries <- function(country,
                                                       "mean_tmax"),
                                         to = c("annual", "monthly")) {
   to <- match.arg(to)
+  
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
-  
+  data_names <- epicsadata::data_definitions(station_id = station_id)
   # even though we can have tmax and tmin defined together, it's being done this way 
-  # in case different paramters are defined for tmax and for tmin.
+  # in case different parameters are defined for tmax and for tmin.
   # TODO: check if that is sensible. 
-  summary_data <- expand.grid(year = unique(daily$year), station = unique(daily$station))
+  summary_data <- expand.grid(year = unique(daily[[data_names$year]]), 
+                              station = unique(daily[[data_names$station]]))
+  names(summary_data) <- c(data_names$year, data_names$station)
   if ("mean_tmax" %in% summaries){
     if (is.null(definitions$mean_tmax$to)){
       stop("'mean_tmax' has been given in summaries but no data is given in definitions json file.")
@@ -32,10 +35,10 @@ total_temperature_summaries <- function(country,
         if (grepl('annual', x = definitions$mean_tmax$to)){
           # TODO: what if different variable names?
           summary_tmax <- rpicsa::mean_temperature(data = daily,
-                                                   date_time  = "date",
-                                                   station = "station_name",
-                                                   year = "year",
-                                                   tmax = "tmax",
+                                                   date_time = data_names$date,
+                                                   station = data_names$station,
+                                                   year = data_names$year,
+                                                   tmax = data_names$tmax,
                                                    tmin = NULL,
                                                    to = "annual",
                                                    na_rm = is.logical(definitions$mean_tmax$na_rm),
@@ -48,10 +51,10 @@ total_temperature_summaries <- function(country,
       } else {
         if (grepl('monthly', x = definitions$mean_tmax$to)){
           summary_tmax <- rpicsa::mean_temperature(data = daily,
-                                                   date_time  = "date",
-                                                   station = "station_name",
-                                                   year = "year",
-                                                   tmax = "tmax",
+                                                   date_time = data_names$date,
+                                                   station = data_names$station,
+                                                   year = data_names$year,
+                                                   tmax = data_names$tmax,
                                                    tmin = NULL,
                                                    to = "monthly",
                                                    na_rm = is.logical(definitions$mean_tmax$na_rm),
@@ -71,11 +74,11 @@ total_temperature_summaries <- function(country,
       if (to == "annual"){
         if (grepl('annual', x = definitions$mean_tmin$to)){
           summary_tmin <- rpicsa::mean_temperature(data = daily,
-                                                   date_time  = "date",
-                                                   station = "station_name",
-                                                   year = "year",
+                                                   date_time = data_names$date,
+                                                   station = data_names$station,
+                                                   year = data_names$year,
                                                    tmax = NULL,
-                                                   tmin = "tmin",
+                                                   tmin = data_names$tmin,
                                                    to = "annual",
                                                    na_rm = is.logical(definitions$mean_tmin$na_rm),
                                                    na_prop = definitions$mean_tmin$na_prop,
@@ -87,18 +90,18 @@ total_temperature_summaries <- function(country,
       } else {
         if (grepl('monthly', x = definitions$mean_tmin$to)){
           summary_tmin <- rpicsa::mean_temperature(data = daily,
-                                                   date_time  = "date",
-                                                   station = "station_name",
-                                                   year = "year",
+                                                   date_time = data_names$date,
+                                                   station = data_names$station,
+                                                   year = data_names$year,
                                                    tmax = NULL,
-                                                   tmin = "tmin",
+                                                   tmin = data_names$tmin,
                                                    to = "monthly",
                                                    na_rm = is.logical(definitions$mean_tmin$na_rm),
                                                    na_prop = definitions$mean_tmin$na_prop,
                                                    na_n = definitions$mean_tmin$na_n,
                                                    na_consec = definitions$mean_tmin$na_consec,
                                                    na_n_non = definitions$mean_tmin$na_n_non)
-          summary_data <- dplyr::full_join(summary_data, summary_tmin)
+          summary_data <- dplyr::full_join(summary_data, summary_tmin, multiple = "all")
         } 
       }
     }

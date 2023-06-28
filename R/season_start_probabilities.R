@@ -21,7 +21,7 @@ season_start_probabilities <- function(country,
                                        station_id,
                                        start_dates = NULL) {
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
-  if ("station_name" %in% names(daily)) daily$station <- daily$station_name # temp until we don't hard code in the columns call
+  data_names <- epicsadata::data_definitions(station_id = station_id)
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "season_start_probabilities")
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains"))
   if (is.null(start_dates)){
@@ -30,7 +30,7 @@ season_start_probabilities <- function(country,
     definitions$season_start_probabilities$specified_day <- start_dates
   }
   summary_probabilities <- rpicsa::probability_season_start(data = season_data[[2]],
-                                                              station = "station",
+                                                              station = data_names$station,
                                                               start_rains = "start_rain",
                                                               doy_format = "doy_366", # we calculate this in the start_rain summaries?
                                                               specified_day = as.integer(start_dates))
