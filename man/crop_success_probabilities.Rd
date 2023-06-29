@@ -9,7 +9,7 @@ crop_success_probabilities(
   station_id,
   planting_dates = NULL,
   water_requirements = NULL,
-  crop_length = NULL,
+  planting_length = NULL,
   start_before_season = NULL
 )
 }
@@ -23,7 +23,7 @@ single value or a vector.}
 
 \item{water_requirements}{\code{numeric} Vector containing water requirements requirements.}
 
-\item{crop_length}{\code{numeric} Vector containing seasonal crop length requirements.}
+\item{planting_length}{\code{numeric} Vector containing seasonal crop length requirements.}
 
 \item{start_before_season}{\code{logical} A logical value indicating whether to check the start day condition (default is \code{TRUE}).}
 }
@@ -46,5 +46,5 @@ The probabilities of crop success for given planting maturity lengths, seasonal 
 
 # or all can be defined in the dialog
 #crop_success_probabilities(country = "zm", station_id = "16", water_requirements = c(100, 300, 800),
-#                           crop_length = c(100, 150), planting_dates = c(90, 100, 110))
+#                           planting_length = c(100, 150), planting_dates = c(90, 100, 110))
 }
