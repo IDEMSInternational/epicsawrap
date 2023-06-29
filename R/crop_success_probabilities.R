@@ -65,8 +65,8 @@ crop_success_probabilities <- function(country,
                                              planting_length = as.integer(planting_length),
                                              start_check = start_before_season,
                                              season_data = season_data[[2]],
-                                             start_day = "start_rain",
-                                             end_day = "end_rain")
+                                             start_day = "start_rains",
+                                             end_day = "end_rains")
   # convert all numeric to integers
   list_return <- NULL
   list_return[[1]] <- c(season_data[[1]], definitions)

@@ -31,8 +31,8 @@ season_start_probabilities <- function(country,
   }
   summary_probabilities <- rpicsa::probability_season_start(data = season_data[[2]],
                                                               station = data_names$station,
-                                                              start_rains = "start_rain",
-                                                              doy_format = "doy_366", # we calculate this in the start_rain summaries?
+                                                              start_rains = "start_rains",
+                                                              doy_format = "doy_366", # we calculate this in the start_rains summaries?
                                                               specified_day = as.integer(start_dates))
   list_return <- NULL
   list_return[[1]] <- c(season_data[[1]], definitions)
