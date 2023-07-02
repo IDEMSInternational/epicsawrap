@@ -20,5 +20,6 @@ TODO
 Definitions
 }
 \examples{
-#TODO
+# e.g. definitions("zm", "16", "annual_rain")
+# error: definitions("zm", "1", c("annual_rain", "hi", "end_season"))
 }
