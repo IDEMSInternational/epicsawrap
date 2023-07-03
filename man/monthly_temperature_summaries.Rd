@@ -25,6 +25,6 @@ A data frame with monthly summaries.
 Monthly Temperature Summaries
 }
 \examples{
-# monthly_temperature_summaries(country = "zm", station_id = "16") # made a fake "16" json definitions data
+# monthly_temperature_summaries(country = "zm", station_id = "33")
 # because it contains temperature data. 
 }

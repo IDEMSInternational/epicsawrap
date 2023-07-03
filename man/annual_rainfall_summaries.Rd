@@ -29,6 +29,5 @@ One row per year/station and one column per summary.
 }
 \examples{
 #annual_rainfall_summaries(country = "zm", station_id = "01122", summaries = "annual_rain")
-#annual_rainfall_summaries(country = "zm", station_id = "16", 
-#                          summaries = c("start_rains", "end_rains", "annual_rain", "seasonal_rain")) #, "end_season"))
+#annual_rainfall_summaries(country = "zm", station_id = "16", summaries = c("start_rains", "end_rains", "annual_rain", "seasonal_rain")) #, "end_season"))
 }

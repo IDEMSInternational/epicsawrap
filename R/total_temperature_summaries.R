@@ -33,7 +33,10 @@ total_temperature_summaries <- function(country,
       stop(paste0("'", summary, "' has been given in summaries but no data is given in definitions json file."))
     } else {
       if (grepl(to, x = definitions[[summary]]$to)){
-        if (is.null(definitions[[summary]]$na_rm)) stop("Missing parameter value for na_rm in ", summary)
+        if (is.null(definitions[[summary]]$na_rm)){
+          warning("Missing parameter value for na_rm in ", summary, ". Setting as FALSE.")
+          definitions$annual_rain$na_rm <- FALSE
+        }
         summary_data[[summary]] <- rpicsa::mean_temperature(data = daily,
                                                  date_time = data_names$date,
                                                  station = data_names$station,
