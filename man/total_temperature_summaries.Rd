@@ -2,7 +2,7 @@
 % Please edit documentation in R/total_temperature_summaries.R
 \name{total_temperature_summaries}
 \alias{total_temperature_summaries}
-\title{Annual and Monthly Temperature Summaries}
+\title{Generate Annual and Monthly Temperature Summaries}
 \usage{
 total_temperature_summaries(
   country,
@@ -12,22 +12,21 @@ total_temperature_summaries(
 )
 }
 \arguments{
-\item{country}{\code{character(1)} The country code of the data.}
+\item{country}{A character string specifying the country code of the data.}
 
-\item{station_id}{\code{character} The id's of the stations to analyse. Either a
-single value or a vector.}
+\item{station_id}{A character vector specifying the ID(s) of the station(s) to analyze.}
 
-\item{summaries}{\code{character} The names of the summaries to produce.}
+\item{summaries}{A character vector specifying the names of the summaries to produce.}
 
-\item{to}{\code{character} Whether this is for annual or monthly summaries}
+\item{to}{A character string indicating whether the summaries should be generated for "annual" or "monthly" data.}
 }
 \value{
-A data frame with either annual or monthly summaries.
+A data frame containing the requested temperature summaries.
 }
 \description{
-Annual and Monthly Temperature Summaries
+This function calculates annual or monthly temperature summaries for specified stations in a given country.
 }
 \examples{
-# total_temperature_summaries(country = "zm", station_id = "16") # made a fake "16" json definitions data
-# because it contains temperature data. 
+# Generate annual temperature summaries for station 16 in Zambia
+#total_temperature_summaries(country = "zm", station_id = "16", to = "annual")
 }

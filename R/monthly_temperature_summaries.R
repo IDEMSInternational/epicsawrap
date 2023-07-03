@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-#' # monthly_temperature_summaries(country = "zm", station_id = "16") # made a fake "16" json definitions data
+#' # monthly_temperature_summaries(country = "zm", station_id = "33")
 #' # because it contains temperature data. 
 monthly_temperature_summaries <- function(country,
                                          station_id,

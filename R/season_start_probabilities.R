@@ -26,6 +26,7 @@ season_start_probabilities <- function(country,
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains"))
   if (is.null(start_dates)){
     start_dates <- definitions$season_start_probabilities$specified_day
+    if (length(start_dates) == 0) stop("start_dates parameter missing in definitions file.")
   } else {
     definitions$season_start_probabilities$specified_day <- start_dates
   }
