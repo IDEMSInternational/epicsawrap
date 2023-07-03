@@ -1,118 +1,60 @@
-#' Annual and Monthly Temperature Summaries
+#' Generate Annual and Monthly Temperature Summaries
 #'
-#' @param country `character(1)` The country code of the data.
-#' @param station_id `character` The id's of the stations to analyse. Either a
-#'   single value or a vector.
-#' @param summaries `character` The names of the summaries to produce.
-#' @param to `character` Whether this is for annual or monthly summaries
+#' This function calculates annual or monthly temperature summaries for specified stations in a given country.
 #'
-#' @return A data frame with either annual or monthly summaries.
+#' @param country A character string specifying the country code of the data.
+#' @param station_id A character vector specifying the ID(s) of the station(s) to analyze.
+#' @param summaries A character vector specifying the names of the summaries to produce.
+#' @param to A character string indicating whether the summaries should be generated for "annual" or "monthly" data.
+#'
+#' @return A data frame containing the requested temperature summaries.
 #'
 #' @examples
-#' # total_temperature_summaries(country = "zm", station_id = "16") # made a fake "16" json definitions data
-#' # because it contains temperature data. 
+#' # Generate annual temperature summaries for station 16 in Zambia
+#' total_temperature_summaries(country = "zm", station_id = "16", to = "annual")
 total_temperature_summaries <- function(country,
                                         station_id,
-                                        summaries = c("mean_tmin",
-                                                      "mean_tmax"),
+                                        summaries = c("mean_tmin", "mean_tmax"),
                                         to = c("annual", "monthly")) {
   to <- match.arg(to)
-  
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
   data_names <- epicsadata::data_definitions(station_id = station_id)
-  # even though we can have tmax and tmin defined together, it's being done this way 
-  # in case different parameters are defined for tmax and for tmin.
-  # TODO: check if that is sensible. 
-  summary_data <- expand.grid(year = unique(daily[[data_names$year]]), 
-                              station = unique(daily[[data_names$station]]))
-  names(summary_data) <- c(data_names$year, data_names$station)
-  if ("mean_tmax" %in% summaries){
-    if (is.null(definitions$mean_tmax$to)){
-      stop("'mean_tmax' has been given in summaries but no data is given in definitions json file.")
+  
+  # # even though we can have tmax and tmin defined together, it's being done this way 
+  # # in case different parameters are defined for tmax and for tmin.
+  # summary_data <- expand.grid(year = unique(daily[[data_names$year]]), 
+  #                             station = unique(daily[[data_names$station]]))
+  # names(summary_data) <- c(data_names$year, data_names$station)
+  # 
+  summary_data <- NULL
+  for (summary in summaries) {
+    if (is.null(definitions[[summary]]$to)) {
+      stop(paste0("'", summary, "' has been given in summaries but no data is given in definitions json file."))
     } else {
-      if (to == "annual"){
-        if (grepl('annual', x = definitions$mean_tmax$to)){
-          # TODO: what if different variable names?
-          summary_tmax <- rpicsa::mean_temperature(data = daily,
-                                                   date_time = data_names$date,
-                                                   station = data_names$station,
-                                                   year = data_names$year,
-                                                   tmax = data_names$tmax,
-                                                   tmin = NULL,
-                                                   to = "annual",
-                                                   na_rm = is.logical(definitions$mean_tmax$na_rm),
-                                                   na_prop = definitions$mean_tmax$na_prop,
-                                                   na_n = definitions$mean_tmax$na_n,
-                                                   na_consec = definitions$mean_tmax$na_consec,
-                                                   na_n_non = definitions$mean_tmax$na_n_non)
-          summary_data <- dplyr::full_join(summary_data, summary_tmax)
-        }
-      } else {
-        if (grepl('monthly', x = definitions$mean_tmax$to)){
-          summary_tmax <- rpicsa::mean_temperature(data = daily,
-                                                   date_time = data_names$date,
-                                                   station = data_names$station,
-                                                   year = data_names$year,
-                                                   tmax = data_names$tmax,
-                                                   tmin = NULL,
-                                                   to = "monthly",
-                                                   na_rm = is.logical(definitions$mean_tmax$na_rm),
-                                                   na_prop = definitions$mean_tmax$na_prop,
-                                                   na_n = definitions$mean_tmax$na_n,
-                                                   na_consec = definitions$mean_tmax$na_consec,
-                                                   na_n_non = definitions$mean_tmax$na_n_non)
-          summary_data <- dplyr::full_join(summary_data, summary_tmax)
-        } 
+      if (grepl(to, x = definitions[[summary]]$to)){
+        if (is.null(definitions[[summary]]$na_rm)) stop("Missing parameter value for na_rm in ", summary)
+        summary_data[[summary]] <- rpicsa::mean_temperature(data = daily,
+                                                 date_time = data_names$date,
+                                                 station = data_names$station,
+                                                 year = data_names$year,
+                                                 tmax = if (summary == "mean_tmax") data_names$tmax else NULL,
+                                                 tmin = if (summary == "mean_tmin") data_names$tmin else NULL,
+                                                 to = to,
+                                                 na_rm = is.logical(definitions[[summary]]$na_rm),
+                                                 na_prop = definitions[[summary]]$na_prop,
+                                                 na_n = definitions[[summary]]$na_n,
+                                                 na_consec = definitions[[summary]]$na_consec,
+                                                 na_n_non = definitions[[summary]]$na_n_non)
       }
     }
   }
-  if ("mean_tmin" %in% summaries){
-    if (is.null(definitions$mean_tmin$to)){
-      stop("'mean_tmin' has been given in summaries but no data is given in definitions json file.")
-    } else {
-      if (to == "annual"){
-        if (grepl('annual', x = definitions$mean_tmin$to)){
-          summary_tmin <- rpicsa::mean_temperature(data = daily,
-                                                   date_time = data_names$date,
-                                                   station = data_names$station,
-                                                   year = data_names$year,
-                                                   tmax = NULL,
-                                                   tmin = data_names$tmin,
-                                                   to = "annual",
-                                                   na_rm = is.logical(definitions$mean_tmin$na_rm),
-                                                   na_prop = definitions$mean_tmin$na_prop,
-                                                   na_n = definitions$mean_tmin$na_n,
-                                                   na_consec = definitions$mean_tmin$na_consec,
-                                                   na_n_non = definitions$mean_tmin$na_n_non)
-          summary_data <- dplyr::full_join(summary_data, summary_tmin)
-        }
-      } else {
-        if (grepl('monthly', x = definitions$mean_tmin$to)){
-          summary_tmin <- rpicsa::mean_temperature(data = daily,
-                                                   date_time = data_names$date,
-                                                   station = data_names$station,
-                                                   year = data_names$year,
-                                                   tmax = NULL,
-                                                   tmin = data_names$tmin,
-                                                   to = "monthly",
-                                                   na_rm = is.logical(definitions$mean_tmin$na_rm),
-                                                   na_prop = definitions$mean_tmin$na_prop,
-                                                   na_n = definitions$mean_tmin$na_n,
-                                                   na_consec = definitions$mean_tmin$na_consec,
-                                                   na_n_non = definitions$mean_tmin$na_n_non)
-          summary_data <- dplyr::full_join(summary_data, summary_tmin, multiple = "all")
-        } 
-      }
-    }
-  }
+  if (length(summary_data) == 2) summary_data <- dplyr::full_join(summary_data[[1]], summary_data[[2]])
   summary_data$year <- as.integer(summary_data$year)
   if ("month" %in% names(summary_data)){
-    summary_data$month <- forcats::as_factor(summary_data$month) # what about reordering this further if we didn't have it in order at the start?
-    summary_data$month <- as.integer(summary_data$month) 
-  } 
-  list_return <- NULL
-  list_return[[1]] <- c(definitions)
-  list_return[[2]] <- summary_data
-  return(list_return) # return a list with in it the metadata and the data itself
+    summary_data$month <- as.integer(forcats::as_factor(summary_data$month))
+  }
+  
+  list_return <- list(definitions, summary_data)
+  return(list_return) # return a list with the metadata and the data itself
 }
