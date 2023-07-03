@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' # Generate annual temperature summaries for station 16 in Zambia
-#' total_temperature_summaries(country = "zm", station_id = "16", to = "annual")
+#' #total_temperature_summaries(country = "zm", station_id = "16", to = "annual")
 total_temperature_summaries <- function(country,
                                         station_id,
                                         summaries = c("mean_tmin", "mean_tmax"),
