@@ -18,7 +18,8 @@ Imports:
     magrittr,
     purrr,
     rlang,
-    rpicsa
+    rpicsa,
+    testthat
 Remotes:
     IDEMSInternational/epicsadata,
     IDEMSInternational/rpicsa
