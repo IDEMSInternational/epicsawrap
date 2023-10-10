@@ -5,9 +5,9 @@
 # result <- epicsawrap::crop_success_probabilities(
 #   country = "zm",
 #   station_id = "16",
-#   planting_dates = c(1, 2, 3),
-#   water_requirements = c(100, 200, 300),
-#   planting_length = 10,
+#   planting_dates = c(92, 122, 153),
+#   water_requirements = c(300, 500, 700),
+#   planting_length = c(120, 180),
 #   start_before_season = TRUE
 # )
 # 
@@ -32,3 +32,9 @@
 #   expect_no_error(result_2)
 #   expect_no_error(result_3)
 # })
+# 
+# # Define test cases
+# test_that("crop_success_probabilities returns same results whether parameters are defined or not", {
+#   expect_identical(result[[2]], result_3[[2]])
+# })
+# 

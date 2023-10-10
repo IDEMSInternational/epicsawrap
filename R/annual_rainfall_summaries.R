@@ -91,6 +91,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
                                        threshold = definitions$start_rains$threshold,
                                        start_day = definitions$start_rains$start_day,
                                        end_day = definitions$start_rains$end_day,
+                                       s_start_doy = definitions$start_rains$s_start_doy,
                                        output = "doy",
                                        total_rainfall = as.logical(definitions$start_rains$total_rainfall),
                                        over_days = definitions$start_rains$over_days,
@@ -119,6 +120,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
     end_rains <- rpicsa::end_rains(daily, date_time = data_names$date, station = data_names$station, year = data_names$year, rain = data_names$rain,
                                    start_day = definitions$end_rains$start_day,
                                    end_day = definitions$end_rains$end_day,
+                                   s_start_doy = definitions$end_rains$s_start_doy,
                                    output = "doy",
                                    interval_length = definitions$end_rains$interval_length,
                                    min_rainfall = definitions$end_rains$min_rainfall)
@@ -144,6 +146,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
                                      rain = data_names$rain,
                                      start_day = definitions$end_season$start_day,
                                      end_day = definitions$end_season$end_day,
+                                     s_start_doy = definitions$end_season$s_start_doy,
                                      output = "doy",
                                      capacity = definitions$end_season$capacity,
                                      water_balance_max = definitions$end_season$water_balance_max,
@@ -210,7 +213,6 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
       stop("start_rains and at least one of end_season or end_rains is required to calculate seasonal_length")
     }
   }
-  
   list_return <- NULL
   list_return[[1]] <- c(definitions)
   list_return[[2]] <- summary_data
