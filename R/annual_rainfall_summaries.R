@@ -18,8 +18,7 @@
 annual_rainfall_summaries <- function(country, station_id, summaries = c("annual_rain", "start_rains", "end_rains", "end_season", "seasonal_rain", "seasonal_length")) {
   # Get data definitions and summary definitions
   data_names <- epicsadata::data_definitions(station_id = station_id)
-  summaries_1 <- summaries[ !summaries == 'seasonal_length']
-  definitions <- definitions(country = country, station_id = station_id, summaries = summaries_1)
+  definitions <- definitions(country = country, station_id = station_id, summaries = summaries)
   
   # Fetch daily data and preprocess
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
