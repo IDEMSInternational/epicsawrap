@@ -2,7 +2,7 @@ library(testthat)
 library(epicsawrap)
 
 # Test case 1
-gcs_auth_file(file = "tests/e-picsa-e630400792e7.json")
+epicsadata::gcs_auth_file(file = "tests/e-picsa-e630400792e7.json")
 test_1_results <- readRDS("tests/test_1_crop_success_probabilities.rds")
 country <- "zm"
 station_id <- "test_1"
