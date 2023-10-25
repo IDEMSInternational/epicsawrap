@@ -1,27 +1,16 @@
-# library(testthat)
-# 
-# # Test case 1: Test with to = "annual"
-# result <- epicsawrap:::total_temperature_summaries(
-#   country = "zm",
-#   station_id = "23",
-#   summaries = c("mean_tmin", "mean_tmax"),
-#   to = "annual"
-# )
-# 
-# # Test case 2: Test with to = "monthly"
-# result_2 <- epicsawrap:::total_temperature_summaries(
-#   country = "zm",
-#   station_id = "1",
-#   summaries = c("mean_tmin", "mean_tmax"),
-#   to = "monthly"
-# )
-# 
-# # Define test cases
-# test_that("total_temperature_summaries returns correct results", {
-#   # Mock the necessary external functions or datasets if needed
-#   expect_length(result, 2)
-#   expect_length(result_2, 2)
-# 
-#   expect_no_error(result)
-#   expect_no_error(result_2)
-# })
+library(testthat)
+library(rpicsa)
+
+# Test case 1
+epicsawrap::gcs_auth_file(file = "tests/e-picsa-e630400792e7.json")
+test_1_annual <- readRDS("tests/test_1_annual.rds")
+test_1_monthly <- readRDS("tests/test_1_monthly.rds")
+country <- "zm"
+station_id <- "test_1"
+result_annual <- epicsawrap::annual_temperature_summaries(country, station_id)
+result_monthly <- epicsawrap::monthly_temperature_summaries(country, station_id)
+
+test_that("Correct summaries are calculated", {
+  expect_true(identical(result_annual[[2]], test_1_annual))
+  expect_true(identical(result_monthly[[2]], test_1_monthly))
+})
