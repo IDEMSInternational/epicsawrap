@@ -2,9 +2,9 @@ library(testthat)
 library(epicsawrap)
 
 # Test case 1
-epicsadata::gcs_auth_file(file = "tests/e-picsa-e630400792e7.json")
-test_1_annual <- readRDS("tests/test_1_annual.rds")
-test_1_monthly <- readRDS("tests/test_1_monthly.rds")
+epicsadata::gcs_auth_file(file = "testdata/e-picsa-e630400792e7.json")
+test_1_annual <- readRDS("testdata/test_1_annual.rds")
+test_1_monthly <- readRDS("testdata/test_1_monthly.rds")
 country <- "zm"
 station_id <- "test_1"
 
