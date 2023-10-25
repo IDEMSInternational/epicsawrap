@@ -1,0 +1,81 @@
+{
+"start_rains": {
+  "threshold": 1,
+  "start_day": 1,
+  "end_day": 366,
+  "total_rainfall": "TRUE",
+  "amount_rain": 25,
+  "over_days": 3,
+  "proportion": "FALSE",
+  "number_rain_days": "FALSE",
+  "dry_spell": "TRUE",
+  "spell_max_dry_days": 10,
+  "spell_interval": 21,
+  "dry_period": "FALSE",
+  "_last_updated": "2022-11-25"
+  },
+"end_rains": {
+  "start_day": 121,
+  "end_day": 366,
+  "interval_length": 1,
+  "min_rainfall": 10
+  },
+"end_season": {
+  "start_day": 121,
+  "end_day": 366,
+  "capacity": 100,
+  "water_balance_max": 60,
+  "evaporation": "value",
+  "evaporation_value": 5
+  },
+"seasonal_length": {
+  "end_type": "rains"
+  },
+"seasonal_total_rainfall": {
+  "na_prop": 0.05
+  },
+"mean_tmax": {
+  "to": "c('annual', 'monthly')",
+  "na_rm": "TRUE"
+  },
+"mean_tmin": {
+  "to": "c('annual', 'monthly')",
+  "na_rm": "TRUE"
+  },
+"annual_rain": {
+  "annual_rain": "TRUE", 
+  "n_rain": "TRUE",
+  "na_rm": "FALSE"
+  },
+"season_start_probabilities": {
+  "specified_day": {
+   "val1": 50,
+   "val2": 100,
+   "val3": 150
+   }
+  },
+"seasonal_rain": {
+  "seasonal_rain": "TRUE", 
+  "end_type": "rains",
+  "n_rain": "TRUE",
+  "na_rm": "FALSE",
+  "rain_day": 0.85
+  },
+"crops_success": {
+  "water_requirements": {
+   "val1": 300,
+   "val2": 500,
+   "val3": 700
+  },
+  "planting_dates": {
+   "val1": 92,
+   "val2": 122,
+   "val3": 153
+  },
+  "planting_length": {
+   "val1": 120,
+   "val2": 180
+  },
+  "start_check": "TRUE"
+  }
+}
