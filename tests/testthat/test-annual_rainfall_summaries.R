@@ -6,9 +6,9 @@ gcs_auth_file(file = "tests/e-picsa-e630400792e7.json")
 test_1_results <- readRDS("test_1_annual_summaries.rds")
 country <- "zm"
 station_id <- "test_1"
-result <- annual_rainfall_summaries(country, station_id)
 
 test_that("Correct summaries are calculated", {
+  result <- annual_rainfall_summaries(country, station_id)
   expect_true(identical(result[[2]], test_1_results))
 })
 
