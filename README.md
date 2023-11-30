@@ -37,7 +37,7 @@ if (!require(devtools)) {
 }
 
 # Install 'epicsawrap' from GitHub
-devtools::install_github("yourusername/epicsawrap")
+devtools::install_github("IDEMSInternational/epicsawrap")
 ```
 
 ## Documentation
