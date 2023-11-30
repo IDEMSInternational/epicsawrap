@@ -2,7 +2,7 @@ library(testthat)
 library(epicsawrap)
 
 # Test case 1
-epicsadata::gcs_auth_file(file = "testdata/epicsae630400792e7.json")
+epicsadata::gcs_auth_file(file = "testdata/e-picsa-e630400792e7.json")
 test_1_annual <- readRDS("testdata/test_1_annual.rds")
 test_1_monthly <- readRDS("testdata/test_1_monthly.rds")
 country <- "zm"
@@ -15,3 +15,6 @@ test_that("Correct summaries are calculated", {
   expect_true(identical(result_annual[[2]], test_1_annual))
   expect_true(identical(result_monthly[[2]], test_1_monthly))
 })
+
+
+result_monthly <- annual_temperature_summaries(country, station_id, "mean_tmin")
