@@ -15,6 +15,3 @@ test_that("Correct summaries are calculated", {
   expect_true(identical(result_annual[[2]], test_1_annual))
   expect_true(identical(result_monthly[[2]], test_1_monthly))
 })
-
-
-result_monthly <- annual_temperature_summaries(country, station_id, "mean_tmin")

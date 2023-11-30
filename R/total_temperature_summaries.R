@@ -12,7 +12,7 @@
 #' @examples
 #' # Generate annual temperature summaries for station 16 in Zambia
 #' #total_temperature_summaries(country = "zm", station_id = "16", to = "annual")
-total_temperature_summaries <- function(country,
+total_temperature_summaries1 <- function(country,
                                         station_id,
                                         summaries = c("mean_tmin", "mean_tmax"),
                                         to = c("annual", "monthly")) {
@@ -52,7 +52,12 @@ total_temperature_summaries <- function(country,
       }
     }
   }
-  if (length(summary_data) == 2) summary_data <- dplyr::full_join(summary_data[[1]], summary_data[[2]])
+  if (length(summary_data) == 2){
+    summary_data <- dplyr::full_join(summary_data[[1]], summary_data[[2]])
+  } else {
+    summary_data <- summary_data[[1]]
+  }
+  summary_data$year <- as.integer(summary_data$year)
   if ("month" %in% names(summary_data)){
     summary_data$month <- as.integer(forcats::as_factor(summary_data$month))
   }
