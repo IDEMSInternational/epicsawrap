@@ -26,6 +26,9 @@ jobs:
           extra-packages: any::covr
           needs: coverage
 
+      - name: Decode GCS Auth JSON
+         run: echo ${{ secrets.GCS_AUTH_JSON }} | base64 -d > ./tests/testthat/testdata/epicsa_token.json
+
       - name: Test coverage
         run: |
           covr::codecov(

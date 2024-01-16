@@ -27,3 +27,6 @@ jobs:
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
+      
+      - name: Decode GCS Auth JSON
+         run: echo ${{ secrets.GCS_AUTH_JSON }} | base64 -d > ./tests/testthat/testdata/epicsa_token.json
