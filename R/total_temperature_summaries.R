@@ -52,12 +52,15 @@ total_temperature_summaries <- function(country,
       }
     }
   }
-  if (length(summary_data) == 2) summary_data <- dplyr::full_join(summary_data[[1]], summary_data[[2]])
+  if (length(summary_data) == 2){
+    summary_data <- dplyr::full_join(summary_data[[1]], summary_data[[2]])
+  } else {
+    summary_data <- summary_data[[1]]
+  }
   summary_data$year <- as.integer(summary_data$year)
   if ("month" %in% names(summary_data)){
     summary_data$month <- as.integer(forcats::as_factor(summary_data$month))
   }
-  
   list_return <- list(definitions, summary_data)
   return(list_return) # return a list with the metadata and the data itself
 }

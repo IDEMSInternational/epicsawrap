@@ -13,19 +13,51 @@ knitr::opts_chunk$set(
 )
 ```
 
-# epicsawrap
+# epicsawrap: R Package for Integrating rpicsa and epicsadata Functions for API Apps
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/IDEMSInternational/epicsawrap/workflows/R-CMD-check/badge.svg)](https://github.com/IDEMSInternational/epicsawrap/actions)
+[![Codecov test
+coverage](https://codecov.io/gh/IDEMSInternational/epicsawrap/branch/main/graph/badge.svg)](https://app.codecov.io/gh/IDEMSInternational/epicsawrap?branch=main)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
-The goal of epicsawrap is to ...
+## Overview
+
+**epicsawrap** is an R package that brings together the functionality of **rpicsa** and **epicsadata** packages to be used in creating API applications for crop and climate analysis. It provides a convenient interface for accessing and utilizing the functions from both packages, enabling the development of web-based tools and services for agricultural decision support.
+
+The package combines the capabilities of **rpicsa** for PICSA and climatic analysis for crops with **epicsadata** for retrieving climate and weather data, creating a powerful tool for addressing the needs of farmers, agronomists, and researchers.
 
 ## Installation
 
-You can install the development version of epicsawrap from [GitHub](https://github.com/) with:
+You can install **epicsawrap** from CRAN using the following command:
 
 ``` r
-# install.packages("devtools")
+# Install the 'devtools' package if you haven't already
+if (!require(devtools)) {
+  install.packages("devtools")
+}
+
+# Install 'epicsawrap' from GitHub
 devtools::install_github("IDEMSInternational/epicsawrap")
 ```
+
+
+## Documentation
+For detailed information on each function, including arguments, usage, and examples, please refer to the package documentation. You can access it using the following command:
+
+```{r, message = FALSE, warning = FALSE, eval=FALSE, include=TRUE}
+?epicsawrap
+```
+
+The GitHub page for the `rpicsa` package can be found [here](https://github.com/IDEMSInternational/rpicsa).
+The GitHub page for the `epicsadata` package can be found [here](https://github.com/IDEMSInternational/epicsadata).
+
+## Contributing
+We welcome contributions from the community. If you have any bug reports, feature requests, or would like to contribute code to rpicsa, please visit our GitHub repository.
+
+## License
+This package is open-source and distributed under the GNU Lesser General Public License v3.0 License. Feel free to use, modify, and distribute it as needed.
+
+## Contact
+If you have any questions, suggestions, or feedback, please feel free to reach out to us.
