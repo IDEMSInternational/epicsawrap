@@ -2,8 +2,8 @@
 #'
 #' This function adds a new definitions file with a timestamp to a specified Google Cloud Storage (GCS) bucket. The new definitions are sourced from a JSON file provided as input.
 #'
-#' @param country A character vector specifying the country or countries from which to get the definitions data. Options are `"mz"` and `"zm"`.
-#' @param station_id A character string specifying the ID of the station for which to get the definitions data.
+#' @param country A character vector specifying the country that the data corresponds to. Options are `"mz"` and `"zm"`.
+#' @param station_id A character string specifying the ID of the station that the data corresponds to.
 #' @param new_definitions A character vector specifying the path to the JSON file containing the new definitions.
 #'
 #' @export
