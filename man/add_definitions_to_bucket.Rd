@@ -7,9 +7,9 @@
 add_definitions_to_bucket(country, station_id, new_definitions)
 }
 \arguments{
-\item{country}{A character vector specifying the country or countries from which to get the definitions data. Options are \code{"mz"} and \code{"zm"}.}
+\item{country}{A character vector specifying the country that the data corresponds to. Options are \code{"mz"} and \code{"zm"}.}
 
-\item{station_id}{A character string specifying the ID of the station for which to get the definitions data.}
+\item{station_id}{A character string specifying the ID of the station that the data corresponds to.}
 
 \item{new_definitions}{A character vector specifying the path to the JSON file containing the new definitions.}
 }
