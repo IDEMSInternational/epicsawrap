@@ -4,17 +4,25 @@
 \alias{station_metadata}
 \title{Get Station Metadata}
 \usage{
-station_metadata(country)
+station_metadata(
+  country = NULL,
+  station_id = NULL,
+  include_definitions = FALSE,
+  format = c("wide", "long", "nested")
+)
 }
 \arguments{
-\item{country}{\code{character(1)} The country code of the data.}
+\item{country}{A character vector specifying the country or countries from which to get the metadata. Options include "zm" (Zambia) and "mz" (Mozambique).}
+
+\item{station_id}{A character vector specifying the station IDs to filter by. If provided, only metadata for the specified station IDs will be returned.}
+
+\item{include_definitions}{A logical value indicating whether to include definitions data. If TRUE, additional information about station definitions will be included in the output.}
+
+\item{format}{A character vector specifying the format of the output. Options are "wide" (default), "long", or "nested".}
 }
 \value{
-TODO
+If \code{include_definitions} is FALSE, the function returns a data frame with metadata for the specified stations. If \code{include_definitions} is TRUE, it returns a data frame with both metadata and station definitions.
 }
 \description{
-Get Station Metadata
-}
-\examples{
-# TODO
+This function retrieves metadata for weather stations in specified countries.
 }
