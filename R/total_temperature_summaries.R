@@ -38,7 +38,7 @@ total_temperature_summaries <- function(country, station_id,
     temp_col <- if (grepl("_tmin", summary)) data_names$tmin else if (grepl("_tmax", summary)) data_names$tmax else NULL
     summary_func <- if (grepl("mean_", summary)) "mean" else sub("_tmax", "", sub("_tmin", "", summary))
     
-    summary_data_list[[summary]] <- rpicsa:::summary_temperature(data = daily,
+    summary_data_list[[summary]] <- rpicsa::summary_temperature(data = daily,
                                                                  date_time = data_names$date,
                                                                  station = data_names$station,
                                                                  year = data_names$year,
