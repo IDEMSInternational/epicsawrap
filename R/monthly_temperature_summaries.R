@@ -13,7 +13,6 @@
 #' # because it contains temperature data. 
 monthly_temperature_summaries <- function(country,
                                          station_id,
-                                         summaries = c("mean_tmin",
-                                                       "mean_tmax")) {
+                                         summaries = c("mean_tmin","mean_tmax", "min_tmin", "min_tmax", "max_tmin", "max_tmax")) {
   return(total_temperature_summaries(country = country, station_id = station_id, summaries = summaries, to = "monthly"))
 }
