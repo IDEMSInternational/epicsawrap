@@ -52,7 +52,7 @@ total_temperature_summaries <- function(country,
       }
     }
   }
-  if (length(summary_data) == 2){
+  if (length(summary_data) == 2){ 
     summary_data <- dplyr::full_join(summary_data[[1]], summary_data[[2]])
   } else {
     summary_data <- summary_data[[1]]
