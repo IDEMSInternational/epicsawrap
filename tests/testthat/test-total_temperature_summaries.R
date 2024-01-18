@@ -2,7 +2,7 @@ library(testthat)
 library(epicsadata)
 library(epicsawrap)
 
-# Test case 1
+# Test case 1 
 epicsadata::gcs_auth_file(file = "testdata/epicsa_token.json")
 test_1_annual <- readRDS("testdata/test_1_annual.rds")
 test_1_monthly <- readRDS("testdata/test_1_monthly.rds")
