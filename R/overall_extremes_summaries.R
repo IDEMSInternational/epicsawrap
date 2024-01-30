@@ -7,7 +7,7 @@
 #' @param summaries A character vector specifying the names of the summaries to produce.
 #'
 #' @return A data frame containing the extreme data.
-#'
+#' 
 #' @examples
 #' # Generate annual temperature summaries for station 16 in Zambia
 #' #overall_extremes_summaries(country, station_id, c("extremes_rain"), to = "annual")

@@ -25,6 +25,6 @@ A data frame with monthly summaries.
 Monthly Temperature Summaries
 }
 \examples{
-# monthly_temperature_summaries(country = "zm", station_id = "33")
+# monthly_temperature_summaries(country = "zm", station_id = "1", summaries = c("min_tmin"))
 # because it contains temperature data. 
 }

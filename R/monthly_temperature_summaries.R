@@ -9,7 +9,7 @@
 #' @export
 #'
 #' @examples
-#' # monthly_temperature_summaries(country = "zm", station_id = "33")
+#' # monthly_temperature_summaries(country = "zm", station_id = "1", summaries = c("min_tmin"))
 #' # because it contains temperature data. 
 monthly_temperature_summaries <- function(country,
                                          station_id,

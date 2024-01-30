@@ -28,5 +28,5 @@ This function calculates annual or monthly temperature summaries for specified s
 }
 \examples{
 # Generate annual temperature summaries for station 16 in Zambia
-#total_temperature_summaries(country, station_id, c("mean_tmin", "mean_tmax"), to = "annual")
+#total_temperature_summaries1(country = "zm", station_id = "1", summaries = c("mean_tmin", "mean_tmax", "min_tmin", "max_tmax"), to = "annual")
 }
