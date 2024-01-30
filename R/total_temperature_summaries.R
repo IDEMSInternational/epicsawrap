@@ -11,10 +11,10 @@
 #'
 #' @examples
 #' # Generate annual temperature summaries for station 16 in Zambia
-#' #total_temperature_summaries(country = "zm", station_id = "16", to = "annual")
+#' #total_temperature_summaries1(country = "zm", station_id = "1", summaries = c("mean_tmin", "mean_tmax", "min_tmin", "max_tmax"), to = "annual")
 total_temperature_summaries <- function(country,
                                         station_id,
-                                        summaries = c("mean_tmin", "mean_tmax"),
+                                        summaries = c("mean_tmin", "mean_tmax", "min_tmin", "min_tmax", "max_tmin", "max_tmax"),
                                         to = c("annual", "monthly")) {
   to <- match.arg(to)
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
@@ -37,23 +37,26 @@ total_temperature_summaries <- function(country,
           warning("Missing parameter value for na_rm in ", summary, ". Setting as FALSE.")
           definitions$annual_rain$na_rm <- FALSE
         }
-        summary_data[[summary]] <- rpicsa::mean_temperature(data = daily,
-                                                 date_time = data_names$date,
-                                                 station = data_names$station,
-                                                 year = data_names$year,
-                                                 tmax = if (summary == "mean_tmax") data_names$tmax else NULL,
-                                                 tmin = if (summary == "mean_tmin") data_names$tmin else NULL,
-                                                 to = to,
-                                                 na_rm = is.logical(definitions[[summary]]$na_rm),
-                                                 na_prop = definitions[[summary]]$na_prop,
-                                                 na_n = definitions[[summary]]$na_n,
-                                                 na_consec = definitions[[summary]]$na_consec,
-                                                 na_n_non = definitions[[summary]]$na_n_non)
+        summary_type <- gsub("_.*$", "", summary)
+        summary_variable <- gsub("^.*_", "", summary)
+        summary_data[[summary]] <- rpicsa::summary_temperature(data = daily,
+                                                               date_time = data_names$date,
+                                                               station = data_names$station,
+                                                               year = data_names$year,
+                                                               tmax = if (summary_variable == "tmax") data_names$tmax else NULL,
+                                                               tmin = if (summary_variable == "tmin") data_names$tmin else NULL,
+                                                               summaries = summary_type,
+                                                               to = to,
+                                                               na_rm = is.logical(definitions[[summary]]$na_rm),
+                                                               na_prop = definitions[[summary]]$na_prop,
+                                                               na_n = definitions[[summary]]$na_n,
+                                                               na_consec = definitions[[summary]]$na_consec,
+                                                               na_n_non = definitions[[summary]]$na_n_non)
       }
     }
   }
-  if (length(summary_data) == 2){
-    summary_data <- dplyr::full_join(summary_data[[1]], summary_data[[2]])
+  if (length(summary_data) > 1){
+    summary_data <- Reduce(function(x, y) dplyr::full_join(x, y), summary_data)
   } else {
     summary_data <- summary_data[[1]]
   }
