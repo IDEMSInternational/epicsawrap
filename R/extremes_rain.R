@@ -12,5 +12,5 @@
 #' # Generate annual temperature summaries for station 16 in Zambia
 #' #extremes_rain(country, station_id)
 extremes_rain <- function(country, station_id){
-  return(epicsawrap:::overall_extremes_summaries(country = country, station_id = station_id, summaries = "extremes_rain"))
+  return(overall_extremes_summaries(country = country, station_id = station_id, summaries = "extremes_rain"))
 }
