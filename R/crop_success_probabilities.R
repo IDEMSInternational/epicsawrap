@@ -41,24 +41,20 @@ crop_success_probabilities <- function(country,
   daily <- check_and_rename_variables(daily, data_names)
   
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "end_rains")) # end rains or end season?
-  if (is.null(planting_length)){
-    planting_length <- as.integer(definitions$crops_success$planting_length)
-    if (length(planting_length) == 0) stop("planting_length parameter missing in definitions file.")
-  } else {
-    definitions$crops_success$planting_length <- planting_length
+  
+  
+  check_and_set_parameter <- function(parameter_name, target_column_name) {
+    if (is.null(get(parameter_name))) {
+      value <- as.integer(definitions$crops_success[[target_column_name]])
+      if (length(value) == 0) stop(paste(parameter_name, "parameter missing in definitions file."))
+      assign(parameter_name, value, envir = parent.frame())
+    } else {
+      definitions$crops_success[[target_column_name]] <- get(parameter_name)
+    }
   }
-  if (is.null(water_requirements)){
-    water_requirements <- as.integer(definitions$crops_success$water_requirements)
-    if (length(water_requirements) == 0) stop("water_requirements parameter missing in definitions file.")
-  } else {
-    definitions$crops_success$water_requirements <- water_requirements
-  }
-  if (is.null(planting_dates)) {
-    planting_dates <- as.integer(definitions$crops_success$planting_dates)
-    if (length(planting_dates) == 0) stop("planting_dates parameter missing in definitions file.")
-  } else {
-    definitions$crops_success$planting_dates <- planting_dates
-  }
+  check_and_set_parameter("planting_length", "planting_length")
+  check_and_set_parameter("water_requirements", "water_requirements")
+  check_and_set_parameter("planting_dates", "planting_dates")
   if (is.null(start_before_season)){
     start_before_season <- is.logical(definitions$crops_success$start_check)
     if (length(start_before_season) == 0) stop("start_before_season parameter missing in definitions file.")
