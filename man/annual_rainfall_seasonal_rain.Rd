@@ -38,7 +38,7 @@ daily rainfall data, summary data, data variable names, and summary types.
 definitions <- list(
   seasonal_rain = list(
     total_rain = TRUE,
-    n_rain = FALSE,
+    n_rain = TRUE,
     rain_day = 10,
     na_rm = TRUE,
     end_type = "rains"
