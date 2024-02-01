@@ -10,13 +10,16 @@
 #' 
 #' @examples
 #' # Generate annual temperature summaries for station 16 in Zambia
-#' #overall_extremes_summaries(country, station_id, c("extremes_rain"), to = "annual")
+#' #overall_extremes_summaries(country, station_id, c("extremes_rain"))
 overall_extremes_summaries <- function(country, station_id,
                                        summaries = c("extremes_rain", "extremes_tmin", "extremes_tmax")){
   summaries <- match.arg(summaries)
-  daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
-  data_names <- epicsadata::data_definitions(station_id = station_id)
+  # Fetch daily data and preprocess
+  daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+  # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
+  data_names <- epicsadata::data_definitions(names(daily), TRUE)
+  daily <- check_and_rename_variables(daily, data_names)
   
   if (is.null(definitions[[summaries]]$direction)){
     direction <- "greater"

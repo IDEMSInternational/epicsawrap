@@ -17,9 +17,13 @@ total_temperature_summaries <- function(country,
                                         summaries = c("mean_tmin", "mean_tmax", "min_tmin", "min_tmax", "max_tmin", "max_tmax"),
                                         to = c("annual", "monthly")) {
   to <- match.arg(to)
-  daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
-  data_names <- epicsadata::data_definitions(station_id = station_id)
+  # Fetch daily data and preprocess
+  daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+  
+  # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
+  data_names <- epicsadata::data_definitions(names(daily), TRUE)
+  daily <- check_and_rename_variables(daily, data_names)
   
   # # even though we can have tmax and tmin defined together, it's being done this way 
   # # in case different parameters are defined for tmax and for tmin.

@@ -25,5 +25,5 @@ This function identifies extreme values in a specified element (column) of a dat
 }
 \examples{
 # Generate annual temperature summaries for station 16 in Zambia
-#overall_extremes_summaries(country, station_id, c("extremes_rain"), to = "annual")
+#overall_extremes_summaries(country, station_id, c("extremes_rain"))
 }

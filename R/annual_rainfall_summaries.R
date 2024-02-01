@@ -17,17 +17,20 @@
 #' #annual_rainfall_summaries(country = "zm", station_id = "16", summaries = c("start_rains", "end_rains", "annual_rain", "seasonal_rain")) #, "end_season"))
 annual_rainfall_summaries <- function(country, station_id, summaries = c("annual_rain", "start_rains", "end_rains", "end_season", "seasonal_rain", "seasonal_length")) {
   # Get data definitions and summary definitions
-  data_names <- epicsadata::data_definitions(station_id = station_id)
   definitions <- definitions(country = country, station_id = station_id, summaries = summaries)
-  
   # Fetch daily data and preprocess
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+ 
+  # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
+  data_names <- epicsadata::data_definitions(names(daily), TRUE)
+  daily <- check_and_rename_variables(daily, data_names)
+  
   daily$year <- as.integer(daily$year)
   
   # Create summary_data dataframe
   summary_data <- expand.grid(year = unique(daily[[data_names$year]]), station = unique(daily[[data_names$station]]))
-  names(summary_data) <- c(data_names$year, data_names$station)
   
+  names(summary_data) <- c(data_names$year, data_names$station)
   # Calculate summaries
   if ("annual_rain" %in% summaries) {
     if (is.null(definitions$annual_rain$annual_rain)) definitions$annual_rain$annual_rain <- FALSE
@@ -51,7 +54,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
   # Check if start_rains and end_rains are required for seasonal_rain and seasonal_length
   require_start_rains <- any(grepl("seasonal_", summaries)) & ("start_rains" %in% summaries)
   require_end_rains <- any(grepl("seasonal_", summaries)) & (any(grepl("end_", summaries)))
-  
+
   if ("start_rains" %in% summaries) {
     if (is.null(definitions$start_rains$threshold)) stop("Missing value in start_rains definitions for threshold.")
     if (is.null(definitions$start_rains$start_day)) stop("Missing value in start_rains definitions for start_day.")
@@ -110,7 +113,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
     summary_data <- dplyr::full_join(summary_data, start_rains)
     summary_data$start_rains <- as.integer(summary_data$start_rains)
   }
-  
+
   if ("end_rains" %in% summaries) {
     if (is.null(definitions$end_rains$start_day)) stop("Missing value in end_rains definitions for start_day.")
     if (is.null(definitions$end_rains$end_day)) stop("Missing value in end_rains definitions for end_day.")
@@ -126,7 +129,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
     summary_data <- dplyr::full_join(summary_data, end_rains)
     summary_data$end_rains <- as.integer(summary_data$end_rains)
   }
-  
+
   if ("end_season" %in% summaries) {
     if (is.null(definitions$end_season$start_day)) stop("Missing value in end_season definitions for start_day.")
     if (is.null(definitions$end_season$end_day)) stop("Missing value in end_season definitions for end_day.")
@@ -154,7 +157,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
                                      evaporation_variable = definitions$end_season$evaporation_variable)
     summary_data <- dplyr::full_join(summary_data, end_season)
     summary_data$end_season <- as.integer(summary_data$end_season)
-  }
+  } 
   
   if ("seasonal_rain" %in% summaries) {
     if (require_start_rains && require_end_rains) {
@@ -198,6 +201,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
     }
   }
   
+
   if ("seasonal_length" %in% summaries) {
     if (require_start_rains && require_end_rains) {
       if (is.null(definitions$seasonal_length$end_type)){
@@ -227,6 +231,8 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
       stop("start_rains and at least one of end_season or end_rains is required to calculate seasonal_length")
     }
   }
+  
+  # rename
   list_return <- NULL
   list_return[[1]] <- c(definitions)
   list_return[[2]] <- summary_data
