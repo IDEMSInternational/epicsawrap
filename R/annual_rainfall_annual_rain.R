@@ -31,12 +31,12 @@
 #'
 annual_rainfall_annual_rain <- function(definitions, daily, data_names) {
   if (is.null(definitions$annual_rain$annual_rain)) 
-    definitions$annual_rain$annual_rain <- FALSE
+    definitions$annual_rain$annual_rain <- "FALSE"
   if (is.null(definitions$annual_rain$n_rain)) 
-    definitions$annual_rain$n_rain <- FALSE
+    definitions$annual_rain$n_rain <- "FALSE"
   if (is.null(definitions$annual_rain$na_rm)){
     warning("Missing value in annual_rain definitions for na_rm. Setting na_rm = FALSE")
-    definitions$annual_rain$na_rm <- FALSE
+    definitions$annual_rain$na_rm <- "FALSE"
   }
   
   annual_rain <- rpicsa::annual_rain(

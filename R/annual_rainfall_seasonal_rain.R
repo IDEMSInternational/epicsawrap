@@ -21,7 +21,7 @@
 #' definitions <- list(
 #'   seasonal_rain = list(
 #'     total_rain = TRUE,
-#'     n_rain = FALSE,
+#'     n_rain = TRUE,
 #'     rain_day = 10,
 #'     na_rm = TRUE,
 #'     end_type = "rains"
@@ -40,14 +40,14 @@
 #'
 annual_rainfall_seasonal_rain <- function(definitions, daily, summary_data, data_names, summaries) {
   if (is.null(definitions$seasonal_rain$total_rain)) 
-    definitions$seasonal_rain$total_rain <- FALSE
+    definitions$seasonal_rain$total_rain <- "FALSE"
   if (is.null(definitions$seasonal_rain$n_rain)) 
-    definitions$seasonal_rain$n_rain <- FALSE
+    definitions$seasonal_rain$n_rain <- "FALSE"
   if (is.null(definitions$seasonal_rain$rain_day)) 
     stop("Missing value in seasonal_rain definitions for rain_day.")
   if (is.null(definitions$seasonal_rain$na_rm)){
     warning("Missing value in seasonal_rain definitions for na_rm. Setting na_rm = FALSE")
-    definitions$seasonal_rain$na_rm <- FALSE
+    definitions$seasonal_rain$na_rm <- "FALSE"
   }
   if (is.null(definitions$seasonal_rain$end_type)){
     present_values <- c("start_rains", "end_rains", "end_season") %in% summaries
