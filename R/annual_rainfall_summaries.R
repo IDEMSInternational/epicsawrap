@@ -20,10 +20,11 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
   definitions <- definitions(country = country, station_id = station_id, summaries = summaries)
   # Fetch daily data and preprocess
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+ 
+  # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
   data_names <- epicsadata::data_definitions(names(daily), TRUE)
-  
-  # check variable names and rename
   daily <- check_and_rename_variables(daily, data_names)
+  
   daily$year <- as.integer(daily$year)
   
   # Create summary_data dataframe

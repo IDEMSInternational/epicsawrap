@@ -35,10 +35,11 @@ crop_success_probabilities <- function(country,
   
   # Fetch daily data and preprocess
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
-  data_names <- epicsadata::data_definitions(names(daily), TRUE)
   
-  # check variable names and rename
+  # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
+  data_names <- epicsadata::data_definitions(names(daily), TRUE)
   daily <- check_and_rename_variables(daily, data_names)
+  
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "end_rains")) # end rains or end season?
   if (is.null(planting_length)){
     planting_length <- as.integer(definitions$crops_success$planting_length)
