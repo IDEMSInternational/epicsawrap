@@ -24,18 +24,19 @@ daily rainfall data, and data variable names.
 \examples{
 
 # Example usage:
-require(dplyr)
-data(daily_niger)
-definitions <- list(
-  end_rains = list(
-    start_day = 122,
-    end_day = 366,
-    interval_length = 7,
-    min_rainfall = 5
-  )
-)
-data_names <- list(date = "date", station = "station_name", year = "year", rain = "rain")
-daily_data <- daily_niger \%>\% dplyr::filter(year > 1975) \%>\% dplyr::filter(station_name == "Zinder")
-end_of_rains <- annual_rainfall_end_rains(definitions, daily_data, data_names)
+# require(dplyr)
+# library(cdms.products)
+# data(daily_niger)
+# definitions <- list(
+#   end_rains = list(
+#     start_day = 122,
+#     end_day = 366,
+#     interval_length = 7,
+#     min_rainfall = 5
+#   )
+# )
+# data_names <- list(date = "date", station = "station_name", year = "year", rain = "rain")
+# daily_data <- daily_niger \%>\% dplyr::filter(year > 1975) \%>\% dplyr::filter(station_name == "Zinder")
+# end_of_rains <- annual_rainfall_end_rains(definitions, daily_data, data_names)
 
 }

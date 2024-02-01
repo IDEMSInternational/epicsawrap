@@ -15,19 +15,20 @@
 #'
 #' @examples
 #' 
-#' # Example usage:
-#' require(dplyr)
-#' data(daily_niger)
-#' definitions <- list(
-#'   annual_rain = list(
-#'     annual_rain = TRUE,
-#'     n_rain = FALSE,
-#'     na_rm = TRUE
-#'   )
-#' )
-#' data_names <- list(date = "date", station = "station_name", year = "year", rain = "rain")
-#' daily_data <- daily_niger %>% dplyr::filter(year > 1975) %>% dplyr::filter(station_name == "Zinder")
-#' annual_rainfall <- annual_rainfall_annual_rain(definitions, daily_data, data_names)
+#'# # Example usage:
+#'# require(dplyr)
+#'# library(cdms.products)
+#'# data(daily_niger)
+#'# definitions <- list(
+#'#   annual_rain = list(
+#'#     annual_rain = TRUE,
+#'#     n_rain = FALSE,
+#'#     na_rm = TRUE
+#'#   )
+#'# )
+#'# data_names <- list(date = "date", station = "station_name", year = "year", rain = "rain")
+#'# daily_data <- daily_niger %>% dplyr::filter(year > 1975) %>% dplyr::filter(station_name == "Zinder")
+#'# annual_rainfall <- annual_rainfall_annual_rain(definitions, daily_data, data_names)
 #'
 annual_rainfall_annual_rain <- function(definitions, daily, data_names) {
   if (is.null(definitions$annual_rain$annual_rain)) 

@@ -15,21 +15,22 @@
 #'
 #' @examples
 #' # Example usage:
-#' require(dplyr)
-#' data(daily_niger)
-#' definitions <- list(
-#'   end_season = list(
-#'     start_day = 150,
-#'     end_day = 366,
-#'     capacity = 100,
-#'     water_balance_max = 50,
-#'     evaporation = "value",
-#'     evaporation_value = 10
-#'   )
-#' )
-#' data_names <- list(date = "date", station = "station_name", year = "year", rain = "rain")
-#' daily_data <- daily_niger %>% dplyr::filter(year > 1975) %>% dplyr::filter(station_name == "Zinder")
-#' end_of_season <- annual_rainfall_end_season(definitions, daily_data, data_names)
+#'# require(dplyr)
+#'# library(cdms.products)
+#'# data(daily_niger)
+#'# definitions <- list(
+#'#   end_season = list(
+#'#     start_day = 150,
+#'#     end_day = 366,
+#'#     capacity = 100,
+#'#     water_balance_max = 50,
+#'#     evaporation = "value",
+#'#     evaporation_value = 10
+#'#   )
+#'# )
+#'# data_names <- list(date = "date", station = "station_name", year = "year", rain = "rain")
+#'# daily_data <- daily_niger %>% dplyr::filter(year > 1975) %>% dplyr::filter(station_name == "Zinder")
+#'# end_of_season <- annual_rainfall_end_season(definitions, daily_data, data_names)
 #'
 annual_rainfall_end_season <- function(definitions, daily, data_names) {
   if (is.null(definitions$end_season$start_day)) 

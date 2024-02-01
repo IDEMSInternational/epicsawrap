@@ -22,30 +22,31 @@ This function calculates the start of the rainy season based on the provided def
 daily rainfall data, and data variable names.
 }
 \examples{
-require(dplyr)
-data(daily_niger)
-# Example usage:
-definitions <- list(
-  start_rains = list(
-    threshold = 0.5,
-    start_day = 90,
-    end_day = 200,
-    total_rainfall = TRUE,
-    over_days = 7,
-    amount_rain = 10,
-    proportion = FALSE,
-    prob_rain_day = 0.6,
-    number_rain_days = TRUE,
-    min_rain_days = 3,
-    rain_day_interval = 5,
-    dry_spell = TRUE,
-    spell_interval = 14,
-    spell_max_dry_days = 10,
-    dry_period = FALSE
-  )
-)
-data_names <- list(date = "date", station = "station_name", year = "year", rain = "rain")
-daily_data <- daily_niger \%>\% dplyr::filter(year > 1975) \%>\% dplyr::filter(station_name == "Zinder")
-start_of_rains <- annual_rainfall_start_rains(definitions, daily_data, data_names)
+# require(dplyr)
+# library(cdms.products)
+# data(daily_niger)
+# # Example usage:
+# definitions <- list(
+#   start_rains = list(
+#     threshold = 0.5,
+#     start_day = 90,
+#     end_day = 200,
+#     total_rainfall = TRUE,
+#     over_days = 7,
+#     amount_rain = 10,
+#     proportion = FALSE,
+#     prob_rain_day = 0.6,
+#     number_rain_days = TRUE,
+#     min_rain_days = 3,
+#     rain_day_interval = 5,
+#     dry_spell = TRUE,
+#     spell_interval = 14,
+#     spell_max_dry_days = 10,
+#     dry_period = FALSE
+#   )
+# )
+# data_names <- list(date = "date", station = "station_name", year = "year", rain = "rain")
+# daily_data <- daily_niger \%>\% dplyr::filter(year > 1975) \%>\% dplyr::filter(station_name == "Zinder")
+# start_of_rains <- annual_rainfall_start_rains(definitions, daily_data, data_names)
 
 }
