@@ -16,7 +16,7 @@ overall_extremes_summaries <- function(country, station_id,
   summaries <- match.arg(summaries)
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
-  data_names <- epicsadata::data_definitions(station_id = station_id)
+  data_names <- epicsadata::data_definitions(names(daily), TRUE)
   
   if (is.null(definitions[[summaries]]$direction)){
     direction <- "greater"

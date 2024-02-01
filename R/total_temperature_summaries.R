@@ -11,7 +11,7 @@
 #'
 #' @examples
 #' # Generate annual temperature summaries for station 16 in Zambia
-#' #total_temperature_summaries1(country = "zm", station_id = "1", summaries = c("mean_tmin", "mean_tmax", "min_tmin", "max_tmax"), to = "annual")
+#' #total_temperature_summaries(country = "zm", station_id = "1", summaries = c("mean_tmin", "mean_tmax", "min_tmin", "max_tmax"), to = "annual")
 total_temperature_summaries <- function(country,
                                         station_id,
                                         summaries = c("mean_tmin", "mean_tmax", "min_tmin", "min_tmax", "max_tmin", "max_tmax"),
@@ -19,7 +19,7 @@ total_temperature_summaries <- function(country,
   to <- match.arg(to)
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
-  data_names <- epicsadata::data_definitions(station_id = station_id)
+  data_names <- epicsadata::data_definitions(names(daily), TRUE)
   
   # # even though we can have tmax and tmin defined together, it's being done this way 
   # # in case different parameters are defined for tmax and for tmin.
