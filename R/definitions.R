@@ -16,8 +16,7 @@ definitions <- function(country, station_id, summaries){
   # are any NULL 1 = NULL
   null_check <- purrr::map_dbl(.x = summaries, .f = ~ is.null(definition_data[[.x]]))
   if (any(null_check == 1)){
-    warning(paste0("Not all summaries are defined in the json definition file: ",
-                paste(x = names(definition_data)[which(null_check == 1)], collapse = ", ")))
+    warning(paste0("Not all summaries are defined in the json definition file: ", paste(x = names(definition_data)[which(null_check == 1)], collapse = ", ")))
   }
   definition_data[sapply(definition_data, is.null)] <- NULL
   return(definition_data)
