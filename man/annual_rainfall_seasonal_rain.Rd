@@ -34,25 +34,25 @@ daily rainfall data, summary data, data variable names, and summary types.
 }
 \examples{
 
-# Example usage:
-definitions <- list(
-  seasonal_rain = list(
-    total_rain = TRUE,
-    n_rain = TRUE,
-    rain_day = 10,
-    na_rm = TRUE,
-    end_type = "rains"
-  )
-)
-data_names <- list(date = "date", station = "station", year = "year", rain = "rain")
-summary_types <- c("start_rains", "end_rains", "end_season")
-daily_data <- data.frame(date = seq(as.Date("2023-01-01"), as.Date("2023-12-31"), by = "days"),
-                         station = "Station_A",
-                         year = rep(2023, each = 365),
-                         rain = runif(365, min = 0, max = 10))
-daily_data$doy <- yday(daily_data$date)
-summary_data <- data.frame(year = 2023, start_rains = as.Date("2023-04-01"), 
-                           end_rains = as.Date("2023-10-31"), end_season = as.Date("2023-12-31"))
-seasonal_rain <- annual_rainfall_seasonal_rain(definitions, daily_data, summary_data, data_names, summary_types)
+# # Example usage:
+# definitions <- list(
+#   seasonal_rain = list(
+#     total_rain = TRUE,
+#     n_rain = TRUE,
+#     rain_day = 10,
+#     na_rm = TRUE,
+#     end_type = "rains"
+#   )
+# )
+# data_names <- list(date = "date", station = "station", year = "year", rain = "rain")
+# summary_types <- c("start_rains", "end_rains", "end_season")
+# daily_data <- data.frame(date = seq(as.Date("2023-01-01"), as.Date("2023-12-31"), by = "days"),
+#                          station = "Station_A",
+#                          year = rep(2023, each = 365),
+#                          rain = runif(365, min = 0, max = 10))
+# daily_data$doy <- lubridate::yday(daily_data$date)
+# summary_data <- data.frame(year = 2023, start_rains = as.Date("2023-04-01"), 
+#                            end_rains = as.Date("2023-10-31"), end_season = as.Date("2023-12-31"))
+# seasonal_rain <- annual_rainfall_seasonal_rain(definitions, daily_data, summary_data, data_names, summary_types)
 
 }
