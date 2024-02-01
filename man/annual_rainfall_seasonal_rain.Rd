@@ -50,7 +50,7 @@ daily_data <- data.frame(date = seq(as.Date("2023-01-01"), as.Date("2023-12-31")
                          station = "Station_A",
                          year = rep(2023, each = 365),
                          rain = runif(365, min = 0, max = 10))
-daily_data$doy <- yday(daily_data$date)
+daily_data$doy <- lubridate::yday(daily_data$date)
 summary_data <- data.frame(year = 2023, start_rains = as.Date("2023-04-01"), 
                            end_rains = as.Date("2023-10-31"), end_season = as.Date("2023-12-31"))
 seasonal_rain <- annual_rainfall_seasonal_rain(definitions, daily_data, summary_data, data_names, summary_types)
