@@ -21,11 +21,6 @@
 #' 
 check_and_rename_variables <- function(data, data_names) {
   
-  # Check if the data_names contain valid variable names
-  if (!is.list(data_names) || !all(sapply(data_names, is.character))) {
-    stop("data_names should be a named character vector.")
-  }
-  
   # Check if all variable names in data_names exist in the dataset
   missing_vars <- setdiff(names(data_names), names(data))
   missing_names <- setdiff(names(data), names(data_names))
