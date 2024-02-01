@@ -9,7 +9,5 @@
 #' 
 #' @export
 station_metadata <- function(country = NULL, station_id = NULL, include_definitions = FALSE, format = c("wide", "long", "nested")) {
-  epicsadata::station_metadata(country = country, station_id = station_id,
-                               include_definitions = include_definitions,
-                               format = format)
+  epicsadata::station_metadata(country = country, station_id = station_id, include_definitions = include_definitions, format = format)
 }
