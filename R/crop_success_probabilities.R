@@ -31,9 +31,14 @@ crop_success_probabilities <- function(country,
                                        water_requirements = NULL,
                                        planting_length = NULL,
                                        start_before_season = NULL) {
-  daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "crops_success")
+  
+  # Fetch daily data and preprocess
+  daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   data_names <- epicsadata::data_definitions(names(daily), TRUE)
+  
+  # check variable names and rename
+  daily <- check_and_rename_variables(daily, data_names)
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "end_rains")) # end rains or end season?
   if (is.null(planting_length)){
     planting_length <- as.integer(definitions$crops_success$planting_length)

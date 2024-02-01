@@ -20,9 +20,13 @@
 season_start_probabilities <- function(country,
                                        station_id,
                                        start_dates = NULL) {
+  definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "season_start_probabilities")
+  # Fetch daily data and preprocess
   daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
   data_names <- epicsadata::data_definitions(names(daily), TRUE)
-  definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "season_start_probabilities")
+  
+  # check variable names and rename
+  daily <- check_and_rename_variables(daily, data_names)
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains"))
   if (is.null(start_dates)){
     start_dates <- definitions$season_start_probabilities$specified_day
