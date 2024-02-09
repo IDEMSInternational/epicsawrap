@@ -46,7 +46,7 @@ annual_rainfall_end_rains <- function(definitions, daily, data_names) {
     station = data_names$station, 
     year = data_names$year, 
     rain = data_names$rain,
-    start_day = 1,#definitions$end_rains$start_day,
+    start_day = definitions$end_rains$start_day,
     end_day = definitions$end_rains$end_day,
     s_start_doy = definitions$end_rains$s_start_doy,
     output = "both",

@@ -74,7 +74,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
       }
       if (!require_end_rains){
         # check for end_rains/seasons in definitions file
-        # and checking for preferances given in seasonal_rain
+        # and checking for preferences given in seasonal_rain
         if (is.null(definitions$seasonal_rain$end_type)){
           if ("end_season" %in% names(definitions_season)){
             end_type <- "seasons"
