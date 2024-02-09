@@ -40,14 +40,14 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
     summary_data$start_rains_doy <- as.integer(summary_data$start_rains_doy)
   }
   if ("end_rains" %in% summaries) {
-    #if (!is.null(definitions$start_rains$s_start_doy)) definitions$end_rains$s_start_doy <- definitions$start_rains$s_start_doy
+    if (!is.null(definitions$start_rains$s_start_doy)) definitions$end_rains$s_start_doy <- definitions$start_rains$s_start_doy
     end_rains <- annual_rainfall_end_rains(definitions, daily, data_names)
     summary_data <- join_null_data(summary_data, end_rains)
     summary_data$end_rains_doy <- as.integer(summary_data$end_rains_doy)
   }
 
   if ("end_season" %in% summaries) {
-    #if (!is.null(definitions$start_rains$s_start_doy)) definitions$end_season$s_start_doy <- definitions$start_rains$s_start_doy
+    if (!is.null(definitions$start_rains$s_start_doy)) definitions$end_season$s_start_doy <- definitions$start_rains$s_start_doy
     end_season <- annual_rainfall_end_season(definitions, daily, data_names)
     summary_data <- join_null_data(summary_data, end_season)
     summary_data$end_season_doy <- as.integer(summary_data$end_season_doy)
