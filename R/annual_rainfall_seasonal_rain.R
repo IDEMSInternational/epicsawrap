@@ -74,6 +74,7 @@ annual_rainfall_seasonal_rain <- function(definitions, daily, summary_data, data
     station = data_names$station, 
     year = data_names$year, 
     rain = data_names$rain, 
+    s_start_doy = definitions$start_rains$s_start_doy,
     total_rain = as.logical(definitions$seasonal_rain$total_rain), 
     n_rain = as.logical(definitions$seasonal_rain$n_rain), 
     rain_day = definitions$seasonal_rain$rain_day, 

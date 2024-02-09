@@ -49,14 +49,9 @@ annual_rainfall_end_rains <- function(definitions, daily, data_names) {
     start_day = 1,#definitions$end_rains$start_day,
     end_day = definitions$end_rains$end_day,
     s_start_doy = definitions$end_rains$s_start_doy,
-    output = "doy",
+    output = "both",
     interval_length = definitions$end_rains$interval_length,
     min_rainfall = definitions$end_rains$min_rainfall
   )
-  
-  # TODO: sort end_rains date because it stops at 366 at the moment.
-  #end_rains$end_rains <- end_rains$end_rains + 100
-  end_rains <- date_amendments(summary = "end_rains", data = end_rains, variable = end_rains, definitions)
-  
   return(end_rains)
 }
