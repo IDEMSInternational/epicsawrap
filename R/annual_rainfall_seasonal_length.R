@@ -34,21 +34,21 @@ annual_rainfall_seasonal_length <- function(definitions, daily, summary_data, da
     if ((length(present_values[present_values]) == 3) || 
         (identical(present_values, c(TRUE, FALSE, TRUE)))) {
       warning("Performing seasonal_length with end_season")
-      end_date <- "end_season"
+      end_date <- "end_season_date"
     }
     if (identical(present_values, c(TRUE, TRUE, FALSE))) {
-      end_date <- "end_rains"
+      end_date <- "end_rains_date"
     }
   } else {
     if (definitions$seasonal_length$end_type == "rains") {
-      end_date <- "end_rains"
+      end_date <- "end_rains_date"
     } else {
-      end_date <- "end_season"
+      end_date <- "end_season_date"
     } 
   }
   season_length <- rpicsa::seasonal_length(
     summary_data = summary_data, 
-    start_date = "start_rains", 
+    start_date = "start_rains_date", 
     end_date = end_date, 
     data = daily, 
     date_time = data_names$date, 

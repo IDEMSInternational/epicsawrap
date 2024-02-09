@@ -95,5 +95,8 @@ annual_rainfall_start_rains <- function(definitions, daily, data_names){
                                      period_interval = definitions$start_rains$period_interval,
                                      max_rain = definitions$start_rains$max_rain,
                                      period_max_dry_days = definitions$start_rains$period_max_dry_days)
+
+  start_rains <- date_amendments(summary = "start_rains", data = start_rains, variable = start_rains, definitions)
+  
   return(start_rains)
 }

@@ -69,5 +69,6 @@ annual_rainfall_end_season <- function(definitions, daily, data_names) {
     evaporation_variable = definitions$end_season$evaporation_variable
   )
   
+  end_season <- shift_year_amendments(summary = "end_season", data = end_season, variable = end_season, definitions)
   return(end_season)
 }

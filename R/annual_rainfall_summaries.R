@@ -28,41 +28,43 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
   daily$year <- as.integer(daily$year)
   
   # Create summary_data dataframe
-  summary_data <- expand.grid(year = unique(daily[[data_names$year]]), station = unique(daily[[data_names$station]]))
-  names(summary_data) <- c(data_names$year, data_names$station)
+  # summary_data <- expand.grid(year = unique(daily[[data_names$year]]), station = unique(daily[[data_names$station]]))
+  # names(summary_data) <- c(data_names$year, data_names$station)
   
   # Check if start_rains and end_rains are required for seasonal_rain and seasonal_length
   require_start_rains <- any(grepl("seasonal_", summaries)) & ("start_rains" %in% summaries)
   require_end_rains <- any(grepl("seasonal_", summaries)) & (any(grepl("end_", summaries)))
   
+  summary_data <- NULL
+  
   # Calculate summaries ==================================================================
   if ("annual_rain" %in% summaries) {
     annual_rain <- annual_rainfall_annual_rain(definitions, daily, data_names)
-    summary_data <- dplyr::full_join(summary_data, annual_rain)
+    summary_data <- join_null_data(summary_data, annual_rain)
   }
-  
   if ("start_rains" %in% summaries) {
     start_rains <- annual_rainfall_start_rains(definitions, daily, data_names)
-    summary_data <- dplyr::full_join(summary_data, start_rains)
+    summary_data <- join_null_data(summary_data, start_rains)
     summary_data$start_rains <- as.integer(summary_data$start_rains)
   }
-  
   if ("end_rains" %in% summaries) {
+    #if (!is.null(definitions$start_rains$s_start_doy)) definitions$end_rains$s_start_doy <- definitions$start_rains$s_start_doy
     end_rains <- annual_rainfall_end_rains(definitions, daily, data_names)
-    summary_data <- dplyr::full_join(summary_data, end_rains)
+    summary_data <- join_null_data(summary_data, end_rains)
     summary_data$end_rains <- as.integer(summary_data$end_rains)
   }
-  
+
   if ("end_season" %in% summaries) {
+    #if (!is.null(definitions$start_rains$s_start_doy)) definitions$end_season$s_start_doy <- definitions$start_rains$s_start_doy
     end_season <- annual_rainfall_end_season(definitions, daily, data_names)
-    summary_data <- dplyr::full_join(summary_data, end_season)
+    summary_data <- join_null_data(summary_data, end_season)
     summary_data$end_season <- as.integer(summary_data$end_season)
   } 
   
   if ("seasonal_rain" %in% summaries) {
     if (require_start_rains && require_end_rains) {
       season_rain <- annual_rainfall_seasonal_rain(definitions, daily, summary_data, data_names, summaries)
-      summary_data <- dplyr::full_join(summary_data, season_rain)
+      summary_data <- join_null_data(summary_data, season_rain)
     } else {
       definitions_season <- definitions(country = country, station_id = station_id, summaries = c("start_rains", "end_rains", "end_season"))
       if (!require_start_rains){ # if start of rains is not given then ...
@@ -70,7 +72,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
         # check for start_rains in definitions file
         if ("start_rains" %in% names(definitions_season)){
           start_rains <- annual_rainfall_start_rains(definitions_season, daily, data_names)
-          summary_data <- dplyr::full_join(summary_data, start_rains)
+          summary_data <- join_null_data(summary_data, start_rains)
           summary_data$start_rains <- as.integer(summary_data$start_rains)
           summaries <- c(summaries, "start_rains")
         } else {
@@ -94,14 +96,16 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
         }
         if (end_type == "seasons"){
           warning("Creating end_season column to calculate seasonal summaries")
+          if (!is.null(definitions$start_rains$s_start_doy)) definitions$end_season$s_start_doy <- definitions$start_rains$s_start_doy
           end_season <- annual_rainfall_end_season(definitions_season, daily, data_names)
-          summary_data <- dplyr::full_join(summary_data, end_season)
+          summary_data <- join_null_data(summary_data, end_season)
           summary_data$end_season <- as.integer(summary_data$end_season)
           summaries <- c(summaries, "end_season")
         } else { # run for rains
           warning("Creating end_rains column to calculate seasonal summaries")
+          if (!is.null(definitions$start_rains$s_start_doy)) definitions$end_rains$s_start_doy <- definitions$start_rains$s_start_doy
           end_rains <- annual_rainfall_end_rains(definitions_season, daily, data_names)
-          summary_data <- dplyr::full_join(summary_data, end_rains)
+          summary_data <- join_null_data(summary_data, end_rains)
           summary_data$end_rains <- as.integer(summary_data$end_rains)
           summaries <- c(summaries, "end_rains")
         }
@@ -112,14 +116,14 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
       definitions <- unique(definitions)
       names(definitions) <- names_definitions
       season_rain <- annual_rainfall_seasonal_rain(definitions, daily, summary_data, data_names, summaries)
-      summary_data <- dplyr::full_join(summary_data, season_rain)
+      summary_data <- join_null_data(summary_data, season_rain)
     }
   }
   
   if ("seasonal_length" %in% summaries) {
     if (require_start_rains && require_end_rains) {
       season_length <- annual_rainfall_seasonal_length(definitions, daily, summary_data, data_names, summaries)
-      summary_data <- dplyr::full_join(summary_data, season_length)
+      summary_data <- join_null_data(summary_data, season_length)
     } else {
       definitions_season <- definitions(country = country, station_id = station_id, summaries = c("start_rains", "end_rains", "end_season"))
       if (!require_start_rains){ # if start of rains is not given then ...
@@ -127,7 +131,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
         # check for start_rains in definitions file
         if ("start_rains" %in% names(definitions_season)){
           start_rains <- annual_rainfall_start_rains(definitions_season, daily, data_names)
-          summary_data <- dplyr::full_join(summary_data, start_rains)
+          summary_data <- join_null_data(summary_data, start_rains)
           summary_data$start_rains <- as.integer(summary_data$start_rains)
           summaries <- c(summaries, "start_rains")
         } else {
@@ -139,14 +143,16 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
         # check for start_rains in definitions file
         if ("end_season" %in% names(definitions_season)){
           warning("Creating end_season column to calculate seasonal summaries")
+          if (!is.null(definitions$start_rains$s_start_doy)) definitions$end_season$s_start_doy <- definitions$start_rains$s_start_doy
           end_season <- annual_rainfall_end_season(definitions_season, daily, data_names)
-          summary_data <- dplyr::full_join(summary_data, end_season)
+          summary_data <- join_null_data(summary_data, end_season)
           summary_data$end_season <- as.integer(summary_data$end_season)
           summaries <- c(summaries, "end_season")
         } else if ("end_rains" %in% names(definitions_season)){
           warning("Creating end_rains column to calculate seasonal summaries")
+          if (!is.null(definitions$start_rains$s_start_doy)) definitions$end_rains$s_start_doy <- definitions$start_rains$s_start_doy
           end_rains <- annual_rainfall_end_rains(definitions_season, daily, data_names)
-          summary_data <- dplyr::full_join(summary_data, end_rains)
+          summary_data <- join_null_data(summary_data, end_rains)
           summary_data$end_rains <- as.integer(summary_data$end_rains)
           summaries <- c(summaries, "end_rains")
         } else {
@@ -159,7 +165,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
       definitions <- unique(definitions)
       names(definitions) <- names_definitions
       season_rain <- annual_rainfall_seasonal_length(definitions, daily, summary_data, data_names, summaries)
-      summary_data <- dplyr::full_join(summary_data, season_rain)
+      summary_data <- join_null_data(summary_data, season_rain)
     }
   }
   
