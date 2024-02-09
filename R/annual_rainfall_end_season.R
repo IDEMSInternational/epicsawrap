@@ -61,13 +61,12 @@ annual_rainfall_end_season <- function(definitions, daily, data_names) {
     start_day = definitions$end_season$start_day,
     end_day = definitions$end_season$end_day,
     s_start_doy = definitions$end_season$s_start_doy,
-    output = "doy",
+    output = "both",
     capacity = definitions$end_season$capacity,
     water_balance_max = definitions$end_season$water_balance_max,
     evaporation = definitions$end_season$evaporation,
     evaporation_value = definitions$end_season$evaporation_value,
     evaporation_variable = definitions$end_season$evaporation_variable
   )
-  
   return(end_season)
 }

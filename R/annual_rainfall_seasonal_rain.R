@@ -53,27 +53,28 @@ annual_rainfall_seasonal_rain <- function(definitions, daily, summary_data, data
     present_values <- c("start_rains", "end_rains", "end_season") %in% summaries
     if ((length(present_values[present_values]) == 3) || (identical(present_values, c(TRUE, FALSE, TRUE)))) {
       warning("Performing seasonal_rain with end_season")
-      end_date <- "end_season"
+      end_date <- "end_season_date"
     }
     if (identical(present_values, c(TRUE, TRUE, FALSE))) {
-      end_date <- "end_rains"
+      end_date <- "end_rains_date"
     }
   } else {
     if (definitions$seasonal_rain$end_type == "rains"){
-      end_date <- "end_rains"
+      end_date <- "end_rains_date"
     } else {
-      end_date <- "end_season"
+      end_date <- "end_season_date"
     } 
   }
   season_rain <- rpicsa::seasonal_rain(
     summary_data = summary_data, 
-    start_date = "start_rains", 
+    start_date = "start_rains_date", 
     end_date = end_date, 
     data = daily, 
     date_time = data_names$date, 
     station = data_names$station, 
     year = data_names$year, 
     rain = data_names$rain, 
+    s_start_doy = definitions$start_rains$s_start_doy,
     total_rain = as.logical(definitions$seasonal_rain$total_rain), 
     n_rain = as.logical(definitions$seasonal_rain$n_rain), 
     rain_day = definitions$seasonal_rain$rain_day, 

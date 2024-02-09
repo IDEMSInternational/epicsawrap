@@ -79,7 +79,7 @@ annual_rainfall_start_rains <- function(definitions, daily, data_names){
                                      start_day = definitions$start_rains$start_day,
                                      end_day = definitions$start_rains$end_day,
                                      s_start_doy = definitions$start_rains$s_start_doy,
-                                     output = "doy",
+                                     output = "both",
                                      total_rainfall = as.logical(definitions$start_rains$total_rainfall),
                                      over_days = definitions$start_rains$over_days,
                                      amount_rain = definitions$start_rains$amount_rain,
@@ -95,5 +95,6 @@ annual_rainfall_start_rains <- function(definitions, daily, data_names){
                                      period_interval = definitions$start_rains$period_interval,
                                      max_rain = definitions$start_rains$max_rain,
                                      period_max_dry_days = definitions$start_rains$period_max_dry_days)
+
   return(start_rains)
 }
