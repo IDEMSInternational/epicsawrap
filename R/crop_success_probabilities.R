@@ -26,11 +26,11 @@
 #' #crop_success_probabilities(country = "zm", station_id = "16", water_requirements = c(100, 300, 800),
 #' #                           planting_length = c(100, 150), planting_dates = c(90, 100, 110))
 crop_success_probabilities <- function(country,
-                                       station_id,
-                                       planting_dates = NULL,
-                                       water_requirements = NULL,
-                                       planting_length = NULL,
-                                       start_before_season = NULL) {
+                                        station_id,
+                                        planting_dates = NULL,
+                                        water_requirements = NULL,
+                                        planting_length = NULL,
+                                        start_before_season = NULL) {
   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "crops_success")
   
   # Fetch daily data and preprocess
@@ -41,7 +41,7 @@ crop_success_probabilities <- function(country,
   daily <- check_and_rename_variables(daily, data_names)
   
   season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "end_rains")) # end rains or end season?
-  
+  #offset <- season_data[[1]]$start_rains$s_start_doy
   
   check_and_set_parameter <- function(parameter_name, target_column_name) {
     if (is.null(get(parameter_name))) {
@@ -61,18 +61,18 @@ crop_success_probabilities <- function(country,
   } else {
     definitions$crops_success$start_check <- start_before_season
   }
-  summary_crops <- rpicsa::crops_definitions(data = daily,
-                                             date_time  = data_names$date,
-                                             station = data_names$station,
-                                             year = data_names$year,
-                                             rain = data_names$rain,
-                                             water_requirements = as.integer(water_requirements),
-                                             planting_dates = as.integer(planting_dates),
-                                             planting_length = as.integer(planting_length),
-                                             start_check = start_before_season,
-                                             season_data = season_data[[2]],
-                                             start_day = "start_rains",
-                                             end_day = "end_rains")
+  summary_crops <- crops_definitions(data = daily,
+                                     date_time  = data_names$date,
+                                     station = data_names$station,
+                                     year = data_names$year,
+                                     rain = data_names$rain,
+                                     water_requirements = as.integer(water_requirements),
+                                     planting_dates = as.integer(planting_dates),
+                                     planting_length = as.integer(planting_length),
+                                     start_check = start_before_season,
+                                     season_data = season_data[[2]],
+                                     start_day = "start_rains_doy",
+                                     end_day = "end_rains_doy")
   # convert all numeric to integers
   list_return <- NULL
   list_return[[1]] <- c(season_data[[1]], definitions)
