@@ -61,7 +61,7 @@ crop_success_probabilities <- function(country,
   } else {
     definitions$crops_success$start_check <- start_before_season
   }
-  summary_crops <- crops_definitions(data = daily,
+  summary_crops <- rpicsa::crops_definitions(data = daily,
                                      date_time  = data_names$date,
                                      station = data_names$station,
                                      year = data_names$year,
