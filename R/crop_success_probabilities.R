@@ -62,17 +62,17 @@ crop_success_probabilities <- function(country,
     definitions$crops_success$start_check <- start_before_season
   }
   summary_crops <- rpicsa::crops_definitions(data = daily,
-                                     date_time  = data_names$date,
-                                     station = data_names$station,
-                                     year = data_names$year,
-                                     rain = data_names$rain,
-                                     water_requirements = as.integer(water_requirements),
-                                     planting_dates = as.integer(planting_dates),
-                                     planting_length = as.integer(planting_length),
-                                     start_check = start_before_season,
-                                     season_data = season_data[[2]],
-                                     start_day = "start_rains_doy",
-                                     end_day = "end_rains_doy")
+                                             date_time  = data_names$date,
+                                             station = data_names$station,
+                                             year = data_names$year,
+                                             rain = data_names$rain,
+                                             water_requirements = as.integer(water_requirements),
+                                             planting_dates = as.integer(planting_dates),
+                                             planting_length = as.integer(planting_length),
+                                             start_check = start_before_season,
+                                             season_data = season_data[[2]],
+                                             start_day = "start_rains_doy",
+                                             end_day = "end_rains_doy")
   # convert all numeric to integers
   list_return <- NULL
   list_return[[1]] <- c(season_data[[1]], definitions)
