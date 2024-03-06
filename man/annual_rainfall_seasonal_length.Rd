@@ -34,15 +34,15 @@ and summary types.
 \examples{
 
 # Example usage:
-definitions <- list(seasonal_length = list(end_type = "season"))
+definitions <- list(seasonal_length = list(end_type = "rains"))
 data_names <- list(date = "date", station = "station", year = "year", rain = "rain")
 summary_types <- c("start_rains", "end_rains", "end_season")
 daily_data <- data.frame(date = seq(as.Date("2023-01-01"), as.Date("2023-12-31"), by = "days"),
                          station = "Station_A",
                          year = rep(2023, each = 365),
                          rain = runif(365, min = 0, max = 10))
-summary_data <- data.frame(year = 2023, start_rains = as.Date("2023-04-01"), 
-                           end_rains = as.Date("2023-10-31"), end_season = as.Date("2023-12-31"))
+summary_data <- data.frame(year = 2023, start_rains_date = as.Date("2023-04-01"), 
+                           end_rains_date = as.Date("2023-10-31"), end_season_date = as.Date("2023-12-31"))
 seasonal_length <- annual_rainfall_seasonal_length(definitions, daily_data, summary_data, data_names, summary_types)
 
 }
