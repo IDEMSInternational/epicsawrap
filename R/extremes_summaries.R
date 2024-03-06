@@ -23,6 +23,7 @@ extremes_summaries <- function(country, station_id,
   
   summary_data <- purrr::map(.x = summaries,
                              .f = ~ overall_extremes_summaries(daily = daily,
+                                                               data_names = data_names, 
                                                                definitions = definitions,
                                                                summaries = .x))
   summary_data <- purrr::reduce(summary_data, dplyr::full_join)

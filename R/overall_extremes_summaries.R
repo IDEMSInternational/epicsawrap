@@ -3,6 +3,7 @@
 #' This function generates summary statistics for extreme weather events based on given definitions.
 #'
 #' @param daily A dataframe containing daily weather data.
+#' @param data_names A list containing the data names in the `daily` data.
 #' @param definitions A list containing definitions of extreme events.
 #' @param summaries Name of the summary to be generated.
 #'
@@ -12,7 +13,7 @@
 #' # Example usage:
 #' # Generate summary statistics for extreme rain events
 #' #rain_summary <- overall_extremes_summaries(daily_data, definitions_list, "extremes_rain")
-overall_extremes_summaries <- function(daily, definitions, summaries){
+overall_extremes_summaries <- function(daily, data_names, definitions, summaries){
   if (is.null(definitions[[summaries]]$direction)){
     direction <- "greater"
   } else {
