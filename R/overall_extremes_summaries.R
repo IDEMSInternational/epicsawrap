@@ -1,26 +1,18 @@
-#' Get the Extreme Data
+#' Generate summary statistics for extreme weather events.
 #'
-#' This function identifies extreme values in a specified element (column) of a data frame. It can operate in two modes: percentile-based and threshold-based.
-#' 
-#' @param country A character string specifying the country code of the data.
-#' @param station_id A character vector specifying the ID(s) of the station(s) to analyse.
-#' @param summaries A character vector specifying the names of the summaries to produce.
+#' This function generates summary statistics for extreme weather events based on given definitions.
 #'
-#' @return A data frame containing the extreme data.
-#' 
+#' @param daily A dataframe containing daily weather data.
+#' @param definitions A list containing definitions of extreme events.
+#' @param summaries Name of the summary to be generated.
+#'
+#' @return A dataframe containing summary statistics for extreme events.
+#'
 #' @examples
-#' # Generate annual temperature summaries for station 16 in Zambia
-#' #overall_extremes_summaries(country, station_id, c("extremes_rain"))
-overall_extremes_summaries <- function(country, station_id,
-                                       summaries = c("extremes_rain", "extremes_tmin", "extremes_tmax")){
-  summaries <- match.arg(summaries)
-  definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
-  # Fetch daily data and preprocess
-  daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
-  # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
-  data_names <- epicsadata::data_definitions(names(daily), TRUE)
-  daily <- check_and_rename_variables(daily, data_names)
-  
+#' # Example usage:
+#' # Generate summary statistics for extreme rain events
+#' #rain_summary <- overall_extremes_summaries(daily_data, definitions_list, "extremes_rain")
+overall_extremes_summaries <- function(daily, definitions, summaries){
   if (is.null(definitions[[summaries]]$direction)){
     direction <- "greater"
   } else {
@@ -31,16 +23,14 @@ overall_extremes_summaries <- function(country, station_id,
   } else {
     type <- as.character(definitions[[summaries]]$type)
   }
+  
   summary_data <- rpicsa::get_extremes(data = daily,
-                                        element = if (summaries == "extremes_rain") data_names$rain else if (summaries == "extremes_tmin") data_names$tmin else if (summaries == "extremes_tmax") data_names$tmax else NULL,
-                                        type = type,
-                                        direction = direction,
-                                        value = as.integer(definitions[[summaries]]$value))
-  
-  summary_data$year <- as.integer(summary_data$year)
-  if ("month" %in% names(summary_data)) {
-    summary_data$month <- as.integer(forcats::as_factor(summary_data$month))
-  }
-  
-  return(list(definitions, summary_data))
+                                       station = data_names$station,
+                                       year = data_names$year,
+                                       element = if (summaries == "extremes_rain") data_names$rain else if (summaries == "extremes_tmin") data_names$tmin else if (summaries == "extremes_tmax") data_names$tmax else NULL,
+                                       type = type,
+                                       direction = direction,
+                                       value = as.integer(definitions[[summaries]]$value))
+  summary_data <- summary_data %>% rename(!!summaries := "count")
+  return(summary_data)
 }

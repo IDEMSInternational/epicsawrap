@@ -35,6 +35,7 @@ season_start_probabilities <- function(country,
   } else {
     definitions$season_start_probabilities$specified_day <- start_dates
   }
+  
   summary_probabilities <- rpicsa::probability_season_start(data = season_data[[2]],
                                                               station = data_names$station,
                                                               start_rains = "start_rains_doy",
