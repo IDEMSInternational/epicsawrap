@@ -4,10 +4,12 @@
 \alias{overall_extremes_summaries}
 \title{Generate summary statistics for extreme weather events.}
 \usage{
-overall_extremes_summaries(daily, definitions, summaries)
+overall_extremes_summaries(daily, data_names, definitions, summaries)
 }
 \arguments{
 \item{daily}{A dataframe containing daily weather data.}
+
+\item{data_names}{A list containing the data names in the \code{daily} data.}
 
 \item{definitions}{A list containing definitions of extreme events.}
 
