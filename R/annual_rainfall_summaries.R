@@ -81,7 +81,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
   # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
   data_names <- epicsadata::data_definitions(names(daily), TRUE)
   daily <- check_and_rename_variables(daily, data_names)
-  daily$year <- as.integer(daily$year)
+  daily$year <- factor(daily$year)
   
   # Check if start_rains and end_rains are required for seasonal_rain and seasonal_length
   if (any(grepl("seasonal_", summaries))){
