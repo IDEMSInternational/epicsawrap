@@ -2,28 +2,25 @@
 % Please edit documentation in R/overall_extremes_summaries.R
 \name{overall_extremes_summaries}
 \alias{overall_extremes_summaries}
-\title{Get the Extreme Data}
+\title{Generate summary statistics for extreme weather events.}
 \usage{
-overall_extremes_summaries(
-  country,
-  station_id,
-  summaries = c("extremes_rain", "extremes_tmin", "extremes_tmax")
-)
+overall_extremes_summaries(daily, definitions, summaries)
 }
 \arguments{
-\item{country}{A character string specifying the country code of the data.}
+\item{daily}{A dataframe containing daily weather data.}
 
-\item{station_id}{A character vector specifying the ID(s) of the station(s) to analyse.}
+\item{definitions}{A list containing definitions of extreme events.}
 
-\item{summaries}{A character vector specifying the names of the summaries to produce.}
+\item{summaries}{Name of the summary to be generated.}
 }
 \value{
-A data frame containing the extreme data.
+A dataframe containing summary statistics for extreme events.
 }
 \description{
-This function identifies extreme values in a specified element (column) of a data frame. It can operate in two modes: percentile-based and threshold-based.
+This function generates summary statistics for extreme weather events based on given definitions.
 }
 \examples{
-# Generate annual temperature summaries for station 16 in Zambia
-#overall_extremes_summaries(country, station_id, c("extremes_rain"))
+# Example usage:
+# Generate summary statistics for extreme rain events
+#rain_summary <- overall_extremes_summaries(daily_data, definitions_list, "extremes_rain")
 }

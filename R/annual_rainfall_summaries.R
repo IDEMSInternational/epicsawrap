@@ -149,6 +149,9 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
   definitions <- unique(definitions)
   names(definitions) <- names_definitions
   
+  summary_data <- summary_data %>%
+    dplyr::mutate(across(ends_with("_date"), ~as.character(.)))
+  
   # rename
   list_return[[1]] <- definitions
   list_return[[2]] <- summary_data
