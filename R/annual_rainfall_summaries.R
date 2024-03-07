@@ -129,29 +129,29 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
     season_rain <- annual_rainfall_seasonal_rain(definitions, daily, summary_data, data_names, summaries)
     summary_data <- join_null_data(summary_data, season_rain)
   }
-  
+
   if ("seasonal_length" %in% summaries) {
     season_rain <- annual_rainfall_seasonal_length(definitions, daily, summary_data, data_names, summaries)
     summary_data <- join_null_data(summary_data, season_rain)
   }
-  
+
   if (!is.null(definitions$start_rains$s_start_doy) | !is.null(definitions$end_season$s_start_doy) | !is.null(definitions$end_rains$s_start_doy)){
-    summary_data$year <- as.integer(sub("-.*", "", summary_data$year))
+    summary_data$year <- sub("-.*", "", summary_data$year)
   }
-  
+
   if ("annual_rain" %in% summaries) {
     annual_rain <- annual_rainfall_annual_rain(definitions, daily, data_names)
     summary_data <- join_null_data(summary_data, annual_rain)
   }
   list_return <- NULL
-  
+
   names_definitions <- unique(names(definitions))
   definitions <- unique(definitions)
   names(definitions) <- names_definitions
   
   summary_data <- summary_data %>%
-    dplyr::mutate(across(ends_with("_date"), ~as.character(.)))
-  
+    dplyr::mutate(dplyr::across(dplyr::ends_with("_date"), ~as.character(.)))
+
   # rename
   list_return[[1]] <- definitions
   list_return[[2]] <- summary_data
