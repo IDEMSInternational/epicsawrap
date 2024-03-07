@@ -62,6 +62,7 @@ crop_success_probabilities <- function(country,
     definitions$crops_success$start_check <- start_before_season
   }
   
+  daily$year <- factor(daily$year)
   summary_crops <- rpicsa::crops_definitions(data = daily,
                                              date_time  = data_names$date,
                                              station = data_names$station,
