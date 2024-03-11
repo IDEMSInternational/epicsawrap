@@ -7,7 +7,8 @@
 monthly_temperature_summaries(
   country,
   station_id,
-  summaries = c("mean_tmin", "mean_tmax", "min_tmin", "min_tmax", "max_tmin", "max_tmax")
+  summaries = c("mean_tmin", "mean_tmax", "min_tmin", "min_tmax", "max_tmin", "max_tmax"),
+  override = FALSE
 )
 }
 \arguments{
@@ -17,6 +18,8 @@ monthly_temperature_summaries(
 single value or a vector.}
 
 \item{summaries}{\code{character} The names of the summaries to produce.}
+
+\item{override}{A logical argument default \code{FALSE} indicating whether to calculate the summaries still, even if they are stored already in the bucket.}
 }
 \value{
 A data frame with monthly summaries.

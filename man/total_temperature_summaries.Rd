@@ -8,17 +8,20 @@ total_temperature_summaries(
   country,
   station_id,
   summaries = c("mean_tmin", "mean_tmax", "min_tmin", "min_tmax", "max_tmin", "max_tmax"),
-  to = c("annual", "monthly")
+  to = c("annual", "monthly"),
+  override = FALSE
 )
 }
 \arguments{
 \item{country}{A character string specifying the country code of the data.}
 
-\item{station_id}{A character vector specifying the ID(s) of the station(s) to analyze.}
+\item{station_id}{A character vector specifying the ID(s) of the station(s) to analyse.}
 
 \item{summaries}{A character vector specifying the names of the summaries to produce.}
 
 \item{to}{A character string indicating whether the summaries should be generated for "annual" or "monthly" data.}
+
+\item{override}{A logical argument default \code{FALSE} indicating whether to calculate the summaries still, even if they are stored already in the bucket.}
 }
 \value{
 A data frame containing the requested temperature summaries.
