@@ -21,6 +21,3 @@ This function adds a new summary data file (RDS format) with a timestamp to a sp
 \details{
 The function creates a timestamp in the format "YYYYMMDDHHMMSS" and appends it to the station_id to form the filename. It then reads the provided file, creates a new file with the timestamped filename, and uploads it to the specified GCS bucket.
 }
-\seealso{
-\code{get_bucket_name} for retrieving the GCS bucket name.
-}
