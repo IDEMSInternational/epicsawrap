@@ -4,7 +4,12 @@
 \alias{season_start_probabilities}
 \title{Season start date probabilities}
 \usage{
-season_start_probabilities(country, station_id, start_dates = NULL)
+season_start_probabilities(
+  country,
+  station_id,
+  start_dates = NULL,
+  override = FALSE
+)
 }
 \arguments{
 \item{country}{\code{character(1)} The country code of the data.}
@@ -13,6 +18,8 @@ season_start_probabilities(country, station_id, start_dates = NULL)
 single value or a vector.}
 
 \item{start_dates}{\code{numeric} A vector of start dates (in doy format) to calculate the probabilities of the season starting on or before.}
+
+\item{override}{A logical argument default \code{FALSE} indicating whether to calculate the summaries still, even if they are stored already in the bucket.}
 }
 \value{
 A list containing the definitions and a data frame with probability summaries.

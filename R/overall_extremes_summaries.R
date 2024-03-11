@@ -32,6 +32,6 @@ overall_extremes_summaries <- function(daily, data_names, definitions, summaries
                                        type = type,
                                        direction = direction,
                                        value = as.integer(definitions[[summaries]]$value))
-  summary_data <- summary_data %>% rename(!!summaries := "count")
+  summary_data <- summary_data %>% dplyr::rename(!!summaries := "count")
   return(summary_data)
 }

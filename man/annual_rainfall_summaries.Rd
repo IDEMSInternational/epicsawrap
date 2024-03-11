@@ -8,7 +8,8 @@ annual_rainfall_summaries(
   country,
   station_id,
   summaries = c("annual_rain", "start_rains", "end_rains", "end_season", "seasonal_rain",
-    "seasonal_length")
+    "seasonal_length"),
+  override = FALSE
 )
 }
 \arguments{
@@ -18,6 +19,8 @@ annual_rainfall_summaries(
 single value or a vector.}
 
 \item{summaries}{\code{character} The names of the summaries to produce.}
+
+\item{override}{A logical argument default \code{FALSE} indicating whether to calculate the summaries still, even if they are stored already in the bucket.}
 }
 \value{
 A data frame with yearly summaries.

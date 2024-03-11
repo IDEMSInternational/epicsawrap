@@ -10,7 +10,8 @@ crop_success_probabilities(
   planting_dates = NULL,
   water_requirements = NULL,
   planting_length = NULL,
-  start_before_season = NULL
+  start_before_season = NULL,
+  override = FALSE
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ single value or a vector.}
 \item{planting_length}{\code{numeric} Vector containing seasonal crop length requirements.}
 
 \item{start_before_season}{\code{logical} A logical value indicating whether to check the start day condition (default is \code{TRUE}).}
+
+\item{override}{A logical argument default \code{FALSE} indicating whether to calculate the summaries still, even if they are stored already in the bucket.}
 }
 \value{
 A list containing the definitions and a data frame with probability summaries.

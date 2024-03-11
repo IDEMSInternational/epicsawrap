@@ -7,7 +7,8 @@
 extremes_summaries(
   country,
   station_id,
-  summaries = c("extremes_rain", "extremes_tmin", "extremes_tmax")
+  summaries = c("extremes_rain", "extremes_tmin", "extremes_tmax"),
+  override = FALSE
 )
 }
 \arguments{
@@ -16,6 +17,8 @@ extremes_summaries(
 \item{station_id}{A character vector specifying the ID(s) of the station(s) to analyse.}
 
 \item{summaries}{A character vector specifying the names of the summaries to produce.}
+
+\item{override}{A logical argument default \code{FALSE} indicating whether to calculate the summaries still, even if they are stored already in the bucket.}
 }
 \value{
 A data frame containing the extreme data.

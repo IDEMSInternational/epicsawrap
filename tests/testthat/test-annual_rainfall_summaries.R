@@ -4,12 +4,17 @@ library(epicsawrap)
 
 # Test case 1
 epicsadata::gcs_auth_file(file = "testdata/epicsa_token.json")
-test_1_results <- readRDS("testdata/test_1_annual_summaries.rds")
+test_1_results <- readRDS("testdata/test_1_annual_rainfall_summaries.rds")
 country <- "zm"
 station_id <- "test_1"
 
 test_that("Correct summaries are calculated", {
-  result <- annual_rainfall_summaries(country, station_id)
+  result <- annual_rainfall_summaries(country, station_id, override = TRUE)
+  expect_true(identical(result[[2]], test_1_results))
+})
+
+test_that("Correct summaries are called", {
+  result <- annual_rainfall_summaries(country, station_id, override = FALSE)
   expect_true(identical(result[[2]], test_1_results))
 })
 
