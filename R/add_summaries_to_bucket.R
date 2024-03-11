@@ -11,12 +11,6 @@
 #' The function creates a timestamp in the format "YYYYMMDDHHMMSS" and appends it to the station_id to form the filename. It then reads the provided file, creates a new file with the timestamped filename, and uploads it to the specified GCS bucket.
 #'
 #' @export
-#' @importFrom googleCloudStorageR gcs_upload
-#' @importFrom jsonlite read_json
-#'
-#' @seealso
-#' \code{get_bucket_name} for retrieving the GCS bucket name.
-#'
 #'
 add_summaries_to_bucket <- function(country, station_id, data, summary){
   return(epicsadata::add_summaries_to_bucket(country = country, station_id = station_id, data = data, summary = summary))
