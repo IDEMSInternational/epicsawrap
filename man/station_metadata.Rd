@@ -8,7 +8,7 @@ station_metadata(
   country = NULL,
   station_id = NULL,
   include_definitions = FALSE,
-  format = c("wide", "long", "nested")
+  format = c("wide", "long", "nested", "list")
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ station_metadata(
 
 \item{include_definitions}{A logical value indicating whether to include definitions data. If TRUE, additional information about station definitions will be included in the output.}
 
-\item{format}{A character vector specifying the format of the output. Options are "wide" (default), "long", or "nested".}
+\item{format}{A character vector specifying the format of the output. Options are "wide" (default), "long", "nested", or "list".}
 }
 \value{
 If \code{include_definitions} is FALSE, the function returns a data frame with metadata for the specified stations. If \code{include_definitions} is TRUE, it returns a data frame with both metadata and station definitions.
