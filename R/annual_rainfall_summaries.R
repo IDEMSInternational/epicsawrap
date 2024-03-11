@@ -8,6 +8,7 @@
 #' @param station_id `character` The id's of the stations to analyse. Either a
 #'   single value or a vector.
 #' @param summaries `character` The names of the summaries to produce.
+#' @param override A logical argument default `FALSE` indicating whether to calculate the summaries still, even if they are stored already in the bucket.
 #'
 #' @return A data frame with yearly summaries.
 #' @export
