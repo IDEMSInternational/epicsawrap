@@ -43,8 +43,12 @@ annual_rainfall_seasonal_rain <- function(definitions, daily, summary_data, data
     definitions$seasonal_rain$total_rain <- "FALSE"
   if (is.null(definitions$seasonal_rain$n_rain)) 
     definitions$seasonal_rain$n_rain <- "FALSE"
-  if (is.null(definitions$seasonal_rain$rain_day)) 
-    stop("Missing value in seasonal_rain definitions for rain_day.")
+  if (definitions$seasonal_rain$n_rain){
+    if (is.null(definitions$seasonal_rain$rain_day)) 
+      stop("Missing value in seasonal_rain definitions for rain_day.")
+    else
+      definitions$seasonal_rain$rain_day <- NA
+  }
   if (is.null(definitions$seasonal_rain$na_rm)){
     warning("Missing value in seasonal_rain definitions for na_rm. Setting na_rm = FALSE")
     definitions$seasonal_rain$na_rm <- "FALSE"
@@ -65,6 +69,11 @@ annual_rainfall_seasonal_rain <- function(definitions, daily, summary_data, data
       end_date <- "end_season_date"
     } 
   }
+  if (!is.null(na_prop = definitions$seasonal_rain$na_prop) && definitions$seasonal_rain$na_prop > 1){
+    na_prop <- definitions$seasonal_rain$na_prop/100
+  } else {
+    na_prop <- NULL
+  }
   season_rain <- rpicsa::seasonal_rain(
     summary_data = summary_data, 
     start_date = "start_rains_date", 
@@ -79,7 +88,7 @@ annual_rainfall_seasonal_rain <- function(definitions, daily, summary_data, data
     n_rain = as.logical(definitions$seasonal_rain$n_rain), 
     rain_day = definitions$seasonal_rain$rain_day, 
     na_rm = as.logical(definitions$seasonal_rain$na_rm), 
-    na_prop = definitions$seasonal_rain$na_prop, 
+    na_prop = na_prop, 
     na_n = definitions$seasonal_rain$na_n, 
     na_consec = definitions$seasonal_rain$na_consec, 
     na_n_non = definitions$seasonal_rain$na_n_non
