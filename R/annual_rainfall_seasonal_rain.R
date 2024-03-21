@@ -69,7 +69,7 @@ annual_rainfall_seasonal_rain <- function(definitions, daily, summary_data, data
       end_date <- "end_season_date"
     } 
   }
-  if (!is.null(na_prop = definitions$seasonal_rain$na_prop) && definitions$seasonal_rain$na_prop > 1){
+  if (!is.null(definitions$seasonal_rain$na_prop) && definitions$seasonal_rain$na_prop > 1){
     na_prop <- definitions$seasonal_rain$na_prop/100
   } else {
     na_prop <- NULL

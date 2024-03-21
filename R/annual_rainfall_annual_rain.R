@@ -43,7 +43,7 @@ annual_rainfall_annual_rain <- function(definitions, daily, data_names) {
     warning("Missing value in annual_rain definitions for na_rm. Setting na_rm = FALSE")
     definitions$annual_rain$na_rm <- "FALSE"
   }
-  if (!is.null(na_prop = definitions$annual_rain$na_prop) && definitions$annual_rain$na_prop > 1){
+  if (!is.null(definitions$annual_rain$na_prop) && definitions$annual_rain$na_prop > 1){
     na_prop <- definitions$annual_rain$na_prop/100
   } else {
     na_prop <- NULL
