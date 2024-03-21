@@ -54,7 +54,7 @@ annual_rainfall_annual_rain <- function(definitions, daily, data_names) {
     rain = data_names$rain, 
     year = data_names$year, 
     station = data_names$station, 
-    total_rain = as.logical(definitions$annual_rain$total_rain),
+    total_rain = as.logical(definitions$annual_rain$annual_rain),
     n_rain = as.logical(definitions$annual_rain$n_rain),
     rain_day = definitions$annual_rain$rain_day,
     na_rm = as.logical(definitions$annual_rain$na_rm),
