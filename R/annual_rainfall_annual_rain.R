@@ -34,10 +34,12 @@ annual_rainfall_annual_rain <- function(definitions, daily, data_names) {
   if (is.null(definitions$annual_rain$annual_rain)) 
     definitions$annual_rain$annual_rain <- "FALSE"
   if (definitions$annual_rain$n_rain){
-    if (is.null(definitions$annual_rain$rain_day)) 
-      stop("Missing value in annual_rain definitions for rain_day.")
-    else
-      definitions$annual_rain$rain_day <- NA
+    if (is.null(definitions$annual_rain$rain_day)) {
+      warning("Missing value in annual_rain definitions for rain_day. Setting as 0")
+      definitions$annual_rain$rain_day <- 0
+    }
+  } else {
+    definitions$annual_rain$rain_day <- NA
   }
   if (is.null(definitions$annual_rain$na_rm)){
     warning("Missing value in annual_rain definitions for na_rm. Setting na_rm = FALSE")
