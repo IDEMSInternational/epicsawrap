@@ -44,10 +44,12 @@ annual_rainfall_seasonal_rain <- function(definitions, daily, summary_data, data
   if (is.null(definitions$seasonal_rain$n_rain)) 
     definitions$seasonal_rain$n_rain <- "FALSE"
   if (definitions$seasonal_rain$n_rain){
-    if (is.null(definitions$seasonal_rain$rain_day)) 
-      stop("Missing value in seasonal_rain definitions for rain_day.")
-    else
-      definitions$seasonal_rain$rain_day <- NA
+    if (is.null(definitions$seasonal_rain$rain_day)) {
+      warning("Missing value in seasonal_rain definitions for rain_day. Setting as 0")
+      definitions$seasonal_rain$rain_day <- 0
+    }
+  } else {
+    definitions$seasonal_rain$rain_day <- NA
   }
   if (is.null(definitions$seasonal_rain$na_rm)){
     warning("Missing value in seasonal_rain definitions for na_rm. Setting na_rm = FALSE")
