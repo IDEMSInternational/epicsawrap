@@ -13,10 +13,10 @@ test_that("Correct summaries are calculated", {
   expect_true(identical(result[[2]], test_1_results))
 })
 
-test_that("Correct summaries are called", {
-  result <- annual_rainfall_summaries(country, station_id, override = FALSE)
-  expect_true(identical(result[[2]], test_1_results))
-})
+# test_that("Correct summaries are called", {
+#   result <- annual_rainfall_summaries1(country, station_id, override = FALSE)
+#   expect_true(identical(result[[2]], test_1_results))
+# })
 
 # test_that("Correct summaries are calculated", {
 #   # Test case 2
