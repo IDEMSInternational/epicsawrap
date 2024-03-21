@@ -33,27 +33,41 @@
 annual_rainfall_annual_rain <- function(definitions, daily, data_names) {
   if (is.null(definitions$annual_rain$annual_rain)) 
     definitions$annual_rain$annual_rain <- "FALSE"
-  if (is.null(definitions$annual_rain$n_rain)) 
-    definitions$annual_rain$n_rain <- "FALSE"
+  if (definitions$annual_rain$n_rain){
+    if (is.null(definitions$annual_rain$rain_day)) {
+      definitions$annual_rain$rain_day <- 0
+    }
+  } else {
+    definitions$annual_rain$rain_day <- NA
+  }
   if (is.null(definitions$annual_rain$na_rm)){
     warning("Missing value in annual_rain definitions for na_rm. Setting na_rm = FALSE")
     definitions$annual_rain$na_rm <- "FALSE"
   }
-  
+  if (!is.null(definitions$annual_rain$na_prop) && definitions$annual_rain$na_prop > 1){
+    na_prop <- definitions$annual_rain$na_prop/100
+  } else {
+    na_prop <- NULL
+  }
+  if (is.null(as.logical(definitions$annual_rain$annual_rain))){
+    total_rain <- as.logical(definitions$annual_rain$total_rain)
+  } else {
+    total_rain <- as.logical(definitions$annual_rain$annual_rain)
+  }
   annual_rain <- rpicsa::annual_rain(
     daily, 
     date_time = data_names$date, 
     rain = data_names$rain, 
     year = data_names$year, 
     station = data_names$station, 
-    total_rain = as.logical(definitions$annual_rain$annual_rain),
+    total_rain = total_rain,
     n_rain = as.logical(definitions$annual_rain$n_rain),
+    rain_day = definitions$annual_rain$rain_day,
     na_rm = as.logical(definitions$annual_rain$na_rm),
-    na_prop = definitions$annual_rain$na_prop,
+    na_prop = na_prop,
     na_n = definitions$annual_rain$na_n,
     na_consec = definitions$annual_rain$na_consec,
     na_n_non = definitions$annual_rain$na_n_non
   )
-  
   return(annual_rain)
 }
