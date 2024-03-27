@@ -9,8 +9,8 @@
 #'
 #' @examples # e.g. definitions("zm", "16", "annual_rain")
 #' # error: definitions("zm", "1", c("annual_rain", "hi", "end_season"))
-definitions <- function(country, station_id, summaries){
-  definition_data <- epicsadata::get_definitions_data(country = country, station_id = station_id)
+definitions <- function(country, station_id, summaries, file = NULL){
+  definition_data <- epicsadata::get_definitions_data(country = country, station_id = station_id, file = file)
   definition_data <- purrr::map(.x = summaries, .f = ~ definition_data[[.x]])
   names(definition_data) <- summaries
   # are any NULL 1 = NULL

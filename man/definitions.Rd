@@ -4,7 +4,7 @@
 \alias{definitions}
 \title{Definitions}
 \usage{
-definitions(country, station_id, summaries)
+definitions(country, station_id, summaries, file = NULL)
 }
 \arguments{
 \item{country}{\code{character(1)} The country code of the data.}

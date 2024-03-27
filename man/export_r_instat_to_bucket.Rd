@@ -18,6 +18,8 @@ export_r_instat_to_bucket(
     "extremes", "crop_success", "start_season"),
   file_path,
   file_name,
+  station_id,
+  country,
   include_summary_data = FALSE
 )
 }
