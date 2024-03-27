@@ -15,6 +15,7 @@ Imports:
     dplyr,
     epicsadata,
     forcats,
+    jsonlite,
     magrittr,
     purrr,
     rlang,
