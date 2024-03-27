@@ -16,6 +16,9 @@
 #' @param summaries A character vector specifying the types of summaries to include.
 #' @param file_path The path to the directory where the JSON file will be saved locally.
 #' @param file_name The name of the JSON file (without the ".json" extension).
+#' @param country `character(1)` The country code of the data.
+#' @param station_id `character` The id's of the stations to analyse. Either a
+#'   single value or a vector.
 #' @param include_summary_data Logical indicating whether to include summary data in the export.
 #'
 #' @return NULL (invisibly)
@@ -31,9 +34,12 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
                                       rain = NULL, tmin = NULL, tmax = NULL, year = NULL, month = NULL,
                                       summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "extremes", "crop_success", "start_season"),
                                       file_path, file_name,
+                                      station_id, country,
                                       include_summary_data = FALSE){
   
-  definitions_data <- collate_definitions_data(data = data,
+  timestamp <- format(Sys.time(), format = "%Y%m%d%H%M%S") 
+  
+  definitions_data <- epicsadata::collate_definitions_data(data = data,
                                                data_by_year = data_by_year,
                                                data_by_year_month = data_by_year_month,
                                                crop_data = crop_data,
@@ -50,10 +56,16 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
                        auto_unbox = TRUE, pretty = TRUE)
   
   # Read from computer to bucket
-  epicsadata::add_definitions_to_bucket(country = country, station_id = station_id, new_definitions = file_name)
-  
+  add_definitions_to_bucket(country = country, station_id = station_id,
+                             new_definitions = paste0(file_path, file_name),
+                             timestamp = timestamp)
   
   if (include_summary_data){
     # function to read summary data from R-Instat into summaries in buckets
+    if ("annual_rainfall" %in% summaries){
+      add_summaries_to_bucket(country = country, station_id = station_id, data = data_book$get_data_frame(data_by_year),
+                               summary = "annual_rainfall_summaries", timestamp = timestamp)
+    }
   }
+  return("Uploaded to Bucket")
 }

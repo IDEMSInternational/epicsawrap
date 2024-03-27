@@ -18,6 +18,8 @@ export_r_instat_to_bucket(
     "extremes", "crop_success", "start_season"),
   file_path,
   file_name,
+  station_id,
+  country,
   include_summary_data = FALSE
 )
 }
@@ -45,6 +47,11 @@ export_r_instat_to_bucket(
 \item{file_path}{The path to the directory where the JSON file will be saved locally.}
 
 \item{file_name}{The name of the JSON file (without the ".json" extension).}
+
+\item{station_id}{\code{character} The id's of the stations to analyse. Either a
+single value or a vector.}
+
+\item{country}{\code{character(1)} The country code of the data.}
 
 \item{include_summary_data}{Logical indicating whether to include summary data in the export.}
 }
