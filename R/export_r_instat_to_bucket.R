@@ -16,6 +16,9 @@
 #' @param summaries A character vector specifying the types of summaries to include.
 #' @param file_path The path to the directory where the JSON file will be saved locally.
 #' @param file_name The name of the JSON file (without the ".json" extension).
+#' @param country `character(1)` The country code of the data.
+#' @param station_id `character` The id's of the stations to analyse. Either a
+#'   single value or a vector.
 #' @param include_summary_data Logical indicating whether to include summary data in the export.
 #'
 #' @return NULL (invisibly)

@@ -3,6 +3,7 @@
 #' @param country `character(1)` The country code of the data.
 #' @param station_id `character(1)` The station code in the data.
 #' @param summaries `character` Vector of summaries to display
+#' @param file Default `NULL` meaning that the most recent definitions file will be found and imported. Otherwise specify as a string the file to import. In format: "STATIONNAME.TIMESTAMP" e.g. "1.20240311152831"
 #'
 #' @return TODO
 #' @export

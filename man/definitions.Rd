@@ -12,6 +12,8 @@ definitions(country, station_id, summaries, file = NULL)
 \item{station_id}{\code{character(1)} The station code in the data.}
 
 \item{summaries}{\code{character} Vector of summaries to display}
+
+\item{file}{Default \code{NULL} meaning that the most recent definitions file will be found and imported. Otherwise specify as a string the file to import. In format: "STATIONNAME.TIMESTAMP" e.g. "1.20240311152831"}
 }
 \value{
 TODO
