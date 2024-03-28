@@ -17,7 +17,6 @@ Imports:
     forcats,
     jsonlite,
     magrittr,
-    naflex,
     purrr,
     rlang,
     rpicsa,
