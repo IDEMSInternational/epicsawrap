@@ -1,4 +1,3 @@
-library(rpicsa)
 library(dplyr)
 library(testthat)
 
