@@ -53,9 +53,7 @@ check_and_rename_variables <- function(data, data_names) {
           pattern_parts <- unlist(strsplit(variations_pattern, "\\|"))
           matches1 <- matches[matches %in% pattern_parts]
           if (length(matches1) == 0) {
-            warning("multiple matches in variable names for ", 
-                    paste(matches, collapse = ", "),
-                    ".\n Setting ", matches[1], " as ", var, ".")
+            warning("multiple matches in variable names for ", paste(matches, collapse = ", "), ".\n Setting ", matches[1], " as ", var, ".")
             matches <- matches[1]
           } else {
             matches <- matches1
