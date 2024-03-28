@@ -32,9 +32,9 @@ season_start_probabilities <- function(country,
   if (nrow(summary_data) > 0 & override == FALSE) {
     file_name <- epicsadata::get_objects_in_bucket(country, station_id, timestamp = get_summaries[[2]])
     if (nrow(file_name) == 0) {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries))
+      list_return[[1]] <- (definitions(country, station_id, summaries = "season_start_probabilities"))
     } else {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries, paste0(station_id, ".", get_summaries[[2]])))
+      list_return[[1]] <- (definitions(country, station_id, summaries = "season_start_probabilities", paste0(station_id, ".", get_summaries[[2]])))
     }
   } else {
     

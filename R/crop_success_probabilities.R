@@ -43,9 +43,10 @@ crop_success_probabilities <- function(country,
   if (nrow(summary_data) > 0 & override == FALSE) {
     file_name <- epicsadata::get_objects_in_bucket(country, station_id, timestamp = get_summaries[[2]])
     if (nrow(file_name) == 0) {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries))
+      list_return[[1]] <- definitions(country, station_id, summaries = "crops_success")
     } else {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries, paste0(station_id, ".", get_summaries[[2]])))
+      list_return[[1]] <- definitions(country, station_id, summaries = "crops_success",
+                                      paste0(station_id, ".", get_summaries[[2]]))
     }
   } else {
     definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "crops_success")
