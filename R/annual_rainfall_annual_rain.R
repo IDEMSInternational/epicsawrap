@@ -31,9 +31,12 @@
 #'# annual_rainfall <- annual_rainfall_annual_rain(definitions, daily_data, data_names)
 #'
 annual_rainfall_annual_rain <- function(definitions, daily, data_names) {
-  if (is.null(definitions$annual_rain$annual_rain)) definitions$annual_rain$annual_rain <- "FALSE"
+  if (is.null(definitions$annual_rain$annual_rain)) 
+    definitions$annual_rain$annual_rain <- "FALSE"
   if (definitions$annual_rain$n_rain){
-    if (is.null(definitions$annual_rain$rain_day)) definitions$annual_rain$rain_day <- 0
+    if (is.null(definitions$annual_rain$rain_day)) {
+      definitions$annual_rain$rain_day <- 0
+    }
   } else {
     definitions$annual_rain$rain_day <- NA
   }
