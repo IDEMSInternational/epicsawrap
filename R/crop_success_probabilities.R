@@ -49,11 +49,7 @@ crop_success_probabilities <- function(country,
                                       paste0(station_id, ".", get_summaries[[2]]))
     }
   } else {
-    print("ye")
-    
     definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "crops_success")
-    
-    print("good")
     # Fetch daily data and preprocess
     daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
     
