@@ -61,7 +61,7 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
   add_definitions_to_bucket(country = country, station_id = station_id,
                             new_definitions = paste0(file_path, file_name),
                             timestamp = timestamp)
-  
+
   if (include_summary_data){
     # function to read summary data from R-Instat into summaries in buckets
     if ("annual_rainfall" %in% summaries){
@@ -77,7 +77,7 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
                               summary = "monthly_temperature_summaries", timestamp = timestamp)
     }
     if ("crop_success" %in% summaries){
-      add_summaries_to_bucket(country = country, station_id = station_id, data = data_book$get_data_frame(crop_data),
+      add_summaries_to_bucket(country = country, station_id = station_id, data = data_book$get_data_frame(start_season_data),
                               summary = "crop_success_probabilities", timestamp = timestamp)
     }
     if ("start_season" %in% summaries){

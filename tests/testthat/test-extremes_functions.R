@@ -15,6 +15,6 @@ test_that("Correct summaries are called", {
 })
 
 test_that("Correct summaries are calculated", {
-  result <- extremes_summaries(country, station_id, override = TRUE)[[2]]
+  result <- suppressWarnings(extremes_summaries(country, station_id, override = TRUE)[[2]])
   expect_equal(nrow(result), nrow(test_1_results))
 })
