@@ -9,6 +9,7 @@ export_r_instat_to_bucket(
   data_by_year,
   data_by_year_month = NULL,
   crop_data = NULL,
+  start_season_data = NULL,
   rain = NULL,
   tmin = NULL,
   tmax = NULL,
@@ -30,7 +31,9 @@ export_r_instat_to_bucket(
 
 \item{data_by_year_month}{The dataset grouped by year and month.}
 
-\item{crop_data}{The crop data.}
+\item{crop_data}{The crop data for if \code{summaries = "crop_success"}}
+
+\item{start_season_data}{for if \code{summaries = "start_season"}}
 
 \item{rain}{The rainfall data.}
 

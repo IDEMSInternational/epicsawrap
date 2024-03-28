@@ -1,6 +1,4 @@
 library(testthat)
-library(epicsadata)
-library(epicsawrap)
 
 # Test case 1 
 epicsadata::gcs_auth_file(file = "testdata/epicsa_token.json")

@@ -19,11 +19,11 @@ extremes_summaries <- function(country, station_id,
   list_return <- NULL
   
   # do the summaries exist already?
-  summary_data <- epicsadata::get_summaries_data(country, station_id, summary = "extremes_summaries")
+  summary_data <- epicsadata::get_summaries_data(country, station_id, summary = "extremes_summaries")[[1]]
   
-  # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
+    # what if the definitions is different? 
     list_return[[1]] <- "definition from summary"
   } else {
     # Fetch daily data and preprocess

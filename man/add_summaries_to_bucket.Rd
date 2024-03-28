@@ -4,7 +4,7 @@
 \alias{add_summaries_to_bucket}
 \title{Add New Summaries to Google Cloud Storage Bucket}
 \usage{
-add_summaries_to_bucket(country, station_id, data, summary)
+add_summaries_to_bucket(country, station_id, data, summary, timestamp = NULL)
 }
 \arguments{
 \item{country}{A character vector specifying the country that the data corresponds to. Options are \code{"mz"} and \code{"zm"}.}
@@ -14,6 +14,8 @@ add_summaries_to_bucket(country, station_id, data, summary)
 \item{data}{The data to upload.}
 
 \item{summary}{The summary function used to create the data.}
+
+\item{timestamp}{A character vector with a timestamp. By default this is \code{NULL} so is generated at the time of creation.}
 }
 \description{
 This function adds a new summary data file (RDS format) with a timestamp to a specified Google Cloud Storage (GCS) bucket.

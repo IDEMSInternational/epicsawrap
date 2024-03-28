@@ -6,12 +6,13 @@
 #' @param station_id A character string specifying the ID of the station that the data corresponds to.
 #' @param data The data to upload.
 #' @param summary The summary function used to create the data.
+#' @param timestamp A character vector with a timestamp. By default this is `NULL` so is generated at the time of creation.
 #'
 #' @details
 #' The function creates a timestamp in the format "YYYYMMDDHHMMSS" and appends it to the station_id to form the filename. It then reads the provided file, creates a new file with the timestamped filename, and uploads it to the specified GCS bucket.
 #'
 #' @export
 #'
-add_summaries_to_bucket <- function(country, station_id, data, summary){
-  return(epicsadata::add_summaries_to_bucket(country = country, station_id = station_id, data = data, summary = summary))
+add_summaries_to_bucket <- function(country, station_id, data, summary, timestamp = NULL){
+  return(epicsadata::add_summaries_to_bucket(country = country, station_id = station_id, data = data, summary = summary, timestamp = timestamp))
 }

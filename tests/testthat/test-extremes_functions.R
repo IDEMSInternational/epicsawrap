@@ -1,6 +1,7 @@
-library(rpicsa)
 library(dplyr)
 library(testthat)
+
+# fix up when we've added extremes into new system. this is not working at the moment.
 
 # Test case 
 epicsadata::gcs_auth_file(file = "testdata/epicsa_token.json")

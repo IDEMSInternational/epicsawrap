@@ -1,6 +1,4 @@
 library(testthat)
-library(epicsadata)
-library(epicsawrap)
 
 # Test case 1
 epicsadata::gcs_auth_file(file = "testdata/epicsa_token.json")
@@ -14,7 +12,7 @@ test_that("Correct summaries are calculated", {
 })
 
 # test_that("Correct summaries are called", {
-#   result <- annual_rainfall_summaries1(country, station_id, override = FALSE)
+#   result <- annual_rainfall_summaries11(country, station_id, override = FALSE)
 #   expect_true(identical(result[[2]], test_1_results))
 # })
 
@@ -27,11 +25,11 @@ test_that("Correct summaries are calculated", {
 # 
 # test_that("Error is thrown if undefined values", {
 #   # Test case 1: Error is thrown if undefined values
-#   expect_error(epicsawrap::annual_rainfall_summaries(country, station_id, "end_season"))
+#   expect_error(epicsawrap::annual_rainfall_summaries1(country, station_id, "end_season"))
 # 
 #   # Test case 2: Error is thrown if start_ is not calculated but needed
-#   expect_error(epicsawrap::annual_rainfall_summaries(country, station_id, c("seasonal_rain")))
+#   expect_error(epicsawrap::annual_rainfall_summaries1(country, station_id, c("seasonal_rain")))
 # 
 #   # Test case 3: Warning if both end are given and seasonal wanted
-#   expect_warning(epicsawrap::annual_rainfall_summaries(country, station_id_2, c("start_rains", "end_rains", "end_season", "seasonal_rain")))
+#   expect_warning(epicsawrap::annual_rainfall_summaries1(country, station_id_2, c("start_rains", "end_rains", "end_season", "seasonal_rain")))
 # })
