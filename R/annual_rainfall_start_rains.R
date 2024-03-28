@@ -41,9 +41,15 @@
 #'# start_of_rains <- annual_rainfall_start_rains(definitions, daily_data, data_names)
 #'
 annual_rainfall_start_rains <- function(definitions, daily, data_names){
-  if (is.null(definitions$start_rains$threshold)) stop("Missing value in start_rains definitions for threshold.")
-  if (is.null(definitions$start_rains$start_day)) stop("Missing value in start_rains definitions for start_day.")
-  if (is.null(definitions$start_rains$end_day)) stop("Missing value in start_rains definitions for end_day.")
+  if (is.null(definitions$start_rains$threshold)) {
+    stop("Missing value in start_rains definitions for threshold.")
+  }
+  if (is.null(definitions$start_rains$start_day)) {
+    stop("Missing value in start_rains definitions for start_day.")
+  }
+  if (is.null(definitions$start_rains$end_day)) {
+    stop("Missing value in start_rains definitions for end_day.")
+  }
   if (is.null(definitions$start_rains$total_rainfall)){
     definitions$start_rains$total_rainfall <- FALSE
   }
