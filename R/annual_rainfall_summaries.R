@@ -18,7 +18,6 @@
 #' #annual_rainfall_summaries(country = "zm", station_id = "16", summaries = c("start_rains", "end_rains", "annual_rain", "seasonal_rain")) #, "end_season"))
 annual_rainfall_summaries <- function(country, station_id, summaries = c("annual_rain", "start_rains", "end_rains", "end_season", "seasonal_rain", "seasonal_length"), override = FALSE) {
   list_return <- NULL
-  
   # do the summaries exist already?
   get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "annual_rainfall_summaries")
   summary_data <- get_summaries[[1]]
