@@ -7,8 +7,8 @@
 #' @param data The main dataset.
 #' @param data_by_year The dataset grouped by year.
 #' @param data_by_year_month The dataset grouped by year and month.
-#' @param crop_data The crop data for if `summaries = "crop_success"`
-#' @param start_season_data for if `summaries = "start_season"`
+#' @param crop_data The crop data. Used for definitions when `summaries = "crop_success"` and for data calculation when `summaries = "start_season"`
+#' @param prop_data The proportion crop data output. Used if `summaries = "crop_success"` when `include_summary_data = TRUE`.
 #' @param rain The rainfall data.
 #' @param tmin The minimum temperature data.
 #' @param tmax The maximum temperature data.
@@ -18,26 +18,29 @@
 #' @param file_path The path to the directory where the JSON file will be saved locally.
 #' @param file_name The name of the JSON file (without the ".json" extension).
 #' @param country `character(1)` The country code of the data.
-#' @param station_id `character` The id's of the stations to analyse. Either a
+#' @param station_id `character` The id's of the stations to analyze. Either a
 #'   single value or a vector.
 #' @param include_summary_data Logical indicating whether to include summary data in the export.
-#'
-#' @return NULL (invisibly)
+#' @param annual_rainfall_data Annual rainfall summary data.
+#' @param annual_temperature_data Annual temperature summary data.
+#' @param monthly_temperature_data Monthly temperature summary data.
+#' @return A message confirming that the data has been uploaded to the bucket.
 #'
 #' @details This function collates the specified data into a JSON format and saves it to the local machine.
-#' Then it uploads the JSON file to the specified Google Cloud Storage bucket.
+#' Then it uploads the JSON file to the specified Google Cloud Storage bucket. If \code{include_summary_data} is TRUE,
+#' it also uploads additional summary data to the bucket.
 #'
 #' @export
 #'
 #' @examples
 #' # Provide examples here if needed
-export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = NULL, crop_data = NULL,
-                                      start_season_data = NULL,
+export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = NULL, crop_data = NULL, prop_data = NULL,
                                       rain = NULL, tmin = NULL, tmax = NULL, year = NULL, month = NULL,
                                       summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "extremes", "crop_success", "start_season"),
                                       file_path, file_name,
                                       station_id, country,
-                                      include_summary_data = FALSE){
+                                      include_summary_data = FALSE,
+                                      annual_rainfall_data = NULL, annual_temperature_data = NULL, monthly_temperature_data = NULL){
   
   timestamp <- format(Sys.time(), format = "%Y%m%d%H%M%S") 
 
@@ -50,15 +53,15 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
 
   if (include_summary_data){
     # function to read summary data from R-Instat into summaries in buckets
-    if ("annual_rainfall" %in% summaries) add_summaries_to_bucket(country = country, station_id = station_id, data = data_book$get_data_frame(data_by_year), summary = "annual_rainfall_summaries", timestamp = timestamp)
+    if ("annual_rainfall" %in% summaries) add_summaries_to_bucket(country = country, station_id = station_id, data = annual_rainfall_data, summary = "annual_rainfall_summaries", timestamp = timestamp)
     
-    if ("annual_temperature" %in% summaries) add_summaries_to_bucket(country = country, station_id = station_id, data = data_book$get_data_frame(data_by_year), summary = "annual_temperature_summaries", timestamp = timestamp)
+    if ("annual_temperature" %in% summaries) add_summaries_to_bucket(country = country, station_id = station_id, data = annual_temperature_data, summary = "annual_temperature_summaries", timestamp = timestamp)
     
-    if ("monthly_temperature" %in% summaries) add_summaries_to_bucket(country = country, station_id = station_id, data = data_book$get_data_frame(data_by_year_month), summary = "monthly_temperature_summaries", timestamp = timestamp)
+    if ("monthly_temperature" %in% summaries) add_summaries_to_bucket(country = country, station_id = station_id, data = monthly_temperature_data, summary = "monthly_temperature_summaries", timestamp = timestamp)
 
-    if ("crop_success" %in% summaries) add_summaries_to_bucket(country = country, station_id = station_id, data = data_book$get_data_frame(start_season_data), summary = "crop_success_probabilities", timestamp = timestamp)
+    if ("crop_success" %in% summaries) add_summaries_to_bucket(country = country, station_id = station_id, data = prop_data, summary = "crop_success_probabilities", timestamp = timestamp)
     
-    if ("start_season" %in% summaries) add_summaries_to_bucket(country = country, station_id = station_id, data = data_book$get_data_frame(start_season_data), summary = "season_start_probabilities", timestamp = timestamp)
+    if ("start_season" %in% summaries) add_summaries_to_bucket(country = country, station_id = station_id, data = crop_data, summary = "season_start_probabilities", timestamp = timestamp)
   }
   return("Uploaded to Bucket")
 }
