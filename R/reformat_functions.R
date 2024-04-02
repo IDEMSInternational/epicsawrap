@@ -58,10 +58,10 @@ reformat_annual_summaries <- function(data,
   }
   
   data <- data %>%
-    mutate(across(ends_with("_doy"), ~as.integer),
-           across(ends_with("_date"), ~as.character),
-           across(ends_with("_rain"), ~as.integer),
-           across(starts_with("n_"), ~as.double),
+    mutate(dplyr::across(dplyr::ends_with("_doy"), as.integer),
+           dplyr::across(dplyr::ends_with("_date"), as.character),
+           dplyr::across(dplyr::ends_with("_rain"), as.integer),
+           dplyr::across(dplyr::starts_with("n_"), as.double),
     )
   
   return(data)

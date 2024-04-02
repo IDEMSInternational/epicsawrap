@@ -8,8 +8,7 @@ export_r_instat_to_bucket(
   data,
   data_by_year,
   data_by_year_month = NULL,
-  crop_data = NULL,
-  prop_data = NULL,
+  crop_data_name = NULL,
   rain = NULL,
   tmin = NULL,
   tmax = NULL,
@@ -24,7 +23,9 @@ export_r_instat_to_bucket(
   include_summary_data = FALSE,
   annual_rainfall_data = NULL,
   annual_temperature_data = NULL,
-  monthly_temperature_data = NULL
+  monthly_temperature_data = NULL,
+  crop_success_data = NULL,
+  season_start_data = NULL
 )
 }
 \arguments{
@@ -34,9 +35,7 @@ export_r_instat_to_bucket(
 
 \item{data_by_year_month}{The dataset grouped by year and month.}
 
-\item{crop_data}{The crop data. Used for definitions when \code{summaries = "crop_success"} and for data calculation when \code{summaries = "start_season"}}
-
-\item{prop_data}{The proportion crop data output. Used if \code{summaries = "crop_success"} when \code{include_summary_data = TRUE}.}
+\item{crop_data_name}{Name of the crop data used for definitions when \code{summaries = "crop_success"}.}
 
 \item{rain}{The rainfall data.}
 
@@ -66,6 +65,10 @@ single value or a vector.}
 \item{annual_temperature_data}{Annual temperature summary data.}
 
 \item{monthly_temperature_data}{Monthly temperature summary data.}
+
+\item{crop_success_data}{The proportion crop data output. Used if \code{summaries = "crop_success"} when \code{include_summary_data = TRUE}. This is called \code{crop_prop} by default in R-Instat.}
+
+\item{season_start_data}{The crop data to be read into \code{"season_start_probabilities"}. This is called \code{crop_def} by default in R-Instat.}
 }
 \value{
 A message confirming that the data has been uploaded to the bucket.
