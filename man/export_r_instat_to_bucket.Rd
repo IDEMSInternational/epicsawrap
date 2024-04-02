@@ -16,8 +16,6 @@ export_r_instat_to_bucket(
   month = NULL,
   summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature",
     "extremes", "crop_success", "start_season"),
-  file_path,
-  file_name,
   station_id,
   country,
   include_summary_data = FALSE,
@@ -48,10 +46,6 @@ export_r_instat_to_bucket(
 \item{month}{The month data.}
 
 \item{summaries}{A character vector specifying the types of summaries to include.}
-
-\item{file_path}{The path to the directory where the JSON file will be saved locally.}
-
-\item{file_name}{The name of the JSON file (without the ".json" extension).}
 
 \item{station_id}{\code{character} The id's of the stations to analyze. Either a
 single value or a vector.}

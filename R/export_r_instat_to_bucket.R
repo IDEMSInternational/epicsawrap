@@ -14,8 +14,6 @@
 #' @param year The year data.
 #' @param month The month data.
 #' @param summaries A character vector specifying the types of summaries to include.
-#' @param file_path The path to the directory where the JSON file will be saved locally.
-#' @param file_name The name of the JSON file (without the ".json" extension).
 #' @param country `character(1)` The country code of the data.
 #' @param station_id `character` The id's of the stations to analyze. Either a
 #'   single value or a vector.
@@ -38,7 +36,6 @@
 export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = NULL, crop_data_name = NULL,
                                       rain = NULL, tmin = NULL, tmax = NULL, year = NULL, month = NULL,
                                       summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "extremes", "crop_success", "start_season"),
-                                      file_path, file_name,
                                       station_id, country,
                                       include_summary_data = FALSE,
                                       annual_rainfall_data = NULL, annual_temperature_data = NULL, monthly_temperature_data = NULL,
@@ -47,11 +44,8 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
   timestamp <- format(Sys.time(), format = "%Y%m%d%H%M%S") 
 
   definitions_data <- epicsadata::collate_definitions_data(data = data, data_by_year = data_by_year, data_by_year_month = data_by_year_month, crop_data = crop_data, rain = rain, tmin = tmin, tmax = tmax, year = year, month = month, summaries = summaries)
-  # Save onto computer
-  jsonlite::write_json(definitions_data, path = paste0(file_path, file_name, ".json"), auto_unbox = TRUE, pretty = TRUE)
-  
-  # Read from computer to bucket
-  add_definitions_to_bucket(country = country, station_id = station_id, new_definitions = paste0(file_path, file_name), timestamp = timestamp)
+  # Save into bucket
+  add_definitions_to_bucket(country = country, station_id = station_id, new_definitions = definitions_data, timestamp = timestamp)
 
   if (include_summary_data){
     # function to read summary data from R-Instat into summaries in buckets
