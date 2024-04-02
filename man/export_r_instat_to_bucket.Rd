@@ -8,8 +8,7 @@ export_r_instat_to_bucket(
   data,
   data_by_year,
   data_by_year_month = NULL,
-  crop_data = NULL,
-  start_season_data = NULL,
+  crop_data_name = NULL,
   rain = NULL,
   tmin = NULL,
   tmax = NULL,
@@ -17,11 +16,14 @@ export_r_instat_to_bucket(
   month = NULL,
   summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature",
     "extremes", "crop_success", "start_season"),
-  file_path,
-  file_name,
   station_id,
   country,
-  include_summary_data = FALSE
+  include_summary_data = FALSE,
+  annual_rainfall_data = NULL,
+  annual_temperature_data = NULL,
+  monthly_temperature_data = NULL,
+  crop_success_data = NULL,
+  season_start_data = NULL
 )
 }
 \arguments{
@@ -31,9 +33,7 @@ export_r_instat_to_bucket(
 
 \item{data_by_year_month}{The dataset grouped by year and month.}
 
-\item{crop_data}{The crop data for if \code{summaries = "crop_success"}}
-
-\item{start_season_data}{for if \code{summaries = "start_season"}}
+\item{crop_data_name}{Name of the crop data used for definitions when \code{summaries = "crop_success"}.}
 
 \item{rain}{The rainfall data.}
 
@@ -47,19 +47,25 @@ export_r_instat_to_bucket(
 
 \item{summaries}{A character vector specifying the types of summaries to include.}
 
-\item{file_path}{The path to the directory where the JSON file will be saved locally.}
-
-\item{file_name}{The name of the JSON file (without the ".json" extension).}
-
-\item{station_id}{\code{character} The id's of the stations to analyse. Either a
+\item{station_id}{\code{character} The id's of the stations to analyze. Either a
 single value or a vector.}
 
 \item{country}{\code{character(1)} The country code of the data.}
 
 \item{include_summary_data}{Logical indicating whether to include summary data in the export.}
+
+\item{annual_rainfall_data}{Annual rainfall summary data.}
+
+\item{annual_temperature_data}{Annual temperature summary data.}
+
+\item{monthly_temperature_data}{Monthly temperature summary data.}
+
+\item{crop_success_data}{The proportion crop data output. Used if \code{summaries = "crop_success"} when \code{include_summary_data = TRUE}. This is called \code{crop_prop} by default in R-Instat.}
+
+\item{season_start_data}{The crop data to be read into \code{"season_start_probabilities"}. This is called \code{crop_def} by default in R-Instat.}
 }
 \value{
-NULL (invisibly)
+A message confirming that the data has been uploaded to the bucket.
 }
 \description{
 This function exports R-Instat data to a specified Google Cloud Storage bucket.
@@ -68,7 +74,8 @@ the file to the specified bucket.
 }
 \details{
 This function collates the specified data into a JSON format and saves it to the local machine.
-Then it uploads the JSON file to the specified Google Cloud Storage bucket.
+Then it uploads the JSON file to the specified Google Cloud Storage bucket. If \code{include_summary_data} is TRUE,
+it also uploads additional summary data to the bucket.
 }
 \examples{
 # Provide examples here if needed

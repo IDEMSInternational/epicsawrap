@@ -10,6 +10,6 @@
 #' @export
 #' @details
 #' The function creates a timestamp in the format "YYYYMMDDHHMMSS" and appends it to the station_id to form the filename. It then reads the provided JSON file, creates a new JSON file with the timestamped filename, and uploads it to the specified GCS bucket.
-add_definitions_to_bucket <- function(country, station_id, new_definitions, timestamp = NULL){
-  return(epicsadata::add_definitions_to_bucket(country = country, station_id = station_id, new_definitions = new_definitions, timestamp = timestamp))
+add_definitions_to_bucket <- function (country, station_id, new_definitions, timestamp = NULL) {
+  epicsadata:::add_definitions_to_bucket(country = country, station_id = station_id, new_definitions = new_definitions, timestamp = timestamp)
 }
