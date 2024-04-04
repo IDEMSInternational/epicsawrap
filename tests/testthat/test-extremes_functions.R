@@ -10,7 +10,7 @@ country <- "zm"
 station_id <- "test_1"
 
 test_that("Correct summaries are called", {
-  result <- extremes_summaries(country, station_id)[[2]]
+  result <- suppressWarnings(extremes_summaries(country, station_id))[[2]]
   expect_equal(nrow(result), nrow(test_1_results))
 })
 
