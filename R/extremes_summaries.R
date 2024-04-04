@@ -13,7 +13,7 @@
 #' @examples
 #' # Generate annual temperature summaries for station 16 in Zambia
 #' #extremes_summaries(country, station_id, c("extremes_rain"))
-extremes_summaries1 <- function(country, station_id,
+extremes_summaries <- function(country, station_id,
                                summaries = c("extremes_rain", "extremes_tmin", "extremes_tmax"),
                                override = FALSE){
   list_return <- NULL
