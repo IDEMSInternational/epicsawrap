@@ -43,7 +43,7 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
   
   timestamp <- format(Sys.time(), format = "%Y%m%d%H%M%S") 
 
-  definitions_data <- epicsadata::collate_definitions_data(data = data, data_by_year = data_by_year, data_by_year_month = data_by_year_month, crop_data = crop_data, rain = rain, tmin = tmin, tmax = tmax, year = year, month = month, summaries = summaries)
+  definitions_data <- epicsadata::collate_definitions_data(data = data, data_by_year = data_by_year, data_by_year_month = data_by_year_month, crop_data = crop_data_name, rain = rain, tmin = tmin, tmax = tmax, year = year, month = month, summaries = summaries)
   # Save into bucket
   add_definitions_to_bucket(country = country, station_id = station_id, new_definitions = definitions_data, timestamp = timestamp)
 
