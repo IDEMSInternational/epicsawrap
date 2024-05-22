@@ -3,8 +3,8 @@ library(testthat)
 # Test case 1
 epicsadata::gcs_auth_file(file = "testdata/epicsa_token.json")
 test_1_results <- readRDS("testdata/test_1_annual_rainfall_summaries.rds")
-country <- "zm"
-station_id <- "test_1"
+country <- "zm_test"
+station_id <- "r_data_test_1"
 
 test_that("Correct summaries are calculated", {
   result <- suppressWarnings(annual_rainfall_summaries(country, station_id, override = TRUE))
