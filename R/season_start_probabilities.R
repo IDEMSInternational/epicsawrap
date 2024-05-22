@@ -27,18 +27,21 @@ season_start_probabilities <- function(country,
   # do the summaries exist already?
   get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "season_start_probabilities")
   summary_data <- get_summaries[[1]]
+  timestamp <- get_summaries[[2]]
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
-    file_name <- epicsadata::get_objects_in_bucket(country, station_id, timestamp = get_summaries[[2]])
+    file_name <- epicsadata::get_objects_in_bucket(country, station_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
       list_return[[1]] <- (definitions(country, station_id, summaries = "season_start_probabilities"))
     } else {
-      list_return[[1]] <- (definitions(country, station_id, summaries = "season_start_probabilities", paste0(station_id, ".", get_summaries[[2]])))
+      list_return[[1]] <- (definitions(country, station_id, summaries = "season_start_probabilities", paste0(station_id, ".", timestamp)))
     }
   } else {
-    
-    definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "season_start_probabilities")
+    if (!is.null(timestamp)) file_name <- paste0(station_id, ".", timestamp)
+    else file_name <- station_id
+    definitions <- epicsawrap::definitions(country = country, station_id = station_id,
+                                           summaries = "season_start_probabilities", file = file_name)
     # Fetch daily data and preprocess
     daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
     

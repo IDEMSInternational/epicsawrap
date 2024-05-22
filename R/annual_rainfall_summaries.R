@@ -25,15 +25,16 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
-    file_name <- epicsadata::get_objects_in_bucket(country, station_id, timestamp = get_summaries[[2]])
+    file_name <- epicsadata::get_objects_in_bucket(country, station_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
       list_return[[1]] <- (definitions(country, station_id, summaries = summaries))
     } else {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries, paste0(station_id, ".", get_summaries[[2]])))
+      list_return[[1]] <- (definitions(country, station_id, summaries = summaries, paste0(station_id, ".", timestamp)))
     }
   } else {
     # Get data definitions and summary definitions
-    file_name <- paste0(station_id, ".", timestamp)
+    if (!is.null(timestamp)) file_name <- paste0(station_id, ".", timestamp)
+    else file_name <- station_id
     definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries, file = file_name)
     definitions_season <- NULL
     
