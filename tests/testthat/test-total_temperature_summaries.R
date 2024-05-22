@@ -4,8 +4,8 @@ library(testthat)
 epicsadata::gcs_auth_file(file = "testdata/epicsa_token.json")
 test_1_annual <- readRDS("testdata/annual_temperature_summaries_test_1.rds")
 test_1_monthly <- readRDS("testdata/monthly_temperature_summaries_test_1.rds")
-country <- "zm"
-station_id <- "test_1"
+country <- "zm_test"
+station_id <- "r_data_test_1"
 
 test_that("Correct summaries are called", {
   result_annual <- suppressWarnings(annual_temperature_summaries(country, station_id, summaries = c("mean_tmin", "mean_tmax")))

@@ -50,6 +50,7 @@ crop_success_probabilities <- function(country,
     }
   } else {
     definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "crops_success")
+    
     # Fetch daily data and preprocess
     daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
     

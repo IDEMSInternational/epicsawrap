@@ -47,7 +47,7 @@ export_r_instat_to_bucket(
 
 \item{summaries}{A character vector specifying the types of summaries to include.}
 
-\item{station_id}{\code{character} The id's of the stations to analyze. Either a
+\item{station_id}{\code{character} The id's of the stations to analyse. Either a
 single value or a vector.}
 
 \item{country}{\code{character(1)} The country code of the data.}
