@@ -52,6 +52,7 @@ total_temperature_summaries <- function(country,
     # names(summary_data) <- c(data_names$year, data_names$station)
     # 
     summary_data <- NULL
+
     for (summary in summaries) {
       if (is.null(definitions[[summary]]$to)) {
         stop(paste0("'", summary, "' has been given in summaries but no data is given in definitions json file."))
@@ -63,6 +64,7 @@ total_temperature_summaries <- function(country,
           }
           summary_type <- gsub("_.*$", "", summary)
           summary_variable <- gsub("^.*_", "", summary)
+          if (length(as.logical(definitions[[summary]]$na_rm)) == 0) definitions[[summary]]$na_rm <- FALSE
           summary_data[[summary]] <- rpicsa::summary_temperature(data = daily,
                                                                  date_time = data_names$date,
                                                                  station = data_names$station,
