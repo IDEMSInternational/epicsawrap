@@ -17,7 +17,7 @@ export_r_instat_to_bucket(
   summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature",
     "extremes", "crop_success", "start_season"),
   station_id,
-  definition_id,
+  definitions_id,
   country,
   include_summary_data = FALSE,
   annual_rainfall_data = NULL,
@@ -51,7 +51,7 @@ export_r_instat_to_bucket(
 \item{station_id}{\code{character} The id's of the stations to analyse. Either a
 single value or a vector.}
 
-\item{definition_id}{\code{character} The ID to give to the definition file.}
+\item{definitions_id}{\code{character} The ID to give to the definition file.}
 
 \item{country}{\code{character(1)} The country code of the data.}
 
