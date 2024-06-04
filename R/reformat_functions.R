@@ -29,7 +29,7 @@ reformat_annual_summaries <- function(data,
                                       n_rain_col = NULL) {
   # Rename columns
   data <- data %>%
-    dplyr::select(any_of(c(station_col, year_col, start_rains_doy_col, start_rains_date_col,
+    dplyr::select(dplyr::any_of(c(station_col, year_col, start_rains_doy_col, start_rains_date_col,
                            end_rains_doy_col, end_rains_date_col, end_season_doy_col,
                            end_season_date_col, seasonal_rain_col, n_seasonal_rain_col,
                            season_length_col, annual_rain_col, n_rain_col))) %>%
@@ -58,7 +58,7 @@ reformat_annual_summaries <- function(data,
   }
   
   data <- data %>%
-    mutate(dplyr::across(dplyr::ends_with("_doy"), as.integer),
+    dplyr::mutate(dplyr::across(dplyr::ends_with("_doy"), as.integer),
            dplyr::across(dplyr::ends_with("_date"), as.character),
            dplyr::across(dplyr::ends_with("_rain"), as.integer),
            dplyr::across(dplyr::starts_with("n_"), as.double),
@@ -131,7 +131,7 @@ reformat_temperature_summaries <- function(data,
                                            mean_tmax_col = NULL, min_tmax_col = NULL, max_tmax_col = NULL) {
   # Rename columns
   data <- data %>%
-    dplyr::select(any_of(c(station_col, year_col, month_col, mean_tmin_col,
+    dplyr::select(dplyr::any_of(c(station_col, year_col, month_col, mean_tmin_col,
                            min_tmin_col, max_tmin_col, mean_tmax_col,
                            min_tmax_col, max_tmax_col))) %>%
     dplyr::rename(
@@ -170,7 +170,7 @@ reformat_temperature_summaries <- function(data,
 #' @export
 reformat_season_start <- function(data, station_col = NULL, year_col, plant_day_col, plant_day_cond_col){
   data <- data %>%
-    dplyr::select(any_of(c(station = station_col,
+    dplyr::select(dplyr::any_of(c(station = station_col,
                            year = year_col,
                            day = plant_day_col,
                            plant_day_cond = plant_day_cond_col))) %>%

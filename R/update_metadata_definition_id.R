@@ -14,8 +14,8 @@
 #' 
 #' @export
 update_metadata_definition_id <- function(country, station_id, definition_id, overwrite = FALSE) {
-  bucket <- get_bucket_name(country)
-  get_metadata_from_bucket <- epicsadata:::station_metadata(country, station_id)
+  bucket <- epicsadata::get_bucket_name(country)
+  get_metadata_from_bucket <- epicsadata::station_metadata(country, station_id)
   
   if (overwrite) {
     get_metadata_from_bucket$definitions_id <- definition_id

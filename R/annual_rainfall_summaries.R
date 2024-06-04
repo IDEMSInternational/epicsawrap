@@ -19,9 +19,7 @@
 annual_rainfall_summaries <- function(country, station_id, summaries = c("annual_rain", "start_rains", "end_rains", "end_season", "seasonal_rain", "seasonal_length"), override = FALSE) {
   list_return <- NULL
   
-  # HERE: we call the metadata containing the country and station_id
-  # from that, we get the definitions_id
-  # get definitions_id from station_id metadata.
+  # we get the definitions_id from station_id metadata.
   definitions_id <- get_definitions_id_from_metadata(country, station_id)
   
   # do the summaries exist already?

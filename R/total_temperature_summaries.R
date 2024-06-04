@@ -20,20 +20,24 @@ total_temperature_summaries <- function(country,
                                         override = FALSE) {
   to <- match.arg(to)
   list_return <- NULL
+  
+  # we get the definitions_id from station_id metadata.
+  definitions_id <- get_definitions_id_from_metadata(country, station_id)
+  
   # do the summaries exist already?
   get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = paste0(to, "_temperature_summaries"))
   summary_data <- get_summaries[[1]]
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
-    file_name <- epicsadata::get_objects_in_bucket(country, station_id, timestamp = get_summaries[[2]])
+    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = get_summaries[[2]])
     if (nrow(file_name) == 0) {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries))
+      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries))
     } else {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries, paste0(station_id, ".", get_summaries[[2]])))
+      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries, paste0(definitions_id, ".", get_summaries[[2]])))
     }
   } else {
-    definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
+    definitions <- definitions(country = country, definitions_id, summaries = summaries)
     # Fetch daily data and preprocess
     daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
     
