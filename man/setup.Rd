@@ -4,7 +4,7 @@
 \alias{setup}
 \title{Setup directories}
 \usage{
-setup(dir, countries = c("mw", "zm"))
+setup(dir, countries = c("mw", "zm", "zm_test"))
 }
 \arguments{
 \item{dir}{\code{character(1)} The path to set as the working directory}
