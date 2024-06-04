@@ -14,7 +14,8 @@ get_definitions_id_from_metadata <- function(country, station_id) {
     warning(paste0(station_id, " not found in metadata. No definition ID given. Returning station_id."))
     definitions_id <- station_id
   } else {
-    definitions_id <- station_id_metadata$definitions_id[[1]][1] # currently only get the first ID [1], 
+    id_store <- station_id_metadata$definitions_id
+    definitions_id <- id_store[[1]][length(id_store)] # currently get the most recent ID 
   }
   return(definitions_id)
 }
