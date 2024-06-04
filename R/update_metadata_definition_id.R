@@ -14,24 +14,13 @@
 #' 
 #' @export
 update_metadata_definition_id <- function(country, station_id, definition_id, overwrite = FALSE) {
-  bucket <- epicsadata::get_bucket_name(country)
+  bucket <- epicsadata:::get_bucket_name(country)
   get_metadata_from_bucket <- epicsadata::station_metadata(country, station_id)
   
-  if (overwrite) {
-    get_metadata_from_bucket$definitions_id <- definition_id
-  } else {
-    get_metadata_from_bucket$definitions_id <-
-      purrr::map(.x = get_metadata_from_bucket$definitions_id,
-                 .f = ~ c(.x, definition_id))
-  }
+  if (overwrite) get_metadata_from_bucket$definitions_id <- definition_id
+  else get_metadata_from_bucket$definitions_id <- purrr::map(.x = get_metadata_from_bucket$definitions_id, .f = ~ c(.x, definition_id))
   
-  object_function <- function(input, output) {
-    saveRDS(input, file = output)
-  }
+  object_function <- function(input, output) { saveRDS(input, file = output) }
   
-  googleCloudStorageR::gcs_upload(file = get_metadata_from_bucket,
-                                  bucket = bucket, 
-                                  name = "metadata.rds", 
-                                  object_function = object_function,
-                                  predefinedAcl = "bucketLevel")
+  googleCloudStorageR::gcs_upload(file = get_metadata_from_bucket, bucket = bucket, name = "metadata.rds", object_function = object_function, predefinedAcl = "bucketLevel")
 }
