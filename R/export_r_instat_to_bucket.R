@@ -17,7 +17,7 @@
 #' @param country `character(1)` The country code of the data.
 #' @param station_id `character` The id's of the stations to analyse. Either a
 #'   single value or a vector.
-#' @param definition_id `character` The ID to give to the definition file. 
+#' @param definitions_id `character` The ID to give to the definition file. 
 #' @param include_summary_data Logical indicating whether to include summary data in the export.
 #' @param annual_rainfall_data Annual rainfall summary data.
 #' @param annual_temperature_data Annual temperature summary data.
@@ -37,7 +37,7 @@
 export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = NULL, crop_data_name = NULL,
                                       rain = NULL, tmin = NULL, tmax = NULL, year = NULL, month = NULL,
                                       summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "extremes", "crop_success", "start_season"),
-                                      station_id, definition_id, country,
+                                      station_id, definitions_id, country,
                                       include_summary_data = FALSE,
                                       annual_rainfall_data = NULL, annual_temperature_data = NULL, monthly_temperature_data = NULL,
                                       crop_success_data = NULL, season_start_data = NULL){
@@ -49,8 +49,10 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
   # commented out code was when we had this for multiple station_ids. We now just do for one definition_id.
   #purrr::map(.x = station_id,
   #           .f = ~add_definitions_to_bucket(country = country, station_id = .x, new_definitions = definitions_data, timestamp = timestamp))
+  
   add_definitions_to_bucket(country = country, definitions_id = definitions_id, new_definitions = definitions_data, timestamp = timestamp)
-
+  update_metadata_definition_id(country = country, station_id = station_id, definition_id = definitions_id, overwrite = FALSE)
+  
   if (include_summary_data){
     # function to read summary data from R-Instat into summaries in buckets
     if ("annual_rainfall" %in% summaries) purrr::map(.x = station_id, .f = ~add_summaries_to_bucket(country = country, station_id = .x, data = annual_rainfall_data, summary = "annual_rainfall_summaries", timestamp = timestamp))
@@ -63,8 +65,6 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
 
     if ("start_season" %in% summaries) purrr::map(.x = station_id, .f = ~add_summaries_to_bucket(country = country, station_id = .x, data = season_start_data, summary = "season_start_probabilities", timestamp = timestamp))
   }
-  
-  update_metadata_definition_id(country = country, station_id = station_id, definition_id = definition_id, overwrite = FALSE)
   
   return("Uploaded to Bucket")
 }

@@ -15,12 +15,24 @@
 #' @export
 update_metadata_definition_id <- function(country, station_id, definition_id, overwrite = FALSE) {
   bucket <- epicsadata:::get_bucket_name(country)
-  get_metadata_from_bucket <- epicsadata::station_metadata(country, station_id)
-  
-  if (overwrite) get_metadata_from_bucket$definitions_id <- definition_id
-  else get_metadata_from_bucket$definitions_id <- purrr::map(.x = get_metadata_from_bucket$definitions_id, .f = ~ c(.x, definition_id))
-  
+  station_id_names <- station_id
+  complete_metadata_from_bucket <- epicsadata::station_metadata(country)
+  reference <- complete_metadata_from_bucket$station_id
+  complete_metadata_from_bucket_filt <- complete_metadata_from_bucket %>% filter(station_id %in% station_id_names)
+  if (nrow(complete_metadata_from_bucket_filt) > 0){
+    complete_metadata_from_bucket_rest <- complete_metadata_from_bucket %>% filter(!station_id %in% station_id_names)
+    if (!is.list(complete_metadata_from_bucket_rest$definitions_id)) complete_metadata_from_bucket_rest$definitions_id <- as.list(complete_metadata_from_bucket_rest$definitions_id)
+    if (overwrite){
+      complete_metadata_from_bucket_filt$definitions_id <- definition_id
+    } else {
+      complete_metadata_from_bucket_filt$definitions_id <- purrr::map(.x = complete_metadata_from_bucket_filt$definitions_id, .f = ~ unique(c(.x, definition_id)))
+    }
+    complete_metadata_from_bucket <- bind_rows(complete_metadata_from_bucket_rest, complete_metadata_from_bucket_filt)
+    complete_metadata_from_bucket <- complete_metadata_from_bucket[order(match(complete_metadata_from_bucket$station_id, reference)),]
+  } else {
+    new_df <- data.frame(station_id = station_id_names, definitions_id = definition_id)
+    complete_metadata_from_bucket <- bind_rows(complete_metadata_from_bucket, new_df)
+  }
   object_function <- function(input, output) { saveRDS(input, file = output) }
-  
-  googleCloudStorageR::gcs_upload(file = get_metadata_from_bucket, bucket = bucket, name = "metadata.rds", object_function = object_function, predefinedAcl = "bucketLevel")
+  googleCloudStorageR::gcs_upload(file = complete_metadata_from_bucket, bucket = bucket, name = "metadata.rds", object_function = object_function, predefinedAcl = "bucketLevel")
 }
