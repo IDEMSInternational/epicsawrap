@@ -30,7 +30,8 @@ update_metadata_definition_id <- function(country, station_id, definition_id, ov
     complete_metadata_from_bucket <- dplyr::bind_rows(complete_metadata_from_bucket_rest, complete_metadata_from_bucket_filt)
     complete_metadata_from_bucket <- complete_metadata_from_bucket[order(match(complete_metadata_from_bucket$station_id, reference)),]
   } else {
-    new_df <- data.frame(station_id = station_id_names, definitions_id = definition_id)
+    new_df <- data.frame(station_id = station_id_names)
+    new_df$definitions_id <- purrr::map(.x = definition_id, .f = ~ unique(c(.x)))
     complete_metadata_from_bucket <- dplyr::bind_rows(complete_metadata_from_bucket, new_df)
   }
   object_function <- function(input, output) { saveRDS(input, file = output) }
