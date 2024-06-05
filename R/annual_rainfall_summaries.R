@@ -26,7 +26,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
   get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "annual_rainfall_summaries")
   summary_data <- get_summaries[[1]]
   timestamp <- get_summaries[[2]]
-  
+
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
@@ -46,11 +46,10 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
       if (!is.null(timestamp)){
         file <- paste0(definitions_id, ".", timestamp)
       } else {
-        file <- definitions_id 
-      }
+        file <- regmatches(file_name$name[length(file_name$name)], regexpr("(?<=/)[^/]+(?=\\.json)", file_name$name[length(file_name$name)], perl=TRUE))
+        }
       definitions <- definitions(country = country, definitions_id = definitions_id, summaries = summaries, file = file)
     }
-
     definitions_season <- NULL
     # Check if all elements in summaries are present in definitions
     # what about start, ends, and that seasonal_length doesn't need to be defined?
@@ -155,16 +154,16 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
       summary_data <- join_null_data(summary_data, start_rains)
       summary_data$start_rains_doy <- as.integer(summary_data$start_rains_doy)
     }
-    
+
     if ("end_rains" %in% summaries) {
-      if (!is.null(definitions$start_rains$s_start_doy)) definitions$end_rains$s_start_doy <- definitions$start_rains$s_start_doy
+      if (!is.null(definitions$start_rains$s_start_doy) & is.null(definitions$end_rains$s_start_doy)) definitions$end_rains$s_start_doy <- definitions$start_rains$s_start_doy
       end_rains <- annual_rainfall_end_rains(definitions, daily, data_names)
       summary_data <- join_null_data(summary_data, end_rains)
       summary_data$end_rains_doy <- as.integer(summary_data$end_rains_doy)
     }
     
     if ("end_season" %in% summaries) {
-      if (!is.null(definitions$start_rains$s_start_doy)) definitions$end_season$s_start_doy <- definitions$start_rains$s_start_doy
+      if (!is.null(definitions$start_rains$s_start_doy) & is.null(definitions$end_season$s_start_doy)) definitions$end_season$s_start_doy <- definitions$start_rains$s_start_doy
       end_season <- annual_rainfall_end_season(definitions, daily, data_names)
       summary_data <- join_null_data(summary_data, end_season)
       summary_data$end_season_doy <- as.integer(summary_data$end_season_doy)
@@ -185,11 +184,12 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
     }
     
     if ("annual_rain" %in% summaries) {
+      if (!is.null(definitions$start_rains$s_start_doy) & is.null(definitions$annual_rain$s_start_doy)) definitions$annual_rain$s_start_doy <- definitions$start_rains$s_start_doy
       annual_rain <- annual_rainfall_annual_rain(definitions, daily, data_names)
       annual_rain$year <- factor(annual_rain$year)
       summary_data <- join_null_data(summary_data, annual_rain)
     }
-    
+
     names_definitions <- unique(names(definitions))
     definitions <- unique(definitions)
     names(definitions) <- names_definitions
