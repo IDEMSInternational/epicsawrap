@@ -35,21 +35,23 @@ crop_success_probabilities <- function(country,
                                        override = FALSE) {
   list_return <- NULL
   
+  # get definitions_id from station_id metadata.
+  definitions_id <- get_definitions_id_from_metadata(country, station_id)
+  
   # do the summaries exist already?
   get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "crop_success_probabilities")
   summary_data <- get_summaries[[1]]
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
-    file_name <- epicsadata::get_objects_in_bucket(country, station_id, timestamp = get_summaries[[2]])
+    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = get_summaries[[2]])
     if (nrow(file_name) == 0) {
-      list_return[[1]] <- definitions(country, station_id, summaries = "crops_success")
+      list_return[[1]] <- definitions(country, definitions_id, summaries = "crops_success")
     } else {
-      list_return[[1]] <- definitions(country, station_id, summaries = "crops_success",
-                                      paste0(station_id, ".", get_summaries[[2]]))
+      list_return[[1]] <- definitions(country, definitions_id, summaries = "crops_success", paste0(definitions_id, ".", get_summaries[[2]]))
     }
   } else {
-    definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = "crops_success")
+    definitions <- epicsawrap::definitions(country = country, definitions_id = definitions_id, summaries = "crops_success")
     
     # Fetch daily data and preprocess
     daily <- epicsadata::get_daily_data(country = country, station_id = station_id)

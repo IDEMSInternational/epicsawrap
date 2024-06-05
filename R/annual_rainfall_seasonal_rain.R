@@ -61,8 +61,9 @@ annual_rainfall_seasonal_rain <- function(definitions, daily, summary_data, data
       warning("Performing seasonal_rain with end_season")
       end_date <- "end_season_date"
     }
-    if (identical(present_values, c(TRUE, TRUE, FALSE)))
+    if (identical(present_values, c(TRUE, TRUE, FALSE))){
       end_date <- "end_rains_date"
+    }
   } else {
     if (definitions$seasonal_rain$end_type == "rains"){
       end_date <- "end_rains_date"

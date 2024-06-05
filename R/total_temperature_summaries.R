@@ -20,20 +20,24 @@ total_temperature_summaries <- function(country,
                                         override = FALSE) {
   to <- match.arg(to)
   list_return <- NULL
+  
+  # we get the definitions_id from station_id metadata.
+  definitions_id <- get_definitions_id_from_metadata(country, station_id)
+  
   # do the summaries exist already?
   get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = paste0(to, "_temperature_summaries"))
   summary_data <- get_summaries[[1]]
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
-    file_name <- epicsadata::get_objects_in_bucket(country, station_id, timestamp = get_summaries[[2]])
+    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = get_summaries[[2]])
     if (nrow(file_name) == 0) {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries))
+      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries))
     } else {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries, paste0(station_id, ".", get_summaries[[2]])))
+      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries, paste0(definitions_id, ".", get_summaries[[2]])))
     }
   } else {
-    definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
+    definitions <- definitions(country = country, definitions_id, summaries = summaries)
     # Fetch daily data and preprocess
     daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
     
@@ -48,6 +52,7 @@ total_temperature_summaries <- function(country,
     # names(summary_data) <- c(data_names$year, data_names$station)
     # 
     summary_data <- NULL
+
     for (summary in summaries) {
       if (is.null(definitions[[summary]]$to)) {
         stop(paste0("'", summary, "' has been given in summaries but no data is given in definitions json file."))
@@ -59,6 +64,7 @@ total_temperature_summaries <- function(country,
           }
           summary_type <- gsub("_.*$", "", summary)
           summary_variable <- gsub("^.*_", "", summary)
+          if (length(as.logical(definitions[[summary]]$na_rm)) == 0) definitions[[summary]]$na_rm <- FALSE
           summary_data[[summary]] <- rpicsa::summary_temperature(data = daily,
                                                                  date_time = data_names$date,
                                                                  station = data_names$station,

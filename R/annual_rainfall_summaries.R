@@ -18,26 +18,40 @@
 #' #annual_rainfall_summaries(country = "zm", station_id = "16", summaries = c("start_rains", "end_rains", "annual_rain", "seasonal_rain")) #, "end_season"))
 annual_rainfall_summaries <- function(country, station_id, summaries = c("annual_rain", "start_rains", "end_rains", "end_season", "seasonal_rain", "seasonal_length"), override = FALSE) {
   list_return <- NULL
+  
+  # we get the definitions_id from station_id metadata.
+  definitions_id <- get_definitions_id_from_metadata(country, station_id)
+  
   # do the summaries exist already?
   get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "annual_rainfall_summaries")
   summary_data <- get_summaries[[1]]
   timestamp <- get_summaries[[2]]
+  
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
-    file_name <- epicsadata::get_objects_in_bucket(country, station_id, timestamp = timestamp)
+    # to see definitions that exist in the bucket / whether that definition exists under that ID
+    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries))
+      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries))
     } else {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries, paste0(station_id, ".", timestamp)))
+      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries, paste0(definitions_id, ".", timestamp)))
     }
   } else {
-    # Get data definitions and summary definitions
-    if (!is.null(timestamp)) file_name <- paste0(station_id, ".", timestamp)
-    else file_name <- station_id
-    definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries, file = file_name)
+    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
+    if (nrow(file_name) == 0) {
+      definitions <- definitions(country = country, definitions_id = definitions_id, summaries = summaries)
+    } else {
+      # Get data definitions and summary definitions
+      if (!is.null(timestamp)){
+        file <- paste0(definitions_id, ".", timestamp)
+      } else {
+        file <- definitions_id 
+      }
+      definitions <- definitions(country = country, definitions_id = definitions_id, summaries = summaries, file = file)
+    }
+
     definitions_season <- NULL
-    
     # Check if all elements in summaries are present in definitions
     # what about start, ends, and that seasonal_length doesn't need to be defined?
     # if (!all(summaries %in% names(definitions))) {
@@ -59,18 +73,22 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
           summaries <- c(summaries, paste0("end_", def_end_type))
           
           # checking we have a definitions file
-          definitions_2 <- definitions(country = country, station_id = station_id, summaries = paste0("end_", def_end_type), file = file_name)
+          if (nrow(file_name) == 0) {
+            definitions_2 <- definitions(country = country, definitions_id = definitions_id, summaries = paste0("end_", def_end_type))
+          } else {
+            definitions_2 <- definitions(country = country, definitions_id = definitions_id, summaries = paste0("end_", def_end_type), file = file)
+          }
           
           # if there's no definitions file, then set the end type to be the other one and check for definitions file
           if (length(definitions_2) == 0){ 
             warning(paste0("Ignoring end_type = ", def_end_type, " in seasonal_rain because no definitions given."))
             if (def_end_type == "rains"){
               definitions[[i]]$end_type <- "season"
-              definitions_2 <- definitions(country = country, station_id = station_id, summaries = paste0("end_season"))
+              definitions_2 <- definitions(country = country, definitions_id = definitions_id, summaries = paste0("end_season"))
               if (length(definitions_2) == 0) stop(paste0("Cannot calculate", i, "without end_rains or end_season in definitions file."))
             } else {
               definitions[[i]]$end_type <- "rains"
-              definitions_2 <- definitions(country = country, station_id = station_id, summaries = paste0("end_rains"))
+              definitions_2 <- definitions(country = country, definitions_id = definitions_id, summaries = paste0("end_rains"))
               if (length(definitions_2) == 0) stop(paste0("Cannot calculate", i, "without end_rains or end_season in definitions file."))
             }
           } else {
@@ -91,7 +109,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
             # set end_type as season by default
           } else { # if no end type is specified, and no summaries are specified
             # specified in the code asked for (if both, then end_seasons as per Roger's recommendation)
-            definitions_season <- definitions(country = "zm", station_id = "1", summaries = c("end_rains", "end_season"))
+            definitions_season <- definitions(country = country, definitions_id = definitions_id, summaries = c("end_rains", "end_season"))
             if ("end_season" %in% names(definitions_season)){
               definitions[[i]]$end_type <- "season"
             } else if ("end_rains" %in% names(definitions_season)){
@@ -116,7 +134,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
         summaries <- c(summaries, "start_rains")
         
         # checking we have a definitions file
-        definitions_2 <- definitions(country = country, station_id = station_id, summaries = "start_rains")
+        definitions_2 <- definitions(country = country, definitions_id = definitions_id, summaries = "start_rains")
         
         # if there's no definitions file, throw error
         if (length(definitions_2) == 0){ 
