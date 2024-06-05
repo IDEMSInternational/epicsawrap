@@ -184,6 +184,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
     }
     
     if ("annual_rain" %in% summaries) {
+      if (!is.null(definitions$start_rains$s_start_doy) & is.null(definitions$annual_rain$s_start_doy)) definitions$annual_rain$s_start_doy <- definitions$annual_rain$s_start_doy
       annual_rain <- annual_rainfall_annual_rain(definitions, daily, data_names)
       annual_rain$year <- factor(annual_rain$year)
       summary_data <- join_null_data(summary_data, annual_rain)
