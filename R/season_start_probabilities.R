@@ -33,8 +33,9 @@ season_start_probabilities <- function(country,
   summary_data <- get_summaries[[1]]
   timestamp <- get_summaries[[2]]
   # what if the definitions is different? Have an override option.
-  # if the summary data exists, and if you do not want to override it then:
-  if (nrow(summary_data) > 0 & override == FALSE) {
+  #if the summary data exists, and if you do not want to override it then:
+  if (!is.null(start_dates) & override == FALSE & nrow(summary_data) > 0) warning("Override set to TRUE for calculating start dates. Using saved data for start_rains")
+  if (nrow(summary_data) > 0 & override == FALSE & is.null(start_dates)) {
     file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
       list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries))
@@ -54,14 +55,18 @@ season_start_probabilities <- function(country,
       }
       definitions <- definitions(country = country, definitions_id = definitions_id, summaries = summaries, file = file)
     }
-
-    # Fetch daily data and preprocess
-    daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
-    
-    # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
-    data_names <- epicsadata::data_definitions(names(daily), TRUE)
-    daily <- check_and_rename_variables(daily, data_names)
-    
+    # if we are overriding, then we are overriding for our start_rains definition too, meaning we need to recalculate that
+    if (override){
+      # Fetch daily data and preprocess
+      daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+      
+      # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
+      data_names <- epicsadata::data_definitions(names(daily), TRUE)
+      daily <- check_and_rename_variables(daily, data_names)
+    } else {
+      data_names <- NULL
+      data_names$station <- "station"
+    }
     season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains"), override = override)
     if (is.null(start_dates)){
       start_dates <- definitions$season_start_probabilities$specified_day

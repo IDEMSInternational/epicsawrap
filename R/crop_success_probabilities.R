@@ -41,6 +41,12 @@ crop_success_probabilities <- function(country,
   # do the summaries exist already?
   get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "crop_success_probabilities")
   summary_data <- get_summaries[[1]]
+  
+  if ((!is.null(planting_dates) | !is.null(water_requirements) | !is.null(planting_length) | !is.null(start_before_season)) & override == FALSE){
+    warning("Setting override = TRUE. Access to raw data is required")
+    override <- TRUE
+  }
+  
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
