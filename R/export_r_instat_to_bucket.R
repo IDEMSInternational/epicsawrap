@@ -9,8 +9,6 @@
 #' @param data_by_year_month The dataset grouped by year and month.
 #' @param crop_data_name Name of the crop data used for definitions when `summaries = "crop_success"`.
 #' @param rain The rainfall data.
-#' @param tmin The minimum temperature data.
-#' @param tmax The maximum temperature data.
 #' @param year The year data.
 #' @param month The month data.
 #' @param summaries A character vector specifying the types of summaries to include.
