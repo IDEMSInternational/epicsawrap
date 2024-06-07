@@ -10,8 +10,6 @@ export_r_instat_to_bucket(
   data_by_year_month = NULL,
   crop_data_name = NULL,
   rain = NULL,
-  tmin = NULL,
-  tmax = NULL,
   year = NULL,
   month = NULL,
   summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature",
@@ -24,7 +22,18 @@ export_r_instat_to_bucket(
   annual_temperature_data = NULL,
   monthly_temperature_data = NULL,
   crop_success_data = NULL,
-  season_start_data = NULL
+  season_start_data = NULL,
+  start_rains_column = "start_rain",
+  start_rains_status_column = "start_rain_status",
+  end_rains_column = "end_rains",
+  end_season_column = "end_season",
+  seasonal_length_column = "seasonal_length",
+  min_tmin_column = "min_tmin",
+  mean_tmin_column = "mean_tmin",
+  max_tmin_column = "max_tmin",
+  min_tmax_column = "min_tmax",
+  mean_tmax_column = "mean_tmax",
+  max_tmax_column = "max_tmax"
 )
 }
 \arguments{
@@ -37,10 +46,6 @@ export_r_instat_to_bucket(
 \item{crop_data_name}{Name of the crop data used for definitions when \code{summaries = "crop_success"}.}
 
 \item{rain}{The rainfall data.}
-
-\item{tmin}{The minimum temperature data.}
-
-\item{tmax}{The maximum temperature data.}
 
 \item{year}{The year data.}
 
@@ -66,6 +71,28 @@ single value or a vector.}
 \item{crop_success_data}{The proportion crop data output. Used if \code{summaries = "crop_success"} when \code{include_summary_data = TRUE}. This is called \code{crop_prop} by default in R-Instat.}
 
 \item{season_start_data}{The crop data to be read into \code{"season_start_probabilities"}. This is called \code{crop_def} by default in R-Instat.}
+
+\item{start_rains_column}{The name of the start of rains column in the data.}
+
+\item{start_rains_status_column}{The name of the start of rains status column in the data.}
+
+\item{end_rains_column}{The name of the end of rains column in the data.}
+
+\item{end_season_column}{The name of the end of season column in the data.}
+
+\item{seasonal_length_column}{The name of the seasonal length column in the data.}
+
+\item{min_tmin_column}{The name of the minimum of minimum temperature column in the data.}
+
+\item{mean_tmin_column}{The name of the mean of minimum temperature column in the data.}
+
+\item{max_tmin_column}{The name of the maximum of minimum temperature column in the data.}
+
+\item{min_tmax_column}{The name of the minimum of maximum temperature column in the data.}
+
+\item{mean_tmax_column}{The name of the mean of maximum temperature column in the data.}
+
+\item{max_tmax_column}{The name of the maximum of maximum temperature column in the data.}
 }
 \value{
 A message confirming that the data has been uploaded to the bucket.
