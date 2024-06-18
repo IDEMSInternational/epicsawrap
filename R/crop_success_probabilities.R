@@ -45,6 +45,9 @@ crop_success_probabilities <- function(country,
   if ((!is.null(planting_dates) | !is.null(water_requirements) | !is.null(planting_length) | !is.null(start_before_season)) & override == FALSE){
     warning("Setting override = TRUE. Access to raw data is required")
     override <- TRUE
+    file_id <- paste0(definitions_id, ".", get_summaries[[2]])
+  } else {
+    file_id <- definitions_id
   }
   
   # what if the definitions is different? Have an override option.
@@ -57,7 +60,7 @@ crop_success_probabilities <- function(country,
       list_return[[1]] <- definitions(country, definitions_id, summaries = "crops_success", paste0(definitions_id, ".", get_summaries[[2]]))
     }
   } else {
-    definitions <- epicsawrap::definitions(country = country, definitions_id = definitions_id, summaries = "crops_success")
+    definitions <- epicsawrap::definitions(country = country, definitions_id = definitions_id, summaries = "crops_success", file = file_id)
     
     # Fetch daily data and preprocess
     daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
