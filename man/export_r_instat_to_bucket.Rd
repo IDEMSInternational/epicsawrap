@@ -26,7 +26,9 @@ export_r_instat_to_bucket(
   start_rains_column = "start_rain",
   start_rains_status_column = "start_rain_status",
   end_rains_column = "end_rains",
+  end_rains_status_column = "end_rains_status",
   end_season_column = "end_season",
+  end_season_status_column = "end_season_status",
   seasonal_length_column = "seasonal_length",
   min_tmin_column = "min_tmin",
   mean_tmin_column = "mean_tmin",
@@ -78,7 +80,11 @@ single value or a vector.}
 
 \item{end_rains_column}{The name of the end of rains column in the data.}
 
+\item{end_rains_status_column}{The name of the end of rains status column in the data.}
+
 \item{end_season_column}{The name of the end of season column in the data.}
+
+\item{end_season_status_column}{The name of the end of season status column in the data.}
 
 \item{seasonal_length_column}{The name of the seasonal length column in the data.}
 

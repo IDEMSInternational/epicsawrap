@@ -25,7 +25,9 @@
 #' @param start_rains_column The name of the start of rains column in the data.
 #' @param start_rains_status_column The name of the start of rains status column in the data.
 #' @param end_rains_column The name of the end of rains column in the data.
+#' @param end_rains_status_column The name of the end of rains status column in the data.
 #' @param end_season_column The name of the end of season column in the data.
+#' @param end_season_status_column The name of the end of season status column in the data.
 #' @param seasonal_length_column The name of the seasonal length column in the data.
 #' @param min_tmin_column The name of the minimum of minimum temperature column in the data.
 #' @param max_tmin_column The name of the maximum of minimum temperature column in the data.
@@ -52,7 +54,8 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
                                       annual_rainfall_data = NULL, annual_temperature_data = NULL, monthly_temperature_data = NULL,
                                       crop_success_data = NULL, season_start_data = NULL,
                                       start_rains_column = "start_rain", start_rains_status_column = "start_rain_status",
-                                      end_rains_column = "end_rains", end_season_column = "end_season", seasonal_length_column = "seasonal_length",
+                                      end_rains_column = "end_rains", end_rains_status_column = "end_rains_status", end_season_column = "end_season",
+                                      end_season_status_column = "end_season_status", seasonal_length_column = "seasonal_length",
                                       min_tmin_column = "min_tmin", mean_tmin_column = "mean_tmin", max_tmin_column = "max_tmin",
                                       min_tmax_column = "min_tmax", mean_tmax_column = "mean_tmax", max_tmax_column = "max_tmax"){
   
@@ -60,7 +63,11 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
   timestamp <- format(Sys.time(), format = "%Y%m%d%H%M%S") 
   
   definitions_data <- epicsadata::collate_definitions_data(data = data, data_by_year = data_by_year, data_by_year_month = data_by_year_month, crop_data = crop_data_name, rain = rain, year = year, month = month, summaries = summaries,
-                                                           start_rains_column = start_rains_column, start_rains_status_column = start_rains_status_column, end_rains_column = end_rains_column, end_season_column = end_season_column, seasonal_length_column = seasonal_length_column, min_tmin_column = min_tmin_column, 
+                                                           start_rains_column = start_rains_column, start_rains_status_column = start_rains_status_column, end_rains_column = end_rains_column,
+                                                           end_rains_status_column = end_rains_status_column, 
+                                                           end_season_column = end_season_column,
+                                                           end_season_status_column = end_season_status_column, 
+                                                           seasonal_length_column = seasonal_length_column, min_tmin_column = min_tmin_column, 
                                                            mean_tmin_column = mean_tmin_column, max_tmin_column = max_tmin_column, min_tmax_column = min_tmax_column, mean_tmax_column = mean_tmax_column, max_tmax_column = max_tmax_column )
   
   # Save into bucket
