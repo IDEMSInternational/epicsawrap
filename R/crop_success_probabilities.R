@@ -37,39 +37,60 @@ crop_success_probabilities <- function(country,
   
   # get definitions_id from station_id metadata.
   definitions_id <- get_definitions_id_from_metadata(country, station_id)
+  summaries <- "crop_success_probabilities"
   
   # do the summaries exist already?
-  get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "crop_success_probabilities")
+  get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = summaries)
   summary_data <- get_summaries[[1]]
+  timestamp <- get_summaries[[2]]
   
-  if ((!is.null(planting_dates) | !is.null(water_requirements) | !is.null(planting_length) | !is.null(start_before_season)) & override == FALSE){
-    warning("Setting override = TRUE. Access to raw data is required")
-    override <- TRUE
-    file_id <- paste0(definitions_id, ".", get_summaries[[2]])
-  } else {
-    file_id <- definitions_id
-  }
+  #if the summary data exists, and if you do not want to override it then:
+  if (!is.null(planting_dates) & !is.null(water_requirements) & !is.null(planting_length) & override == FALSE & nrow(summary_data) > 0) warning("Override set to TRUE for calculating probabilities. Using saved annual rainfall summaries.")
   
-  # what if the definitions is different? Have an override option.
-  # if the summary data exists, and if you do not want to override it then:
-  if (nrow(summary_data) > 0 & override == FALSE) {
+  # if ((!is.null(planting_dates) | !is.null(water_requirements) | !is.null(planting_length) | !is.null(start_before_season)) & override == FALSE){
+  #   file_id <- paste0(definitions_id, ".", get_summaries[[2]])
+  # } else {
+  #   file_id <- definitions_id
+  # }
+  # 
+  # if the summary data exists in the bucket, and if you do not want to recalculate anything then:
+  if (nrow(summary_data) > 0 & override == FALSE & is.null(planting_dates) & is.null(water_requirements) & is.null(planting_length)) {
     file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = get_summaries[[2]])
     if (nrow(file_name) == 0) {
-      list_return[[1]] <- definitions(country, definitions_id, summaries = "crops_success")
+      list_return[[1]] <- definitions(country, definitions_id, summaries = summaries)
     } else {
-      list_return[[1]] <- definitions(country, definitions_id, summaries = "crops_success", paste0(definitions_id, ".", get_summaries[[2]]))
+      list_return[[1]] <- definitions(country, definitions_id, summaries = summaries, paste0(definitions_id, ".", timestamp))
     }
   } else {
-    definitions <- epicsawrap::definitions(country = country, definitions_id = definitions_id, summaries = "crops_success", file = file_id)
     
-    # Fetch daily data and preprocess
-    daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+    # check bucket for file
+    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
+    if (nrow(file_name) == 0) {
+      definitions <- definitions(country = country, definitions_id = definitions_id, summaries = "crops_success")
+    } else {
+      # Get data definitions and summary definitions
+      if (!is.null(timestamp)){
+        file <- paste0(definitions_id, ".", timestamp)
+      } else {
+        file <- definitions_id 
+      }
+      definitions <- epicsawrap::definitions(country = country, definitions_id = definitions_id, summaries = "crops_success", file = file)
+    }
     
-    # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
-    data_names <- epicsadata::data_definitions(names(daily), TRUE)
-    daily <- check_and_rename_variables(daily, data_names)
+    # if we are overriding, then we are overriding for our start_rains definition too, meaning we need to recalculate that
+    if (override){
+      # Fetch daily data and preprocess
+      daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+      
+      # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
+      data_names <- epicsadata::data_definitions(names(daily), TRUE)
+      daily <- check_and_rename_variables(daily, data_names)
+    } else {
+      data_names <- NULL
+      data_names$station <- "station"
+    }
     
-    season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "end_rains"), override = override) # end rains or end season?
+    season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "seasonal_length", "seasonal_rain"), override = override) # end rains or end season?
     #offset <- season_data[[1]]$start_rains$s_start_doy
     
     check_and_set_parameter <- function(parameter_name, target_column_name) {
@@ -91,20 +112,32 @@ crop_success_probabilities <- function(country,
       definitions$crops_success$start_check <- start_before_season
     }
     
-    daily$year <- factor(daily$year)
-    summary_data <- rpicsa::crops_definitions(data = daily,
-                                               date_time  = data_names$date,
-                                               station = data_names$station,
-                                               year = data_names$year,
-                                               rain = data_names$rain,
-                                               water_requirements = as.integer(water_requirements),
-                                               planting_dates = as.integer(planting_dates),
-                                               planting_length = as.integer(planting_length),
-                                               start_check = start_before_season,
-                                               season_data = season_data[[2]],
-                                               start_day = "start_rains_doy",
-                                               end_day = "end_rains_doy")
-    list_return[[1]] <- c(season_data[[1]], definitions)
+    if (override){
+      daily$year <- factor(daily$year)
+      summary_data <- rpicsa::crops_definitions(data = daily,
+                                                date_time  = data_names$date,
+                                                station = data_names$station,
+                                                year = data_names$year,
+                                                rain = data_names$rain,
+                                                water_requirements = as.integer(water_requirements),
+                                                planting_dates = as.integer(planting_dates),
+                                                planting_length = as.integer(planting_length),
+                                                start_check = start_before_season,
+                                                season_data = season_data[[2]],
+                                                start_day = "start_rains_doy",
+                                                end_day = "end_rains_doy")
+      list_return[[1]] <- c(season_data[[1]], definitions)
+    } else {
+      summary_data <- rpicsa::crops_definitions(water_requirements = as.integer(water_requirements),
+                                                planting_dates = as.integer(planting_dates),
+                                                planting_length = as.integer(planting_length),
+                                                start_check = start_before_season,
+                                                season_data = season_data[[2]],
+                                                start_day = "start_rains_doy",
+                                                seasonal_length = "season_length",
+                                                seasonal_rain = "seasonal_rain ")
+      list_return[[1]] <- c(season_data[[1]], definitions)
+    }
   }
   # rename
   list_return[[2]] <- summary_data
