@@ -39,20 +39,26 @@ crop_success_probabilities <- function(country,
   definitions_id <- get_definitions_id_from_metadata(country, station_id)
   summaries <- "crop_success_probabilities"
   
-  # do the summaries exist already?
-  get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = summaries)
-  summary_data <- get_summaries[[1]]
-  timestamp <- get_summaries[[2]]
+  # if you are calling for new estimates, and do not want to override:
+  if (!is.null(planting_dates) & !is.null(water_requirements) & !is.null(planting_length) & override == FALSE){
+      get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "annual_rainfall_summaries")
+      summary_data <- get_summaries[[1]]
+      timestamp <- get_summaries[[2]]
+      if (nrow(summary_data) > 0){
+        warning("Override set to TRUE for calculating probabilities. Using saved annual rainfall summaries.")
+      } else {
+        # if in here, then it will later calculate the annual rainfall summaries
+        get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = summaries)
+        summary_data <- get_summaries[[1]]
+        timestamp <- get_summaries[[2]]
+      }
+  } else {
+    # do the summaries exist already?
+    get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = summaries)
+    summary_data <- get_summaries[[1]]
+    timestamp <- get_summaries[[2]]
+  }
   
-  #if the summary data exists, and if you do not want to override it then:
-  if (!is.null(planting_dates) & !is.null(water_requirements) & !is.null(planting_length) & override == FALSE & nrow(summary_data) > 0) warning("Override set to TRUE for calculating probabilities. Using saved annual rainfall summaries.")
-  
-  # if ((!is.null(planting_dates) | !is.null(water_requirements) | !is.null(planting_length) | !is.null(start_before_season)) & override == FALSE){
-  #   file_id <- paste0(definitions_id, ".", get_summaries[[2]])
-  # } else {
-  #   file_id <- definitions_id
-  # }
-  # 
   # if the summary data exists in the bucket, and if you do not want to recalculate anything then:
   if (nrow(summary_data) > 0 & override == FALSE & is.null(planting_dates) & is.null(water_requirements) & is.null(planting_length)) {
     file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = get_summaries[[2]])
@@ -135,7 +141,7 @@ crop_success_probabilities <- function(country,
                                                 season_data = season_data[[2]],
                                                 start_day = "start_rains_doy",
                                                 seasonal_length = "season_length",
-                                                seasonal_rain = "seasonal_rain ")
+                                                seasonal_rain = "seasonal_rain")
       list_return[[1]] <- c(season_data[[1]], definitions)
     }
   }
