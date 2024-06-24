@@ -35,13 +35,23 @@ crop_success_probabilities <- function(country,
                                        override = FALSE) {
   list_return <- NULL
   
+  check_and_set_parameter <- function(parameter_name, target_column_name) {
+    if (is.null(get(parameter_name))) {
+      value <- as.integer(definitions$crops_success[[target_column_name]])
+      if (length(value) == 0) stop(paste(parameter_name, "parameter missing in definitions file."))
+      assign(parameter_name, value, envir = parent.frame())
+    } else {
+      definitions$crops_success[[target_column_name]] <- get(parameter_name)
+    }
+  }
+  
   # get definitions_id from station_id metadata.
   definitions_id <- get_definitions_id_from_metadata(country, station_id)
   summaries <- "crop_success_probabilities"
   
   # if you are calling for new estimates, and do not want to override:
   if (!is.null(planting_dates) & !is.null(water_requirements) & !is.null(planting_length) & override == FALSE){
-      get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "annual_rainfall_summaries")
+    get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "annual_rainfall_summaries")
       summary_data <- get_summaries[[1]]
       timestamp <- get_summaries[[2]]
       if (nrow(summary_data) > 0){
@@ -63,12 +73,15 @@ crop_success_probabilities <- function(country,
   if (nrow(summary_data) > 0 & override == FALSE & is.null(planting_dates) & is.null(water_requirements) & is.null(planting_length)) {
     file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = get_summaries[[2]])
     if (nrow(file_name) == 0) {
-      list_return[[1]] <- definitions(country, definitions_id, summaries = summaries)
+      definitions <- definitions(country, definitions_id, summaries = "crops_success")
     } else {
-      list_return[[1]] <- definitions(country, definitions_id, summaries = summaries, paste0(definitions_id, ".", timestamp))
+      definitions <- definitions(country, definitions_id, summaries = "crops_success", paste0(definitions_id, ".", timestamp))
     }
+    definitions$crops_success$planting_length <- check_and_set_parameter("planting_length", "planting_length")
+    definitions$crops_success$water_requirements <- check_and_set_parameter("water_requirements", "water_requirements")
+    definitions$crops_success$planting_dates <- check_and_set_parameter("planting_dates", "planting_dates")
+    list_return[[1]] <- definitions
   } else {
-    
     # check bucket for file
     file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
@@ -99,18 +112,9 @@ crop_success_probabilities <- function(country,
     season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "seasonal_length", "seasonal_rain"), override = override) # end rains or end season?
     #offset <- season_data[[1]]$start_rains$s_start_doy
     
-    check_and_set_parameter <- function(parameter_name, target_column_name) {
-      if (is.null(get(parameter_name))) {
-        value <- as.integer(definitions$crops_success[[target_column_name]])
-        if (length(value) == 0) stop(paste(parameter_name, "parameter missing in definitions file."))
-        assign(parameter_name, value, envir = parent.frame())
-      } else {
-        definitions$crops_success[[target_column_name]] <- get(parameter_name)
-      }
-    }
-    check_and_set_parameter("planting_length", "planting_length")
-    check_and_set_parameter("water_requirements", "water_requirements")
-    check_and_set_parameter("planting_dates", "planting_dates")
+    definitions$crops_success$planting_length <- check_and_set_parameter("planting_length", "planting_length")
+    definitions$crops_success$water_requirements <- check_and_set_parameter("water_requirements", "water_requirements")
+    definitions$crops_success$planting_dates <- check_and_set_parameter("planting_dates", "planting_dates")
     if (is.null(start_before_season)){
       start_before_season <- is.logical(definitions$crops_success$start_check)
       if (length(start_before_season) == 0) stop("start_before_season parameter missing in definitions file.")
