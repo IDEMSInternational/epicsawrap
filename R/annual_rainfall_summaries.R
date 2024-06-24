@@ -26,7 +26,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
   get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "annual_rainfall_summaries")
   summary_data <- get_summaries[[1]]
   timestamp <- get_summaries[[2]]
-
+  
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
@@ -37,6 +37,19 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
     } else {
       list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries, paste0(definitions_id, ".", timestamp)))
     }
+    
+    vars_to_pull <- c("station", "year")
+    if ("annual_rain" %in% summaries) vars_to_pull <- c(vars_to_pull, "annual_rain", "n_rain")
+    if ("start_rains" %in% summaries) vars_to_pull <- c(vars_to_pull, "start_rains_doy", "start_rains_date")
+    if ("end_rains" %in% summaries) vars_to_pull <- c(vars_to_pull, "end_rains_doy", "end_rains_date")
+    if ("end_season" %in% summaries) vars_to_pull <- c(vars_to_pull, "end_season_doy", "end_season_date")
+    if ("seasonal_rain" %in% summaries) vars_to_pull <- c(vars_to_pull, "start_rains_doy", "start_rains_date", "end_rains_doy", "end_rains_date", "end_season_doy", "end_season_date", "seasonal_rain")
+    if ("seasonal_length" %in% summaries) vars_to_pull <- c(vars_to_pull, "start_rains_doy", "start_rains_date", "end_rains_doy", "end_rains_date", "end_season_doy", "end_season_date", "season_length")
+    vars_to_pull <- unique(vars_to_pull)
+    # set vars_to_pull to only be names in the summary_data
+    vars_to_pull <- vars_to_pull[vars_to_pull %in% colnames(summary_data)]
+    summary_data <- summary_data %>% dplyr::select(dplyr::all_of(vars_to_pull))
+    
   } else {
     file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {

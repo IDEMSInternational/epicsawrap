@@ -36,6 +36,12 @@ total_temperature_summaries <- function(country,
     } else {
       list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries, paste0(definitions_id, ".", get_summaries[[2]])))
     }
+    
+    # set vars_to_pull to only be names in the summary_data
+    vars_to_pull <- c("station", "year", "month", summaries)
+    vars_to_pull <- vars_to_pull[vars_to_pull %in% colnames(summary_data)]
+    summary_data <- summary_data %>% dplyr::select(dplyr::all_of(vars_to_pull))
+    
   } else {
     definitions <- definitions(country = country, definitions_id, summaries = summaries)
     # Fetch daily data and preprocess
@@ -86,12 +92,13 @@ total_temperature_summaries <- function(country,
     } else {
       summary_data <- summary_data[[1]]
     }
-    summary_data$year <- as.integer(summary_data$year)
-    if ("month" %in% names(summary_data)){
-      summary_data$month <- as.integer(forcats::as_factor(summary_data$month))
-    }
     list_return[[1]] <- definitions
   }
+  summary_data$year <- as.integer(summary_data$year)
+  if ("month" %in% names(summary_data)){
+    summary_data$month <- as.integer(forcats::as_factor(summary_data$month))
+  }
+  
   # rename
   list_return[[2]] <- summary_data
   return(list_return)
