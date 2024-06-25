@@ -9,6 +9,7 @@
 #' @param elements Vector of element IDs to filter the data, defaults to an empty vector.
 #' @param include_observation_flags Boolean, if TRUE includes observation flags in the output, defaults to FALSE.
 #' @param include_station_info Boolean, if TRUE includes station metadata in the output, defaults to FALSE.
+#' @param unstack_data Boolean. Option to unstack data once read in. 
 #' @param start_date Start date for filtering the observations, format should be Date, defaults to NULL.
 #' @param end_date End date for filtering the observations, format should be Date, defaults to NULL.
 #' 
@@ -26,6 +27,7 @@ import_from_climsoft <- function(con = get_climsoft_conn(),
                                  elements = c(),
                                  include_observation_flags = FALSE,
                                  include_station_info = FALSE,
+                                 unstack_data = TRUE,
                                  start_date = NULL,
                                  end_date = NULL) {
   con <- con # get connection
@@ -60,9 +62,9 @@ import_from_climsoft <- function(con = get_climsoft_conn(),
     element_ids_values <- paste0("(", paste0(sprintf("%d", db_elements_ids$elementId), collapse = ", "), ")")
   }
   
-  if(include_elements_info) {
-    db_elements_info <- DBI::dbGetQuery(con, paste0("SELECT elementId, elementName, abbreviation, description, elementtype, upperLimit, lowerLimit, units FROM obselement WHERE elementId ", " IN ", element_ids_values, ";" ))
-  }
+  # if(include_elements_info) {
+  #   db_elements_info <- DBI::dbGetQuery(con, paste0("SELECT elementId, elementName, abbreviation, description, elementtype, upperLimit, lowerLimit, units FROM obselement WHERE elementId ", " IN ", element_ids_values, ";" ))
+  # }
   
   flags_column_col_sql <- " "
   if (include_observation_flags) {

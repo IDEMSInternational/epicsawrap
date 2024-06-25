@@ -12,6 +12,7 @@ import_from_climsoft(
   elements = c(),
   include_observation_flags = FALSE,
   include_station_info = FALSE,
+  unstack_data = TRUE,
   start_date = NULL,
   end_date = NULL
 )
@@ -30,6 +31,8 @@ import_from_climsoft(
 \item{include_observation_flags}{Boolean, if TRUE includes observation flags in the output, defaults to FALSE.}
 
 \item{include_station_info}{Boolean, if TRUE includes station metadata in the output, defaults to FALSE.}
+
+\item{unstack_data}{Boolean. Option to unstack data once read in.}
 
 \item{start_date}{Start date for filtering the observations, format should be Date, defaults to NULL.}
 
