@@ -2,6 +2,7 @@
 #'
 #' @param country A character vector specifying the country or countries from which to get the data. Common options are `"mz"`, `"zm"`, and `"zm_test"`. Any defined in `get_bucket_name()`.
 #' @param station_id A character string specifying the ID of the station for which to get the daily data.
+#' @param call_from A character string specifying the location of the raw data.
 #'
 #' @return A data frame containing the daily data for the specified station and country.
 #' @export
