@@ -7,6 +7,7 @@
 station_metadata(
   country = NULL,
   station_id = NULL,
+  include_definitions_id = TRUE,
   include_definitions = FALSE,
   format = c("wide", "long", "nested", "list")
 )
@@ -15,6 +16,8 @@ station_metadata(
 \item{country}{A character vector specifying the country or countries from which to get the metadata. Options include "zm" (Zambia) and "mz" (Mozambique).}
 
 \item{station_id}{A character vector specifying the station IDs to filter by. If provided, only metadata for the specified station IDs will be returned.}
+
+\item{include_definitions_id}{A logical value indicating whether to include the definitions ID.}
 
 \item{include_definitions}{A logical value indicating whether to include definitions data. If TRUE, additional information about station definitions will be included in the output.}
 
