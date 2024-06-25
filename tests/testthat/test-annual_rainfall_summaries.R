@@ -8,7 +8,7 @@ country <- "zm_test"
 station_id <- "r_data_test_1"
 
 test_that("Correct summaries are calculated", {
-  result <- suppressWarnings(annual_rainfall_summaries(country, station_id, override = TRUE))
+  result <- suppressWarnings(annual_rainfall_summaries(country, station_id, call = "googlebuckets", override = TRUE))
   expect_true(identical(result[[2]], test_1_results))
 })
 

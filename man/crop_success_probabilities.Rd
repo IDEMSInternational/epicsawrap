@@ -7,6 +7,7 @@
 crop_success_probabilities(
   country,
   station_id,
+  call = c("climsoft", "googlebuckets"),
   planting_dates = NULL,
   water_requirements = NULL,
   planting_length = NULL,
@@ -19,6 +20,8 @@ crop_success_probabilities(
 
 \item{station_id}{\code{character} The id's of the stations to analyse. Either a
 single value or a vector.}
+
+\item{call}{A character vector specifying where to call the raw data from if calling raw data.}
 
 \item{planting_dates}{\code{numeric} Vector containing planting dates requirements.}
 

@@ -7,6 +7,7 @@
 #' @param country `character(1)` The country code of the data.
 #' @param station_id `character` The id's of the stations to analyse. Either a
 #'   single value or a vector.
+#' @param call A character vector specifying where to call the raw data from if calling raw data.
 #' @param summaries `character` The names of the summaries to produce.
 #' @param override A logical argument default `FALSE` indicating whether to calculate the summaries still, even if they are stored already in the bucket.
 #'
@@ -16,8 +17,10 @@
 #' @examples
 #' #annual_rainfall_summaries(country = "zm", station_id = "01122", summaries = "annual_rain")
 #' #annual_rainfall_summaries(country = "zm", station_id = "16", summaries = c("start_rains", "end_rains", "annual_rain", "seasonal_rain")) #, "end_season"))
-annual_rainfall_summaries <- function(country, station_id, summaries = c("annual_rain", "start_rains", "end_rains", "end_season", "seasonal_rain", "seasonal_length"), override = FALSE) {
+annual_rainfall_summaries <- function(country, station_id, call = c("climsoft", "googlebuckets"),
+                                      summaries = c("annual_rain", "start_rains", "end_rains", "end_season", "seasonal_rain", "seasonal_length"), override = FALSE) {
   list_return <- NULL
+  call <- match.arg(call)
   
   # we get the definitions_id from station_id metadata.
   definitions_id <- get_definitions_id_from_metadata(country, station_id)
@@ -26,7 +29,7 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
   get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "annual_rainfall_summaries")
   summary_data <- get_summaries[[1]]
   timestamp <- get_summaries[[2]]
-  
+
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
@@ -133,12 +136,14 @@ annual_rainfall_summaries <- function(country, station_id, summaries = c("annual
         }
       }
     }
-    
     # Fetch daily data and preprocess
-    daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+    daily <- get_daily_data(country = country, station_id = station_id, call_from = call)
+    
     # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
     data_names <- epicsadata::data_definitions(names(daily), TRUE)
     daily <- check_and_rename_variables(daily, data_names)
+    if (class(daily$date) != "Date") daily$date <- as.Date(daily$date)
+    if (!"year" %in% names(daily)) daily$year <- lubridate::year(daily$date)
     
     # Check if start_rains and end_rains are required for seasonal_rain and seasonal_length
     if (any(grepl("seasonal_", summaries))){

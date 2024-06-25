@@ -33,9 +33,9 @@ check_and_rename_variables <- function(data, data_names) {
                        month = c("month_abbr", "month"),
                        doy = c("DOY", "doy_366", "doy"),
                        day = c("day"),
-                       rain = c("rain", "rainfall", "precipitation"),
-                       tmax = c("tmax", "max_temperature", "maximum", "max", "temperature_max"),
-                       tmin = c("tmin","min_temperature", "minimum", "min", "temperature_min"))
+                       rain = c("rain", "rainfall", "precipitation", "PRECIP"),
+                       tmax = c("tmax", "max_temperature", "maximum", "max", "temperature_max", "TMPMAX"),
+                       tmin = c("tmin","min_temperature", "minimum", "min", "temperature_min", "TMPMIN"))
     
     # Loop through the missing variable names
     

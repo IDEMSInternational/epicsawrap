@@ -20,11 +20,13 @@ test_that("Correct summaries are called", {
 test_that("Correct summaries are calculated", {
   result_annual <- suppressWarnings(total_temperature_summaries(country, 
                                                                 station_id, 
+                                                                call = "googlebuckets",
                                                                 to = "annual",
                                                                 summaries = c("mean_tmin", "mean_tmax"), 
                                                                 override = TRUE))
   result_monthly <- suppressWarnings(total_temperature_summaries(country, 
                                                                  station_id, 
+                                                                 call = "googlebuckets",
                                                                  to = "monthly",
                                                                  summaries = c("mean_tmin", "mean_tmax"), 
                                                                  override = TRUE))
@@ -36,6 +38,7 @@ test_that("Correct summaries are calculated", {
 test_that("Correct summaries are called", {
   result_annual <- suppressWarnings(total_temperature_summaries(country, station_id,
                                                                 summaries = c("min_tmin"),
+                                                                call = "googlebuckets",
                                                                 to = "annual",
                                                                 override = TRUE))
   expect_true(identical(names(result_annual[[2]]), c("station", "year", "min_tmin")))

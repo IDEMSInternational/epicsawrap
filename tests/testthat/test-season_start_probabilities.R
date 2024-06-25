@@ -12,6 +12,6 @@ test_that("Correct summaries are called", {
 })
 
 test_that("Correct summaries are calculated", {
-  result <- suppressWarnings(season_start_probabilities(country, station_id, override = TRUE))
+  result <- suppressWarnings(season_start_probabilities(country, station_id, call = "googlebuckets", override = TRUE))
   expect_true(identical(result[[2]], test_1_results))
 })

@@ -4,6 +4,7 @@
 #' @param country `character(1)` The country code of the data.
 #' @param station_id `character` The id's of the stations to analyse. Either a
 #'   single value or a vector.
+#' @param call A character vector specifying where to call the raw data from if calling raw data.
 #' @param water_requirements \code{numeric} Vector containing water requirements requirements.
 #' @param planting_dates \code{numeric} Vector containing planting dates requirements.
 #' @param planting_length \code{numeric} Vector containing seasonal crop length requirements.
@@ -28,6 +29,7 @@
 #' #                           planting_length = c(100, 150), planting_dates = c(90, 100, 110))
 crop_success_probabilities <- function(country,
                                        station_id,
+                                       call = c("climsoft", "googlebuckets"),
                                        planting_dates = NULL,
                                        water_requirements = NULL,
                                        planting_length = NULL,
@@ -99,17 +101,20 @@ crop_success_probabilities <- function(country,
     # if we are overriding, then we are overriding for our start_rains definition too, meaning we need to recalculate that
     if (override){
       # Fetch daily data and preprocess
-      daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+      daily <- get_daily_data(country = country, station_id = station_id, call_from = call)
       
       # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
       data_names <- epicsadata::data_definitions(names(daily), TRUE)
       daily <- check_and_rename_variables(daily, data_names)
+      if (class(daily$date) != "Date") daily$date <- as.Date(daily$date)
+      if (!"year" %in% names(daily)) daily$year <- lubridate::year(daily$date)
+    
     } else {
       data_names <- NULL
       data_names$station <- "station"
     }
     
-    season_data <- annual_rainfall_summaries(country = country, station_id = station_id, summaries = c("start_rains", "seasonal_length", "seasonal_rain"), override = override) # end rains or end season?
+    season_data <- annual_rainfall_summaries(country = country, station_id = station_id, call = call, summaries = c("start_rains", "seasonal_length", "seasonal_rain"), override = override) # end rains or end season?
     #offset <- season_data[[1]]$start_rains$s_start_doy
     
     definitions$crops_success$planting_length <- check_and_set_parameter("planting_length", "planting_length")

@@ -12,16 +12,19 @@ RoxygenNote: 7.2.3
 Depends: 
     R (>= 2.10)
 Imports: 
+    DBI,
     dplyr,
     epicsadata,
     forcats,
     googleCloudStorageR,
     jsonlite,
+    lubridate,
     magrittr,
     purrr,
     rlang,
     rpicsa,
-    testthat
+    testthat,
+    tidyr
 Remotes:
     IDEMSInternational/epicsadata,
     IDEMSInternational/rpicsa

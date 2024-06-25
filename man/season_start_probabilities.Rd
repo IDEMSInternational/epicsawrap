@@ -7,6 +7,7 @@
 season_start_probabilities(
   country,
   station_id,
+  call = c("climsoft", "googlebuckets"),
   start_dates = NULL,
   override = FALSE
 )
@@ -16,6 +17,8 @@ season_start_probabilities(
 
 \item{station_id}{\code{character} The id's of the stations to analyse. Either a
 single value or a vector.}
+
+\item{call}{A character vector specifying where to call the raw data from if calling raw data.}
 
 \item{start_dates}{\code{numeric} A vector of start dates (in doy format) to calculate the probabilities of the season starting on or before.}
 

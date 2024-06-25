@@ -4,6 +4,7 @@
 #'
 #' @param country A character string specifying the country code of the data.
 #' @param station_id A character vector specifying the ID(s) of the station(s) to analyse.
+#' @param call A character vector specifying where to call the raw data from if calling raw data.
 #' @param summaries A character vector specifying the names of the summaries to produce.
 #' @param to A character string indicating whether the summaries should be generated for "annual" or "monthly" data.
 #' @param override A logical argument default `FALSE` indicating whether to calculate the summaries still, even if they are stored already in the bucket.
@@ -15,10 +16,12 @@
 #' #total_temperature_summaries(country = "zm", station_id = "1", summaries = c("mean_tmin", "mean_tmax", "min_tmin", "max_tmax"), to = "annual")
 total_temperature_summaries <- function(country,
                                         station_id,
+                                        call = c("climsoft", "googlebuckets"),
                                         summaries = c("mean_tmin", "mean_tmax", "min_tmin", "min_tmax", "max_tmin", "max_tmax"),
                                         to = c("annual", "monthly"),
                                         override = FALSE) {
   to <- match.arg(to)
+  call <- match.arg(call)
   list_return <- NULL
   
   # we get the definitions_id from station_id metadata.
@@ -44,19 +47,15 @@ total_temperature_summaries <- function(country,
     
   } else {
     definitions <- definitions(country = country, definitions_id, summaries = summaries)
-    # Fetch daily data and preprocess
-    daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
     
+    # Fetch daily data and preprocess
+    daily <- get_daily_data(country = country, station_id = station_id, call_from = call)
+
     # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
     data_names <- epicsadata::data_definitions(names(daily), TRUE)
     daily <- check_and_rename_variables(daily, data_names)
-    
-    # # even though we can have tmax and tmin defined together, it's being done this way 
-    # # in case different parameters are defined for tmax and for tmin.
-    # summary_data <- expand.grid(year = unique(daily[[data_names$year]]), 
-    #                             station = unique(daily[[data_names$station]]))
-    # names(summary_data) <- c(data_names$year, data_names$station)
-    # 
+    if (class(daily$date) != "Date") daily$date <- as.Date(daily$date)
+    if (!"year" %in% names(daily)) daily$year <- lubridate::year(daily$date)
     summary_data <- NULL
 
     for (summary in summaries) {

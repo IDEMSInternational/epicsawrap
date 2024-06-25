@@ -7,6 +7,7 @@
 annual_rainfall_summaries(
   country,
   station_id,
+  call = c("climsoft", "googlebuckets"),
   summaries = c("annual_rain", "start_rains", "end_rains", "end_season", "seasonal_rain",
     "seasonal_length"),
   override = FALSE
@@ -17,6 +18,8 @@ annual_rainfall_summaries(
 
 \item{station_id}{\code{character} The id's of the stations to analyse. Either a
 single value or a vector.}
+
+\item{call}{A character vector specifying where to call the raw data from if calling raw data.}
 
 \item{summaries}{\code{character} The names of the summaries to produce.}
 
