@@ -39,10 +39,8 @@
 #'# seasonal_rain <- annual_rainfall_seasonal_rain(definitions, daily_data, summary_data, data_names, summary_types)
 #'
 annual_rainfall_seasonal_rain <- function(definitions, daily, summary_data, data_names, summaries) {
-  if (is.null(definitions$seasonal_rain$total_rain))
-    definitions$seasonal_rain$total_rain <- "FALSE"
-  if (is.null(definitions$seasonal_rain$n_rain))
-    definitions$seasonal_rain$n_rain <- "FALSE"
+  if (is.null(definitions$seasonal_rain$total_rain)) definitions$seasonal_rain$total_rain <- "FALSE"
+  if (is.null(definitions$seasonal_rain$n_rain)) definitions$seasonal_rain$n_rain <- "FALSE"
   if (definitions$seasonal_rain$n_rain){
     if (is.null(definitions$seasonal_rain$rain_day)) {
       warning("Missing value in seasonal_rain definitions for rain_day. Setting as 0")
@@ -61,9 +59,7 @@ annual_rainfall_seasonal_rain <- function(definitions, daily, summary_data, data
       warning("Performing seasonal_rain with end_season")
       end_date <- "end_season_date"
     }
-    if (identical(present_values, c(TRUE, TRUE, FALSE))){
-      end_date <- "end_rains_date"
-    }
+    if (identical(present_values, c(TRUE, TRUE, FALSE))) end_date <- "end_rains_date"
   } else {
     if (definitions$seasonal_rain$end_type == "rains"){
       end_date <- "end_rains_date"
