@@ -45,7 +45,7 @@ A list containing Climsoft station and observation data based on the filters app
 Connects to a Climsoft database and imports data based on the specified filters for stations and elements, with options to include observation flags and station information.
 }
 \examples{
-con <- get_climsoft_conn()
-data <- import_from_climsoft(con, stations = c("101", "102"), elements = c("1", "2"), start_date = as.Date("2020-01-01"), end_date = as.Date("2020-01-31"))
+#con <- get_climsoft_conn()
+#data <- import_from_climsoft(con, stations = c("101", "102"), elements = c("1", "2"), start_date = as.Date("2020-01-01"), end_date = as.Date("2020-01-31"))
 
 }

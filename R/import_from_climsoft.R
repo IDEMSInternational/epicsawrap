@@ -16,8 +16,8 @@
 #' @return A list containing Climsoft station and observation data based on the filters applied. If `include_station_info` is TRUE, the list will have two elements: 'Metadata' with station details and 'Daily data' with observations.
 #' 
 #' @examples
-#' con <- get_climsoft_conn()
-#' data <- import_from_climsoft(con, stations = c("101", "102"), elements = c("1", "2"), start_date = as.Date("2020-01-01"), end_date = as.Date("2020-01-31"))
+#' #con <- get_climsoft_conn()
+#' #data <- import_from_climsoft(con, stations = c("101", "102"), elements = c("1", "2"), start_date = as.Date("2020-01-01"), end_date = as.Date("2020-01-31"))
 #'
 #' @export
 import_from_climsoft <- function(con = get_climsoft_conn(),
