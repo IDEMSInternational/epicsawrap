@@ -16,3 +16,14 @@ test_that("Correct summaries are calculated", {
   result <- suppressWarnings(crop_success_probabilities(country, station_id, call = "googlebuckets", override = TRUE))
   expect_true(identical(result[[2]], test_2_results))
 })
+
+test_that("Recalculate summaries", {
+  result <- suppressWarnings(crop_success_probabilities(country,
+                                                        station_id = "zambia_eastern_4",
+                                                        water_requirements = c(100, 300, 800),
+                                                        planting_dates = 120,
+                                                        planting_length = 120))
+  expect_equal(nrow(result[[2]]), 15)
+})
+
+
