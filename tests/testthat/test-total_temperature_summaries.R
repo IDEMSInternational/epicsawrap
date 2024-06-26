@@ -6,7 +6,7 @@ test_1_annual <- readRDS("testdata/annual_temperature_summaries_test_1.rds")
 test_1_monthly <- readRDS("testdata/monthly_temperature_summaries_test_1.rds")
 test_1_annual_narm <- readRDS("testdata/annual_temperature_summaries_test_1_narm_F.rds")
 test_1_monthly_narm <- readRDS("testdata/monthly_temperature_summaries_test_1_narm_F.rds")
-country <- "zm_test"
+country <- "internal_tests"
 station_id <- "r_data_test_1"
 
 test_that("Correct summaries are called", {
@@ -31,8 +31,8 @@ test_that("Correct summaries are calculated", {
                                                                  summaries = c("mean_tmin", "mean_tmax"), 
                                                                  override = TRUE))
   
-  expect_true(identical(result_annual[[2]], test_1_annual_narm))
-  expect_true(identical(result_monthly[[2]], test_1_monthly_narm))
+  expect_true(identical(result_annual[[2]], test_1_annual))
+  expect_true(identical(result_monthly[[2]], test_1_monthly))
 })
 
 test_that("Correct summaries are called", {

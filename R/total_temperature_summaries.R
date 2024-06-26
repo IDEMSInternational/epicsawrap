@@ -30,14 +30,17 @@ total_temperature_summaries <- function(country,
   # do the summaries exist already?
   get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = paste0(to, "_temperature_summaries"))
   summary_data <- get_summaries[[1]]
+  timestamp <- get_summaries[[2]]
+  
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
-    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = get_summaries[[2]])
+    # to see definitions that exist in the bucket / whether that definition exists under that ID
+    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
       list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries))
     } else {
-      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries, paste0(definitions_id, ".", get_summaries[[2]])))
+      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries, paste0(definitions_id, ".", timestamp)))
     }
     
     # set vars_to_pull to only be names in the summary_data
@@ -46,7 +49,18 @@ total_temperature_summaries <- function(country,
     summary_data <- summary_data %>% dplyr::select(dplyr::all_of(vars_to_pull))
     
   } else {
-    definitions <- definitions(country = country, definitions_id, summaries = summaries)
+    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
+    if (nrow(file_name) == 0) {
+      definitions <- definitions(country = country, definitions_id = definitions_id, summaries = summaries)
+    } else {
+      # Get data definitions and summary definitions
+      if (!is.null(timestamp)){
+        file <- paste0(definitions_id, ".", timestamp)
+      } else {
+        file <- regmatches(file_name$name[length(file_name$name)], regexpr("(?<=/)[^/]+(?=\\.json)", file_name$name[length(file_name$name)], perl=TRUE))
+      }
+      definitions <- definitions(country = country, definitions_id = definitions_id, summaries = summaries, file = file)
+    }
     
     # Fetch daily data and preprocess
     daily <- get_daily_data(country = country, station_id = station_id, call_from = call)

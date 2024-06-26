@@ -4,7 +4,7 @@ library(testthat)
 epicsadata::gcs_auth_file(file = "testdata/epicsa_token.json")
 test_1_results <- readRDS("testdata/test_1_annual_rainfall_summaries.rds")
 test_2_results <- readRDS("testdata/test_2_annual_rainfall_summaries.rds")
-country <- "zm_test"
+country <- "internal_tests"
 station_id <- "r_data_test_1"
 
 test_that("Correct summaries are calculated", {
