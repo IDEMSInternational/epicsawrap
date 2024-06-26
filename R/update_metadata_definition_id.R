@@ -7,13 +7,19 @@
 #' @param station_id A character string representing the station ID.
 #' @param definition_id A character string representing the new definition ID to be added.
 #' @param overwrite A logical value indicating whether to overwrite the existing definitions ID. 
+#' @param add_climsoft A logical value indicating whether to add in climsoft details. This will add in the values from `elementfiltercolumn` and `elements`.
+#' @param elementfiltercolumn Name of the column to filter by elements, default is 'elementName'.
+#' @param elements Vector of element IDs to filter the data.
 #' If \code{TRUE}, the existing definitions ID will be overwritten. If \code{FALSE}, the new 
 #' definition ID will be appended. Default is \code{FALSE}.
 #'
 #' @return None. The function updates the metadata in the specified cloud storage bucket.
 #' 
 #' @export
-update_metadata_definition_id <- function(country, station_id, definition_id, overwrite = FALSE) {
+update_metadata_definition_id <- function(country, station_id, definition_id, overwrite = FALSE,
+                                          add_climsoft = FALSE,
+                                          elementfiltercolumn = "elementName",
+                                          elements = c("Temp  Daily Max", "Temp  Daily Min", "Precip  Daily")) {
   bucket <- epicsadata:::get_bucket_name(country)
   station_id_names <- station_id
   complete_metadata_from_bucket <- epicsadata::station_metadata(country)
@@ -32,6 +38,11 @@ update_metadata_definition_id <- function(country, station_id, definition_id, ov
   } else {
     new_df <- data.frame(station_id = station_id_names)
     new_df$definitions_id <- purrr::map(.x = definition_id, .f = ~ unique(c(.x)))
+    if (add_climsoft){
+      climsoft_list <- list(elementfiltercolumn, elements)
+      names(climsoft_list) <- c("elementName", "elements")
+      new_df$climsoft_list <- list(climsoft_list)
+    }
     complete_metadata_from_bucket <- dplyr::bind_rows(complete_metadata_from_bucket, new_df)
   }
   object_function <- function(input, output) { saveRDS(input, file = output) }

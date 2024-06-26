@@ -8,7 +8,10 @@ update_metadata_definition_id(
   country,
   station_id,
   definition_id,
-  overwrite = FALSE
+  overwrite = FALSE,
+  add_climsoft = FALSE,
+  elementfiltercolumn = "elementName",
+  elements = c("Temp  Daily Max", "Temp  Daily Min", "Precip  Daily")
 )
 }
 \arguments{
@@ -18,7 +21,13 @@ update_metadata_definition_id(
 
 \item{definition_id}{A character string representing the new definition ID to be added.}
 
-\item{overwrite}{A logical value indicating whether to overwrite the existing definitions ID.
+\item{overwrite}{A logical value indicating whether to overwrite the existing definitions ID.}
+
+\item{add_climsoft}{A logical value indicating whether to add in climsoft details. This will add in the values from \code{elementfiltercolumn} and \code{elements}.}
+
+\item{elementfiltercolumn}{Name of the column to filter by elements, default is 'elementName'.}
+
+\item{elements}{Vector of element IDs to filter the data.
 If \code{TRUE}, the existing definitions ID will be overwritten. If \code{FALSE}, the new
 definition ID will be appended. Default is \code{FALSE}.}
 }
