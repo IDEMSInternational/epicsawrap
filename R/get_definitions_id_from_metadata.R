@@ -15,7 +15,7 @@ get_definitions_id_from_metadata <- function(country, station_id) {
     definitions_id <- station_id
   } else {
     id_store <- station_id_metadata$definitions_id
-    definitions_id <- id_store[[1]][length(id_store)] # currently get the most recent ID 
+    definitions_id <- id_store[[1]][length(id_store[[1]])] # currently get the most recent ID 
   }
   return(definitions_id)
 }
