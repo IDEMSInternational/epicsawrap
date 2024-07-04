@@ -7,6 +7,7 @@
 annual_temperature_summaries(
   country,
   station_id,
+  call = c("climsoft", "googlebuckets"),
   summaries = c("mean_tmin", "mean_tmax", "min_tmin", "min_tmax", "max_tmin", "max_tmax"),
   override = FALSE
 )
@@ -16,6 +17,8 @@ annual_temperature_summaries(
 
 \item{station_id}{\code{character} The id's of the stations to analyse. Either a
 single value or a vector.}
+
+\item{call}{A character vector specifying where to call the raw data from if calling raw data.}
 
 \item{summaries}{\code{character} The names of the summaries to produce.}
 
