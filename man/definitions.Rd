@@ -4,10 +4,18 @@
 \alias{definitions}
 \title{Definitions}
 \usage{
-definitions(country, definitions_id, summaries, file = NULL)
+definitions(
+  country,
+  station_id = NULL,
+  definitions_id = NULL,
+  summaries,
+  file = NULL
+)
 }
 \arguments{
 \item{country}{\code{character(1)} The country code of the data.}
+
+\item{station_id}{\code{character(1)} The definitions code in the data.}
 
 \item{definitions_id}{\code{character(1)} The definitions code in the data.}
 

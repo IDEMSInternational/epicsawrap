@@ -21,7 +21,7 @@ annual_rainfall_summaries <- function(country, station_id, call = c("climsoft", 
                                       summaries = c("annual_rain", "start_rains", "end_rains", "end_season", "seasonal_rain", "seasonal_length"), override = FALSE) {
   list_return <- NULL
   call <- match.arg(call)
-  
+
   # we get the definitions_id from station_id metadata.
   definitions_id <- get_definitions_id_from_metadata(country, station_id)
   
@@ -33,14 +33,16 @@ annual_rainfall_summaries <- function(country, station_id, call = c("climsoft", 
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
+
     # to see definitions that exist in the bucket / whether that definition exists under that ID
     file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
-      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries))
+      list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries))
     } else {
-      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries, paste0(definitions_id, ".", timestamp)))
+      
+      list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries, file = paste0(definitions_id, ".", timestamp)))
     }
-    
+
     vars_to_pull <- c("station", "year")
     if ("annual_rain" %in% summaries) vars_to_pull <- c(vars_to_pull, "annual_rain", "n_rain")
     if ("start_rains" %in% summaries) vars_to_pull <- c(vars_to_pull, "start_rains_doy", "start_rains_date")
@@ -52,7 +54,6 @@ annual_rainfall_summaries <- function(country, station_id, call = c("climsoft", 
     # set vars_to_pull to only be names in the summary_data
     vars_to_pull <- vars_to_pull[vars_to_pull %in% colnames(summary_data)]
     summary_data <- summary_data %>% dplyr::select(dplyr::all_of(vars_to_pull))
-    
   } else {
     file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
@@ -163,7 +164,7 @@ annual_rainfall_summaries <- function(country, station_id, call = c("climsoft", 
     }
     require_end_rains <- any(grepl("seasonal_", summaries)) & (any(grepl("end_", summaries)))
     # run the checks to create this above, so we should never have this as false
-    
+
     summary_data <- NULL
     
     # Calculate summaries ==================================================================

@@ -13,19 +13,26 @@ station_metadata(
 )
 }
 \arguments{
-\item{country}{A character vector specifying the country or countries from which to get the metadata. Options include "zm" (Zambia) and "mz" (Mozambique).}
+\item{country}{A character vector specifying the country or countries from which to get the metadata. Options are defined in \code{get_bucket_name()} (e.g., \code{"zm"}, \code{"mw"}).}
 
 \item{station_id}{A character vector specifying the station IDs to filter by. If provided, only metadata for the specified station IDs will be returned.}
 
-\item{include_definitions_id}{A logical value indicating whether to include the definitions ID.}
+\item{include_definitions_id}{A logical value indicating whether to include the definitions id. If \code{TRUE}, definitions_id is given.}
 
-\item{include_definitions}{A logical value indicating whether to include definitions data. If TRUE, additional information about station definitions will be included in the output.}
+\item{include_definitions}{A logical value indicating whether to include definitions data. If \code{TRUE}, additional information about station definitions will be included in the output.}
 
-\item{format}{A character vector specifying the format of the output. Options are "wide" (default), "long", "nested", or "list".}
+\item{format}{A character vector specifying the format of the output. Options are \code{"wide"} (default), \code{"long"}, \code{"nested"}, or \code{"list"}.}
 }
 \value{
-If \code{include_definitions} is FALSE, the function returns a data frame with metadata for the specified stations. If \code{include_definitions} is TRUE, it returns a data frame with both metadata and station definitions.
+If \code{include_definitions} is FALSE, the function returns a data frame with metadata for the specified stations. If \code{include_definitions} is \code{TRUE}, it returns a data frame with both metadata and station definitions.
 }
 \description{
 This function retrieves metadata for weather stations in specified countries.
+}
+\examples{
+# TODO
+
+}
+\seealso{
+\code{update_metadata} for updating metadata files.
 }
