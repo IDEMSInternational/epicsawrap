@@ -27,9 +27,9 @@ extremes_summaries <- function(country, station_id,
     # what if the definitions is different? 
     file_name <- epicsadata::get_objects_in_bucket(country, station_id, timestamp = get_summaries[[2]])
     if (nrow(file_name) == 0) {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries))
+      list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries))
     } else {
-      list_return[[1]] <- (definitions(country, station_id, summaries = summaries, paste0(station_id, ".", get_summaries[[2]])))
+      list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries, file = paste0(station_id, ".", get_summaries[[2]])))
     }
   } else {
     # Fetch daily data and preprocess
