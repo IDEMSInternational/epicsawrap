@@ -53,7 +53,7 @@ get_definitions_data <- function(country, station_id, definitions_id = NULL, fil
       json_files <- files$name
       
       # Check if multiple json files found. If so, take hte most recent one.
-      if (length(json_files) > 1){
+      if (length(json_files) >= 1){
         # Extract timestamps from file names
         definitions_id[i] <- extract_most_recent_json(json_files)
       }
