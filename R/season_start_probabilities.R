@@ -43,9 +43,9 @@ season_start_probabilities <- function(country,
   if (nrow(summary_data) > 0 & override == FALSE & is.null(start_dates)) {
     file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
-      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries))
+      list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries))
     } else {
-      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries, paste0(definitions_id, ".", timestamp)))
+      list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries, file = paste0(definitions_id, ".", timestamp)))
     }
   } else {
     file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)

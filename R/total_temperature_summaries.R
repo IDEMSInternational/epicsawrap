@@ -38,9 +38,9 @@ total_temperature_summaries <- function(country,
     # to see definitions that exist in the bucket / whether that definition exists under that ID
     file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
-      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries))
+      list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries))
     } else {
-      list_return[[1]] <- (definitions(country, definitions_id, summaries = summaries, paste0(definitions_id, ".", timestamp)))
+      list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries, file = paste0(definitions_id, ".", timestamp)))
     }
     
     # set vars_to_pull to only be names in the summary_data

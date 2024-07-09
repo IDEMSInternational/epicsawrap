@@ -68,9 +68,9 @@ crop_success_probabilities <- function(country,
   if (nrow(summary_data) > 0 & override == FALSE) {
     file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
-      definitions <- definitions(country, definitions_id, summaries = "crops_success")
+      definitions <- definitions(country, station_id = station_id, summaries = "crops_success")
     } else {
-      definitions <- definitions(country, definitions_id, summaries = "crops_success", paste0(definitions_id, ".", timestamp))
+      definitions <- definitions(country, station_id = station_id, summaries = "crops_success", file = paste0(definitions_id, ".", timestamp))
     }
     definitions$crops_success$planting_length <- check_and_set_parameter("planting_length", "planting_length")
     definitions$crops_success$water_requirements <- check_and_set_parameter("water_requirements", "water_requirements")
