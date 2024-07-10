@@ -4,7 +4,7 @@
 \alias{add_data_to_bucket}
 \title{Add New Data to Google Cloud Storage Bucket}
 \usage{
-add_data_to_bucket(country, station_id, data)
+add_data_to_bucket(country, station_id, data, timestamp = NULL)
 }
 \arguments{
 \item{country}{A character vector specifying the country that the data corresponds to. Options are \code{"mz"} and \code{"zm"}.}
@@ -12,10 +12,15 @@ add_data_to_bucket(country, station_id, data)
 \item{station_id}{A character string specifying the ID of the station that the data corresponds to.}
 
 \item{data}{The data to upload.}
+
+\item{timestamp}{A character vector with a timestamp. By default this is \code{NULL} so is generated.}
 }
 \description{
 This function adds a new data file (RDS format) with a timestamp to a specified Google Cloud Storage (GCS) bucket.
 }
 \details{
 The function creates a timestamp in the format "YYYYMMDDHHMMSS" and appends it to the station_id to form the filename. It then reads the provided file, creates a new file with the timestamped filename, and uploads it to the specified GCS bucket.
+}
+\seealso{
+\code{get_bucket_name} for retrieving the GCS bucket name.
 }

@@ -15,11 +15,14 @@ add_summaries_to_bucket(country, station_id, data, summary, timestamp = NULL)
 
 \item{summary}{The summary function used to create the data.}
 
-\item{timestamp}{A character vector with a timestamp. By default this is \code{NULL} so is generated at the time of creation.}
+\item{timestamp}{A character vector with a timestamp. By default this is \code{NULL} so is generated.}
 }
 \description{
 This function adds a new summary data file (RDS format) with a timestamp to a specified Google Cloud Storage (GCS) bucket.
 }
 \details{
 The function creates a timestamp in the format "YYYYMMDDHHMMSS" and appends it to the station_id to form the filename. It then reads the provided file, creates a new file with the timestamped filename, and uploads it to the specified GCS bucket.
+}
+\seealso{
+\code{get_bucket_name} for retrieving the GCS bucket name.
 }

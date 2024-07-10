@@ -6,23 +6,26 @@
 \usage{
 add_definitions_to_bucket(
   country,
-  definitions_id,
+  station_id,
   new_definitions,
   timestamp = NULL
 )
 }
 \arguments{
-\item{country}{A character vector specifying the country that the data corresponds to. Options are \code{"mz"} and \code{"zm"}.}
+\item{country}{A character vector specifying the country or countries from which to get the definitions data. Options are \code{"mz"} and \code{"zm"}.}
 
-\item{definitions_id}{A character string specifying the ID of the station that the data corresponds to.}
+\item{station_id}{A character string specifying the ID of the station for which to get the definitions data.}
 
 \item{new_definitions}{A character vector specifying the path to the JSON file containing the new definitions.}
 
-\item{timestamp}{A character vector with a timestamp. By default this is \code{NULL} so is generated at the time of creation.}
+\item{timestamp}{A character vector with a timestamp. By default this is \code{NULL} so is generated.}
 }
 \description{
 This function adds a new definitions file with a timestamp to a specified Google Cloud Storage (GCS) bucket. The new definitions are sourced from a JSON file provided as input.
 }
 \details{
-The function creates a timestamp in the format "YYYYMMDDHHMMSS" and appends it to the definitions_id to form the filename. It then reads the provided JSON file, creates a new JSON file with the timestamped filename, and uploads it to the specified GCS bucket.
+The function creates a timestamp in the format "YYYYMMDDHHMMSS" and appends it to the station_id to form the filename. It then reads the provided JSON file, creates a new JSON file with the timestamped filename, and uploads it to the specified GCS bucket.
+}
+\seealso{
+\code{get_bucket_name} for retrieving the GCS bucket name.
 }
