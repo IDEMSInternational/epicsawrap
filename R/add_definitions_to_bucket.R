@@ -3,12 +3,12 @@
 #' This function adds a new definitions file with a timestamp to a specified Google Cloud Storage (GCS) bucket. The new definitions are sourced from a JSON file provided as input.
 #'
 #' @param country A character vector specifying the country or countries from which to get the definitions data. Options are `"mz"` and `"zm"`.
-#' @param station_id A character string specifying the ID of the station for which to get the definitions data.
+#' @param definitions_id A character string specifying the ID of the station for which to get the definitions data.
 #' @param new_definitions A character vector specifying the path to the JSON file containing the new definitions.
 #' @param timestamp A character vector with a timestamp. By default this is `NULL` so is generated.
 #'
 #' @details
-#' The function creates a timestamp in the format "YYYYMMDDHHMMSS" and appends it to the station_id to form the filename. It then reads the provided JSON file, creates a new JSON file with the timestamped filename, and uploads it to the specified GCS bucket.
+#' The function creates a timestamp in the format "YYYYMMDDHHMMSS" and appends it to the definitions_id to form the filename. It then reads the provided JSON file, creates a new JSON file with the timestamped filename, and uploads it to the specified GCS bucket.
 #'
 #' @export
 #' @importFrom googleCloudStorageR gcs_upload
@@ -17,7 +17,7 @@
 #' @seealso
 #' \code{get_bucket_name} for retrieving the GCS bucket name.
 #'
-add_definitions_to_bucket <- function(country, station_id, new_definitions, timestamp = NULL){
+add_definitions_to_bucket <- function(country, definitions_id, new_definitions, timestamp = NULL){
   bucket <- get_bucket_name(country)
   definitions_dir <- "definitions"
   
@@ -28,7 +28,7 @@ add_definitions_to_bucket <- function(country, station_id, new_definitions, time
   }
   
   # Define the filename with the timestamp 
-  new_filename <- paste0(station_id, ".", timestamp, ".json")
+  new_filename <- paste0(definitions_id, ".", timestamp, ".json")
   
   object_function <- function(input, output) {
     jsonlite::write_json(input, path = output, auto_unbox = TRUE, pretty = TRUE)
