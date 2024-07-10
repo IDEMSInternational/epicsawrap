@@ -16,5 +16,7 @@
 #'
 #' @examples # get_binary_file("zm", "16", "pdf")
 get_binary_file <- function(country = c("mz", "zm"), station_id, type = c("pdf", "jpeg")) {
-  return(epicsadata::get_binary_file(country = country, station_id = station_id, type = type))
+  type <- match.arg(type)
+  filename <- paste0(type, "/", station_id, ".", type)
+  invisible(get_data(country = country, filename = filename))
 }
