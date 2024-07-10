@@ -1,4 +1,5 @@
 library(testthat)
+gcs_auth_file(file = "testdata/epicsa_token.json")
 
 # test definitions
 test_that("Expect warning", {

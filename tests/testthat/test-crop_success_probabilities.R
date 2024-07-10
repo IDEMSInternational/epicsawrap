@@ -1,7 +1,7 @@
 library(testthat)
 
 # Test case 1
-epicsadata::gcs_auth_file(file = "testdata/epicsa_token.json")
+gcs_auth_file(file = "testdata/epicsa_token.json")
 test_1_results <- readRDS("testdata/crop_success_probabilities_test_1.rds")
 test_2_results <- readRDS("testdata/crop_success_probabilities_test_2.rds")
 country <- "internal_tests"

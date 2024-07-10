@@ -4,7 +4,7 @@ library(testthat)
 # fix up when we've added extremes into new system. this is not working at the moment.
 
 # Test case 
-epicsadata::gcs_auth_file(file = "testdata/epicsa_token.json")
+gcs_auth_file(file = "testdata/epicsa_token.json")
 test_1_results <- readRDS("testdata/extremes_summaries_test_1.rds")
 country <- "zm"
 station_id <- "test_1"

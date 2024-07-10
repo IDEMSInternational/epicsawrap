@@ -1,7 +1,7 @@
 library(testthat)
 
 # Test case 1 
-epicsadata::gcs_auth_file(file = "testdata/epicsa_token.json")
+gcs_auth_file(file = "testdata/epicsa_token.json")
 test_1_annual <- readRDS("testdata/annual_temperature_summaries_test_1.rds")
 test_1_monthly <- readRDS("testdata/monthly_temperature_summaries_test_1.rds")
 test_1_annual_narm <- readRDS("testdata/annual_temperature_summaries_test_1_narm_F.rds")

@@ -1,3 +1,5 @@
+gcs_auth_file(file = "testdata/epicsa_token.json")
+
 ### mw_workshops
 annual_rainfall_summaries("mw_workshops", "Nkhotakota")
 annual_rainfall_summaries("mw_workshops", "Kasungu")
