@@ -51,7 +51,7 @@ crop_success_probabilities <- function(country,
   definitions_id <- get_definitions_id_from_metadata(country, station_id)
   
   # do the summaries exist already?
-  get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = "crop_success_probabilities")
+  get_summaries <- get_summaries_data(country, station_id, summary = "crop_success_probabilities")
   summary_data <- get_summaries[[1]]
   timestamp <- get_summaries[[2]]
   
@@ -66,7 +66,7 @@ crop_success_probabilities <- function(country,
   # what if the definitions is different? Have an override option.
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
-    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
+    file_name <- get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
       definitions <- definitions(country, station_id = station_id, summaries = "crops_success")
     } else {
@@ -80,7 +80,7 @@ crop_success_probabilities <- function(country,
   } else {
     
     # check bucket for file
-    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
+    file_name <- get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
       definitions <- definitions(country = country, definitions_id = definitions_id, summaries = "crops_success")
     } else {
@@ -95,10 +95,10 @@ crop_success_probabilities <- function(country,
     
     # if we are overriding, then we are overriding for our start_rains definition too, meaning we need to recalculate that
     # Fetch daily data and preprocess
-    daily <- epicsadata::get_daily_data(country = country, station_id = station_id)
+    daily <- get_daily_data(country = country, station_id = station_id)
     
     # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
-    data_names <- epicsadata::data_definitions(names(daily), TRUE)
+    data_names <- data_definitions(names(daily), TRUE)
     daily <- check_and_rename_variables(daily, data_names)
     
     season_data <- annual_rainfall_summaries(country = country, station_id = station_id, call = call, summaries = c("start_rains", "end_rains"), override = override) # end rains or end season?

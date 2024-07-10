@@ -31,7 +31,7 @@ season_start_probabilities <- function(country,
   summaries <- "season_start_probabilities"
   
   # do the summaries exist already?
-  get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = summaries)
+  get_summaries <- get_summaries_data(country, station_id, summary = summaries)
   summary_data <- get_summaries[[1]]
   timestamp <- get_summaries[[2]]
   
@@ -41,14 +41,14 @@ season_start_probabilities <- function(country,
   if (!is.null(start_dates) & override == FALSE & nrow(summary_data) > 0) warning("Override set to TRUE for calculating start dates. Using saved data for start_rains")
   
   if (nrow(summary_data) > 0 & override == FALSE & is.null(start_dates)) {
-    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
+    file_name <- get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
       list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries))
     } else {
       list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries, file = paste0(definitions_id, ".", timestamp)))
     }
   } else {
-    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
+    file_name <- get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
       definitions <- definitions(country = country, definitions_id = definitions_id, summaries = summaries)
     } else {
@@ -66,7 +66,7 @@ season_start_probabilities <- function(country,
       # Fetch daily data and preprocess
       daily <- get_daily_data(country = country, station_id = station_id, call_from = call)
       # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
-      data_names <- epicsadata::data_definitions(names(daily), TRUE)
+      data_names <- data_definitions(names(daily), TRUE)
       daily <- check_and_rename_variables(daily, data_names)
       if (class(daily$date) != "Date") daily$date <- as.Date(daily$date)
       if (!"year" %in% names(daily)) daily$year <- lubridate::year(daily$date)

@@ -14,7 +14,7 @@ get_summaries_data <- function(country, station_id, summary) {
   station_id <- as.character(station_id)
   dfs <- vector("list", length(station_id))
   names(dfs) <- station_id
-  bucket_name <- epicsadata:::get_bucket_name(country)
+  bucket_name <- get_bucket_name(country)
   for (i in seq_along(station_id)) {
     objects_in_space <- googleCloudStorageR::gcs_list_objects(bucket = bucket_name, prefix = paste0("summaries/", summary, "_", station_id[i], "."), versions = TRUE)
     
@@ -36,7 +36,7 @@ get_summaries_data <- function(country, station_id, summary) {
       if (file.exists(f)) {
         dfs[[i]] <- readRDS(f)
       } else {
-        f <- epicsadata:::update_summaries_data(country, station_id[i], summary)
+        f <- update_summaries_data(country, station_id[i], summary)
         dfs[[i]] <- f
       }
       timestamp <- gsub(".*\\.(\\d+)\\.rds", "\\1", rds_files)

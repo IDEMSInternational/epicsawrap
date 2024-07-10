@@ -31,7 +31,7 @@ get_daily_data <- function(country, station_id, call_from = c("climsoft", "googl
       if (file.exists(f)) {
         dfs[[i]] <- readRDS(f)
       } else {
-        f <- epicsadata::update_daily_data(country, station_id[i])
+        f <- update_daily_data(country, station_id[i])
         dfs[[i]] <- f#saveRDS(o, file = f)
       }
     }

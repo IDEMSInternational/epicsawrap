@@ -28,7 +28,7 @@ total_temperature_summaries <- function(country,
   definitions_id <- get_definitions_id_from_metadata(country, station_id)
   
   # do the summaries exist already?
-  get_summaries <- epicsadata::get_summaries_data(country, station_id, summary = paste0(to, "_temperature_summaries"))
+  get_summaries <- get_summaries_data(country, station_id, summary = paste0(to, "_temperature_summaries"))
   summary_data <- get_summaries[[1]]
   timestamp <- get_summaries[[2]]
   
@@ -36,7 +36,7 @@ total_temperature_summaries <- function(country,
   # if the summary data exists, and if you do not want to override it then:
   if (nrow(summary_data) > 0 & override == FALSE) {
     # to see definitions that exist in the bucket / whether that definition exists under that ID
-    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
+    file_name <- get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
       list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries))
     } else {
@@ -49,7 +49,7 @@ total_temperature_summaries <- function(country,
     summary_data <- summary_data %>% dplyr::select(dplyr::all_of(vars_to_pull))
     
   } else {
-    file_name <- epicsadata::get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
+    file_name <- get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
       definitions <- definitions(country = country, definitions_id = definitions_id, summaries = summaries)
     } else {
@@ -66,7 +66,7 @@ total_temperature_summaries <- function(country,
     daily <- get_daily_data(country = country, station_id = station_id, call_from = call)
 
     # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
-    data_names <- epicsadata::data_definitions(names(daily), TRUE)
+    data_names <- data_definitions(names(daily), TRUE)
     daily <- check_and_rename_variables(daily, data_names)
     if (class(daily$date) != "Date") daily$date <- as.Date(daily$date)
     if (!"year" %in% names(daily)) daily$year <- lubridate::year(daily$date)
