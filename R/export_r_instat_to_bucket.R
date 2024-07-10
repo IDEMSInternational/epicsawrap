@@ -62,13 +62,14 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
   
   timestamp <- format(Sys.time(), format = "%Y%m%d%H%M%S") 
 
-  definitions_data <- epicsadata::collate_definitions_data(data = data, data_by_year = data_by_year, data_by_year_month = data_by_year_month, crop_data = crop_data_name, rain = rain, year = year, month = month, summaries = summaries,
+  definitions_data <- collate_definitions_data(data = data, data_by_year = data_by_year, data_by_year_month = data_by_year_month, crop_data = crop_data_name, rain = rain, year = year, month = month, summaries = summaries,
                                                            start_rains_column = start_rains_column, start_rains_status_column = start_rains_status_column, end_rains_column = end_rains_column,
                                                            end_rains_status_column = end_rains_status_column, 
                                                            end_season_column = end_season_column,
                                                            end_season_status_column = end_season_status_column, 
                                                            seasonal_length_column = seasonal_length_column, min_tmin_column = min_tmin_column, 
                                                            mean_tmin_column = mean_tmin_column, max_tmin_column = max_tmin_column, min_tmax_column = min_tmax_column, mean_tmax_column = mean_tmax_column, max_tmax_column = max_tmax_column )
+  
   # Save into bucket
   # commented out code was when we had this for multiple station_ids. We now just do for one definition_id.
   #purrr::map(.x = station_id,
@@ -80,13 +81,9 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
   if (include_summary_data){
     # function to read summary data from R-Instat into summaries in buckets
     if ("annual_rainfall" %in% summaries) purrr::map(.x = station_id, .f = ~add_summaries_to_bucket(country = country, station_id = .x, data = annual_rainfall_data, summary = "annual_rainfall_summaries", timestamp = timestamp))
-    
     if ("annual_temperature" %in% summaries) purrr::map(.x = station_id, .f = ~add_summaries_to_bucket(country = country, station_id = .x, data = annual_temperature_data, summary = "annual_temperature_summaries", timestamp = timestamp))
-    
     if ("monthly_temperature" %in% summaries) purrr::map(.x = station_id, .f = ~add_summaries_to_bucket(country = country, station_id = .x, data = monthly_temperature_data, summary = "monthly_temperature_summaries", timestamp = timestamp))
-    
     if ("crop_success" %in% summaries) purrr::map(.x = station_id, .f = ~add_summaries_to_bucket(country = country, station_id = .x, data = crop_success_data, summary = "crop_success_probabilities", timestamp = timestamp))
-    
     if ("start_season" %in% summaries) purrr::map(.x = station_id, .f = ~add_summaries_to_bucket(country = country, station_id = .x, data = season_start_data, summary = "season_start_probabilities", timestamp = timestamp))
   }
   
