@@ -95,7 +95,7 @@ crop_success_probabilities <- function(country,
     
     # if we are overriding, then we are overriding for our start_rains definition too, meaning we need to recalculate that
     # Fetch daily data and preprocess
-    daily <- get_daily_data(country = country, station_id = station_id)
+    daily <- get_daily_data(country = country, station_id = station_id, call_from = call)
     
     # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
     data_names <- data_definitions(names(daily), TRUE)
