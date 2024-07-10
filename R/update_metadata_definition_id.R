@@ -20,7 +20,7 @@ update_metadata_definition_id <- function(country, station_id, definition_id, ov
                                           add_climsoft = FALSE,
                                           elementfiltercolumn = "elementName",
                                           elements = c("Temp  Daily Max", "Temp  Daily Min", "Precip  Daily")) {
-  bucket <- epicsadata:::get_bucket_name(country)
+  bucket <- get_bucket_name(country)
   station_id_names <- station_id
   complete_metadata_from_bucket <- epicsadata::station_metadata(country)
   reference <- complete_metadata_from_bucket$station_id
