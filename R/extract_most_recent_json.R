@@ -14,7 +14,6 @@
 #'   "definitions/1.20240304125111.json",
 #'   "definitions/1.json"
 #' )
-#' epicsadata:::extract_most_recent_json(files)
 extract_most_recent_json <- function(files) {
   most_recent_file <- NULL
   most_recent_timestamp <- 0

@@ -9,7 +9,7 @@
 #' 
 #' @export
 get_definitions_id_from_metadata <- function(country, station_id) {
-  station_id_metadata <- epicsadata::station_metadata(country = country, station_id = station_id, include_definitions = FALSE)
+  station_id_metadata <- station_metadata(country = country, station_id = station_id, include_definitions = FALSE)
   if (nrow(station_id_metadata) == 0) {
     warning(paste0(station_id, " not found in metadata. No definition ID given. Returning station_id."))
     definitions_id <- station_id
