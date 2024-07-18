@@ -5,7 +5,7 @@
 \title{Export R-Instat Data to Google Cloud Storage Bucket}
 \usage{
 export_r_instat_to_bucket(
-  data,
+  data = NULL,
   data_by_year,
   data_by_year_month = NULL,
   crop_data_name = NULL,

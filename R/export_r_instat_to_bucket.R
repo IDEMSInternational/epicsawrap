@@ -47,7 +47,7 @@
 #'
 #' @examples
 #' # Provide examples here if needed
-export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = NULL, crop_data_name = NULL,
+export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_month = NULL, crop_data_name = NULL,
                                       rain = NULL, station = NULL, year = NULL, month = NULL,
                                       summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "extremes", "crop_success", "start_season"),
                                       station_id = NULL, definitions_id, country,
