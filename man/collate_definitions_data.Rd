@@ -5,7 +5,6 @@
 \title{Collate Definitions Data for Climatic Analysis from R-Instat}
 \usage{
 collate_definitions_data(
-  data = "ghana",
   data_by_year = "ghana_by_station_year",
   data_by_year_month = NULL,
   crop_data = "crop_def",
@@ -30,8 +29,6 @@ collate_definitions_data(
 )
 }
 \arguments{
-\item{data}{The name of the main data set, default is "ghana".}
-
 \item{data_by_year}{The name of the data set that contains data aggregated by year, default is "ghana_by_station_year".}
 
 \item{data_by_year_month}{The name of the data set that contains data aggregated by year and month, default is NULL.}

@@ -4,10 +4,10 @@
 \alias{get_offset_term}
 \title{Get Offset Term}
 \usage{
-get_offset_term(data)
+get_offset_term(data_by_year)
 }
 \arguments{
-\item{data}{A data object from which to retrieve the start DOY. This data object is expected
+\item{data_by_year}{A data object from which to retrieve the start DOY. This data object is expected
 to have an associated metadata containing a \code{doy_start} field.}
 }
 \value{

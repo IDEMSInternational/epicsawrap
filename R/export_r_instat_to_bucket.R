@@ -4,11 +4,12 @@
 #' It collates the data and saves it as a JSON file on the local machine, then uploads
 #' the file to the specified bucket.
 #'
-#' @param data The main dataset.
+#' @param data The main dataset. Depreciated. can be removed after updates to R-Instat dialog.
 #' @param data_by_year The dataset grouped by year.
 #' @param data_by_year_month The dataset grouped by year and month.
 #' @param crop_data_name Name of the crop data used for definitions when `summaries = "crop_success"`.
 #' @param rain The rainfall data.
+#' @param station The station variable.
 #' @param year The year data.
 #' @param month The month data.
 #' @param summaries A character vector specifying the types of summaries to include.
@@ -47,9 +48,9 @@
 #' @examples
 #' # Provide examples here if needed
 export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = NULL, crop_data_name = NULL,
-                                      rain = NULL, year = NULL, month = NULL,
+                                      rain = NULL, station = NULL, year = NULL, month = NULL,
                                       summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "extremes", "crop_success", "start_season"),
-                                      station_id, definitions_id, country,
+                                      station_id = NULL, definitions_id, country,
                                       include_summary_data = FALSE,
                                       annual_rainfall_data = NULL, annual_temperature_data = NULL, monthly_temperature_data = NULL,
                                       crop_success_data = NULL, season_start_data = NULL,
@@ -59,10 +60,9 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
                                       min_tmin_column = "min_tmin", mean_tmin_column = "mean_tmin", max_tmin_column = "max_tmin",
                                       min_tmax_column = "min_tmax", mean_tmax_column = "mean_tmax", max_tmax_column = "max_tmax"){
   
-  
   timestamp <- format(Sys.time(), format = "%Y%m%d%H%M%S") 
 
-  definitions_data <- collate_definitions_data(data = data, data_by_year = data_by_year, data_by_year_month = data_by_year_month, crop_data = crop_data_name, rain = rain, year = year, month = month, summaries = summaries,
+  definitions_data <- collate_definitions_data(data_by_year = data_by_year, data_by_year_month = data_by_year_month, crop_data = crop_data_name, rain = rain, year = year, month = month, summaries = summaries,
                                                            start_rains_column = start_rains_column, start_rains_status_column = start_rains_status_column, end_rains_column = end_rains_column,
                                                            end_rains_status_column = end_rains_status_column, 
                                                            end_season_column = end_season_column,
@@ -74,17 +74,73 @@ export_r_instat_to_bucket <- function(data, data_by_year, data_by_year_month = N
   # commented out code was when we had this for multiple station_ids. We now just do for one definition_id.
   #purrr::map(.x = station_id,
   #           .f = ~add_definitions_to_bucket(country = country, station_id = .x, new_definitions = definitions_data, timestamp = timestamp))
-  
   add_definitions_to_bucket(country = country, definitions_id = definitions_id, new_definitions = definitions_data, timestamp = timestamp)
-  update_metadata_definition_id(country = country, station_id = station_id, definition_id = definitions_id, overwrite = FALSE)
+
+  # Ensure unique stations are obtained because we want to repeat for each station
+  unique_stations <- unique(data_book$get_data_frame(data_by_year)[[station]])
+  
+  # TODO: need to add in metadata additions
+  purrr::map(.x = unique_stations,
+             .f = ~{station_id <- .x
+             update_metadata_definition_id(country = country, station_id = .x, definition_id = definitions_id, overwrite = FALSE)
+             })
   
   if (include_summary_data){
     # function to read summary data from R-Instat into summaries in buckets
-    if ("annual_rainfall" %in% summaries) purrr::map(.x = station_id, .f = ~add_summaries_to_bucket(country = country, station_id = .x, data = annual_rainfall_data, summary = "annual_rainfall_summaries", timestamp = timestamp))
-    if ("annual_temperature" %in% summaries) purrr::map(.x = station_id, .f = ~add_summaries_to_bucket(country = country, station_id = .x, data = annual_temperature_data, summary = "annual_temperature_summaries", timestamp = timestamp))
-    if ("monthly_temperature" %in% summaries) purrr::map(.x = station_id, .f = ~add_summaries_to_bucket(country = country, station_id = .x, data = monthly_temperature_data, summary = "monthly_temperature_summaries", timestamp = timestamp))
-    if ("crop_success" %in% summaries) purrr::map(.x = station_id, .f = ~add_summaries_to_bucket(country = country, station_id = .x, data = crop_success_data, summary = "crop_success_probabilities", timestamp = timestamp))
-    if ("start_season" %in% summaries) purrr::map(.x = station_id, .f = ~add_summaries_to_bucket(country = country, station_id = .x, data = season_start_data, summary = "season_start_probabilities", timestamp = timestamp))
+    # different file per station:
+    if ("annual_rainfall" %in% summaries) {
+      purrr::map(.x = unique_stations,
+        .f = ~{station_id <- .x
+          filtered_data <- annual_rainfall_data %>% filter(station == station_id)
+          add_summaries_to_bucket(country = country, station_id = station_id, data = filtered_data,
+            summary = "annual_rainfall_summaries", timestamp = timestamp)
+        }
+      )
+    }
+    
+    if ("annual_temperature" %in% summaries) {
+      purrr::map(
+        .x = unique_stations,
+        .f = ~{station_id <- .x
+          filtered_data <- annual_temperature_data %>% filter(station == station_id)
+          add_summaries_to_bucket(country = country, station_id = station_id, data = filtered_data,
+            summary = "annual_temperature_summaries", timestamp = timestamp)
+        }
+      )
+    }
+    
+    if ("monthly_temperature" %in% summaries) {
+      purrr::map(
+        .x = unique_stations,
+        .f = ~{station_id <- .x
+        filtered_data <- monthly_temperature_data %>% filter(station == station_id)
+        add_summaries_to_bucket(country = country, station_id = station_id, data = filtered_data,
+                                summary = "monthly_temperature_summaries", timestamp = timestamp)
+        }
+      )
+    }
+
+    if ("crop_success" %in% summaries) {
+      purrr::map(
+        .x = unique_stations,
+        .f = ~{station_id <- .x
+        filtered_data <- crop_success_data %>% filter(station == station_id)
+        add_summaries_to_bucket(country = country, station_id = station_id, data = filtered_data,
+                                summary = "crop_success_probabilities", timestamp = timestamp)
+        }
+      )
+    }
+    
+    if ("start_season" %in% summaries) {
+      purrr::map(
+        .x = unique_stations,
+        .f = ~{station_id <- .x
+        filtered_data <- season_start_data %>% filter(station == station_id)
+        add_summaries_to_bucket(country = country, station_id = station_id, data = filtered_data,
+                                summary = "season_start_probabilities", timestamp = timestamp)
+        }
+      )
+    }
   }
   
   return("Uploaded to Bucket")

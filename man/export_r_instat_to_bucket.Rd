@@ -10,11 +10,12 @@ export_r_instat_to_bucket(
   data_by_year_month = NULL,
   crop_data_name = NULL,
   rain = NULL,
+  station = NULL,
   year = NULL,
   month = NULL,
   summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature",
     "extremes", "crop_success", "start_season"),
-  station_id,
+  station_id = NULL,
   definitions_id,
   country,
   include_summary_data = FALSE,
@@ -39,7 +40,7 @@ export_r_instat_to_bucket(
 )
 }
 \arguments{
-\item{data}{The main dataset.}
+\item{data}{The main dataset. Depreciated. can be removed after updates to R-Instat dialog.}
 
 \item{data_by_year}{The dataset grouped by year.}
 
@@ -48,6 +49,8 @@ export_r_instat_to_bucket(
 \item{crop_data_name}{Name of the crop data used for definitions when \code{summaries = "crop_success"}.}
 
 \item{rain}{The rainfall data.}
+
+\item{station}{The station variable.}
 
 \item{year}{The year data.}
 

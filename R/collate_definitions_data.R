@@ -6,7 +6,6 @@
 #' focusing on data related to Ghana's climate. The function uses multiple sources of data
 #' and calculations to generate a comprehensive list-formatted summary.
 #'
-#' @param data The name of the main data set, default is "ghana".
 #' @param data_by_year The name of the data set that contains data aggregated by year, default is "ghana_by_station_year".
 #' @param data_by_year_month The name of the data set that contains data aggregated by year and month, default is NULL.
 #' @param crop_data The name of the crop data set, default is "crop_def".
@@ -36,8 +35,7 @@
 #' #                  get_data_frame_metadata = function(data_name) { list() })
 #' #collate_definitions_data(data_book = data_book)
 #' 
-collate_definitions_data <- function(data = "ghana",
-                                     data_by_year = "ghana_by_station_year",
+collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                      data_by_year_month = NULL,
                                      crop_data = "crop_def",
                                      rain = data_book$get_climatic_column_name(data_name = "ghana", "rain"),
@@ -50,9 +48,8 @@ collate_definitions_data <- function(data = "ghana",
                                      min_tmin_column = "min_tmin", mean_tmin_column = "mean_tmin", max_tmin_column = "max_tmin",
                                      min_tmax_column = "min_tmax", mean_tmax_column = "mean_tmax", max_tmax_column = "max_tmax"){
   
-  definitions_data <- get_r_instat_definitions(data_book$get_calculations(data))
   definitions_year <- get_r_instat_definitions(data_book$get_calculations(data_by_year))
-  definitions_offset <- get_offset_term(data)
+  definitions_offset <- get_offset_term(data_by_year)
   
   if (length(names(definitions_year)) != length(unique(names(definitions_year)))){
     # Identify duplicates
@@ -65,9 +62,7 @@ collate_definitions_data <- function(data = "ghana",
   
   # if yes to annual summaries - give the data frame "ghana_by_station_year"
   if ("annual_rainfall" %in% summaries){
-    annual_summaries <- build_annual_summaries_definitions(data_name = data,
-                                                           data_by_year = definitions_year,
-                                                           data = definitions_data,
+    annual_summaries <- build_annual_summaries_definitions(data_by_year = definitions_year,
                                                            rain_name = rain,
                                                            start_rains_column = start_rains_column,
                                                            start_rains_status_column = start_rains_status_column,
