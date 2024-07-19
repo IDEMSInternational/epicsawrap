@@ -17,6 +17,9 @@ get_end_rains_definitions <- function(end_rains = NULL){
     end_day <- extract_value(end_rains$filter_2, " <= ")
     output <- "both"
     min_rainfall <- extract_value(end_rains$filter[[1]], "roll_sum_rain > ")
+    if (is.null(end_rains$filter$roll_sum_rain[[2]])){
+      stop("No roll_sum_rain value. Have you put end_rains_column to equal 'end_season'? You want end_season_column to equal 'end_season'.")
+    }
     interval_length <- extract_value(end_rains$filter$roll_sum_rain[[2]], "n=")
   }
   # Loop through variables and add to the list if defined
@@ -27,6 +30,5 @@ get_end_rains_definitions <- function(end_rains = NULL){
       data_list[["end_rains"]][[variable]] <- NA
     }
   }
-  
   return(data_list)
 }
