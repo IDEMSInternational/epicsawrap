@@ -20,6 +20,8 @@ get_offset_term <- function(data_by_year){
       warning(paste0("Multiple start DOYs. Taking ", s_start_doy[1]))
       s_start_doy <- s_start_doy[1]
     }
+    return(s_start_doy)
+  } else {
+    return(1)
   } 
-  return(s_start_doy)
 }
