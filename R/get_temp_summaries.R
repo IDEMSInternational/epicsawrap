@@ -36,8 +36,10 @@ get_temp_summaries <- function(temp_summary_name, year, month,
       if (year %in% unlist(temp_summary[grep("^by_", names(temp_summary))]) | year %in% unlist(temp_summary_2[grep("^by_", names(temp_summary_2))])){
         to <- c(to, "annual")
       }
-      if (month %in% unlist(temp_summary[grep("^by_", names(temp_summary))]) | month %in% unlist(temp_summary_2[grep("^by_", names(temp_summary_2))])){
-        to <- c(to, "monthly")
+      if (!is.null(month)){
+        if (month %in% unlist(temp_summary[grep("^by_", names(temp_summary))]) | month %in% unlist(temp_summary_2[grep("^by_", names(temp_summary_2))])){
+          to <- c(to, "monthly")
+        } 
       }
       na_rm <- extract_value(temp_summary$function_exp, "na.rm = ", FALSE)
       na_n <- extract_value(temp_summary$function_exp, "na_max_n = ", TRUE)
