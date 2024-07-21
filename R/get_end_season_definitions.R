@@ -28,7 +28,6 @@ get_end_season_definitions <- function(end_season = NULL){
       evaporation <- "value"
     }
   }
-  
   # Loop through variables and add to the list if defined
   for (variable in variables_list) {
     if (exists(variable) && !is.na(get(variable))) {
