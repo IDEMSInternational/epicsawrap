@@ -142,6 +142,10 @@ test_that("get_end_season_definitions extracts correct values", {
   expect_equal(result$end_season$evaporation_value, 5)
 })
 
+test_that("get_end_rains_definitions throws error for end_season", {
+  expect_error(get_end_rains_definitions(zambia_by_year_example$end_season))
+})
+
 # TO TEST:
 #zambia_by_year_example$sum_rainfall
 #zambia_by_year_example$sum_rainday
