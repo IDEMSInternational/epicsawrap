@@ -16,33 +16,33 @@
 extremes_summaries <- function(country, station_id,
                                summaries = c("extremes_rain", "extremes_tmin", "extremes_tmax"),
                                override = FALSE){
-  list_return <- NULL
-
-  # do the summaries exist already?
-  get_summaries <- get_summaries_data(country, station_id, summary = "extremes_summaries")
-  summary_data <- get_summaries[[1]]
-  
-  # if the summary data exists, and if you do not want to override it then:
-  if (nrow(summary_data) > 0 & override == FALSE) {
-    # what if the definitions is different? 
-    file_name <- get_objects_in_bucket(country, station_id, timestamp = get_summaries[[2]])
-    if (nrow(file_name) == 0) {
-      list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries))
-    } else {
-      list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries, file = paste0(station_id, ".", get_summaries[[2]])))
-    }
-  } else {
-    # Fetch daily data and preprocess
-    daily <- get_daily_data(country = country, station_id = station_id)
-    # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
-    data_names <- data_definitions(names(daily), TRUE)
-    daily <- check_and_rename_variables(daily, data_names)
-    definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
-    summary_data <- purrr::map(.x = summaries, .f = ~ overall_extremes_summaries(daily = daily, data_names = data_names, definitions = definitions, summaries = .x))
-    summary_data <- purrr::reduce(summary_data, dplyr::full_join)
-    summary_data[is.na(summary_data)] <- 0
-    list_return[[1]] <- c(definitions)
-  }
-  list_return[[2]] <- summary_data
-  return(list_return)
+  # list_return <- NULL
+  # 
+  # # do the summaries exist already?
+  # get_summaries <- get_summaries_data(country, station_id, summary = "extremes_summaries")
+  # summary_data <- get_summaries[[1]]
+  # 
+  # # if the summary data exists, and if you do not want to override it then:
+  # if (nrow(summary_data) > 0 & override == FALSE) {
+  #   # what if the definitions is different? 
+  #   file_name <- get_objects_in_bucket(country, station_id, timestamp = get_summaries[[2]])
+  #   if (nrow(file_name) == 0) {
+  #     list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries))
+  #   } else {
+  #     list_return[[1]] <- (definitions(country, station_id = station_id, summaries = summaries, file = paste0(station_id, ".", get_summaries[[2]])))
+  #   }
+  # } else {
+  #   # Fetch daily data and preprocess
+  #   daily <- get_daily_data(country = country, station_id = station_id)
+  #   # For the variable names to be set as a certain default, set TRUE here, and run check_and_rename_variables
+  #   data_names <- data_definitions(names(daily), TRUE)
+  #   daily <- check_and_rename_variables(daily, data_names)
+  #   definitions <- epicsawrap::definitions(country = country, station_id = station_id, summaries = summaries)
+  #   summary_data <- purrr::map(.x = summaries, .f = ~ overall_extremes_summaries(daily = daily, data_names = data_names, definitions = definitions, summaries = .x))
+  #   summary_data <- purrr::reduce(summary_data, dplyr::full_join)
+  #   summary_data[is.na(summary_data)] <- 0
+  #   list_return[[1]] <- c(definitions)
+  # }
+  # list_return[[2]] <- summary_data
+  # return(list_return)
 }
