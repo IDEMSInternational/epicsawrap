@@ -35,8 +35,7 @@ build_annual_summaries_definitions <- function(data_name, data_by_year,
   if (!is.null(data_by_year[[end_season_status_column]])) end_season$end_season$include_status <- TRUE
   
   # for annual rainfall / rainy days in year:
-  total_rain_counts <- get_total_rain_counts(data_name, data_by_year, rain_name)
-    
+  total_rain_counts <- get_total_rain_counts(data_by_year, rain_name)
   # Get the list of summaries:
   summaries_list <- c(start_of_rains, end_rains, end_season, seasonal_length, total_rain_counts)
   return(summaries_list)

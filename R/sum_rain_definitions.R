@@ -18,9 +18,9 @@ sum_rain_definitions <- function(time = "annual_rain", total_rain,
          n_raindays, data = NULL){
   data_list <- list()
   data_list[[time]] <- list()
-  if (n_rain){
-    rain_day <- extract_value(data$count$rain_day[[2]], " >= ", FALSE)
-  }
+  # if (n_rain){
+  #   rain_day <- extract_value(data$count$rain_day[[2]], " >= ", FALSE)
+  # }
   sum_rain <- c(sum_rain, n_raindays)
   
   na_rm <- extract_value(sum_rain$function_exp, "na.rm = ", FALSE)

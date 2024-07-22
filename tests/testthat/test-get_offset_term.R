@@ -56,3 +56,4 @@ test_that("get_offset_term handles NA values in DOY start", {
   result <- get_offset_term(data_by_year)
   expect_equal(result, 183)
 })
+
