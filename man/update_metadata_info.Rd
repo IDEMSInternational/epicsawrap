@@ -6,7 +6,6 @@
 \usage{
 update_metadata_info(
   country,
-  station_id,
   metadata_data,
   station_var = NULL,
   latitude_var = NULL,
@@ -17,8 +16,6 @@ update_metadata_info(
 }
 \arguments{
 \item{country}{A character vector specifying the country or countries from which to update the metadata. Options are defined in \code{get_bucket_name()} (e.g., \code{"zm"}, \code{"mw"}).}
-
-\item{station_id}{A character vector specifying the station IDs to update.}
 
 \item{metadata_data}{A data frame containing new metadata for the stations. This data should include columns for station identifiers and other metadata fields like latitude, longitude, etc.}
 

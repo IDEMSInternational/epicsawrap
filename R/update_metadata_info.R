@@ -3,7 +3,6 @@
 #' This function updates the metadata for specified stations in a given country by merging new data from `metadata_data` with existing metadata.
 #'
 #' @param country A character vector specifying the country or countries from which to update the metadata. Options are defined in `get_bucket_name()` (e.g., `"zm"`, `"mw"`).
-#' @param station_id A character vector specifying the station IDs to update.
 #' @param metadata_data A data frame containing new metadata for the stations. This data should include columns for station identifiers and other metadata fields like latitude, longitude, etc.
 #' @param station_var Optional. The name of the column in `metadata_data` corresponding to station IDs. Defaults to `NULL`.
 #' @param latitude_var Optional. The name of the column in `metadata_data` containing latitude values. Defaults to `NULL`.
@@ -18,7 +17,7 @@
 #' # Assuming get_bucket_name and station_metadata functions are defined:
 #' # update_metadata_info("zm", c("BINGA", "KARIBA"), new_metadata_data, 
 #' #                     station_var = "stationName", latitude_var = "lat", longitude_var = "lon")
-update_metadata_info <- function(country, station_id,
+update_metadata_info <- function(country,
                                  metadata_data,
                                  station_var = NULL,
                                  latitude_var = NULL,
