@@ -19,7 +19,7 @@
 #' #                     station_var = "stationName", latitude_var = "lat", longitude_var = "lon")
 update_metadata_info <- function(country,
                                  metadata_data,
-                                 station_var = NULL,
+                                 station_var,
                                  latitude_var = NULL,
                                  longitude_var = NULL,
                                  elevation_var = NULL,

@@ -7,7 +7,7 @@
 update_metadata_info(
   country,
   metadata_data,
-  station_var = NULL,
+  station_var,
   latitude_var = NULL,
   longitude_var = NULL,
   elevation_var = NULL,
