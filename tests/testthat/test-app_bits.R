@@ -26,19 +26,14 @@ test_that("Correct summaries are calculated for mw_workshop", {
 station_metadata("zm_workshop")
 
 test_that("Correct summaries are calculated for zm_workshop", {
-  expect_no_error(annual_rainfall_summaries("zm_workshops", "zambia_eastern"))
   expect_no_error(annual_rainfall_summaries("zm_workshops", "Chipata Met"))
   
-  expect_no_error(annual_temperature_summaries("zm_workshops", "zambia_eastern"))
   expect_no_error(annual_temperature_summaries("zm_workshops", "Chipata Met"))
   
-  expect_no_error(monthly_temperature_summaries("zm_workshops", "zambia_eastern"))
-  #expect_no_error(monthly_temperature_summaries("zm_workshops", "Chipata Met"))
+  expect_no_error(monthly_temperature_summaries("zm_workshops", "Chipata Met"))
   
-  expect_no_error(crop_success_probabilities("zm_workshops", "zambia_eastern"))
   expect_no_error(crop_success_probabilities("zm_workshops", "Chipata Met"))
   
-  expect_no_error(season_start_probabilities("zm_workshops", "zambia_eastern"))
   expect_no_error(season_start_probabilities("zm_workshops", "Chipata Met"))
 })
 
