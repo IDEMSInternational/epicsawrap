@@ -19,7 +19,7 @@ Imports:
     jsonlite,
     lubridate,
     magrittr,
-    purrr,
+    purrr (>= 1.00),
     rlang,
     RMySQL,
     rpicsa,
