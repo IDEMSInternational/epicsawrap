@@ -7,7 +7,9 @@
 update_rainfall_summaries_from_definition(
   country = "zm_workshops",
   station_id = "Lundazi Met",
-  daily_data
+  daily_data,
+  summaries = c("annual_rain", "start_rains", "end_rains", "end_season", "seasonal_rain",
+    "seasonal_length")
 )
 }
 \arguments{
@@ -16,6 +18,8 @@ update_rainfall_summaries_from_definition(
 \item{station_id}{Character. The station ID for which data is retrieved. Defaults to "Lundazi Met".}
 
 \item{daily_data}{Data frame. The daily data to update.}
+
+\item{summaries}{\code{character} The names of the summaries to produce.}
 }
 \value{
 A data frame containing summarized rainfall data for the specified station and definitions.
