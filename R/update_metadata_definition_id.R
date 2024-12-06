@@ -26,6 +26,7 @@ update_metadata_definition_id <- function(country, station_id, definition_id, ov
   reference <- complete_metadata_from_bucket$station_id
   complete_metadata_from_bucket_filt <- complete_metadata_from_bucket %>% dplyr::filter(station_id %in% station_id_names)
   if (nrow(complete_metadata_from_bucket_filt) > 0){
+    # add definition ID
     complete_metadata_from_bucket_rest <- complete_metadata_from_bucket %>% dplyr::filter(!station_id %in% station_id_names)
     if (!is.list(complete_metadata_from_bucket_rest$definitions_id)) complete_metadata_from_bucket_rest$definitions_id <- as.list(complete_metadata_from_bucket_rest$definitions_id)
     if (overwrite){
