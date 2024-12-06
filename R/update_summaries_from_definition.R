@@ -8,6 +8,7 @@
 #' @param station_id Character. The station ID for which data is retrieved. Defaults to "Lundazi Met".
 #' 
 #' @return A data frame containing summarized rainfall data for the specified station and definitions.
+#' @export
 #' @examples
 #' #update_rainfall_summaries_from_definition(country = "zm_workshops", station_id = "Lundazi Met")
 
