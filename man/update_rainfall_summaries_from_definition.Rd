@@ -6,13 +6,16 @@
 \usage{
 update_rainfall_summaries_from_definition(
   country = "zm_workshops",
-  station_id = "Lundazi Met"
+  station_id = "Lundazi Met",
+  daily_data
 )
 }
 \arguments{
 \item{country}{Character. The name of the country for which definitions and observations are retrieved. Defaults to "zm_workshops".}
 
 \item{station_id}{Character. The station ID for which data is retrieved. Defaults to "Lundazi Met".}
+
+\item{daily_data}{Data frame. The daily data to update.}
 }
 \value{
 A data frame containing summarized rainfall data for the specified station and definitions.
