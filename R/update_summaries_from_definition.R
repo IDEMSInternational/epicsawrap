@@ -6,13 +6,14 @@
 #'
 #' @param country Character. The name of the country for which definitions and observations are retrieved. Defaults to "zm_workshops".
 #' @param station_id Character. The station ID for which data is retrieved. Defaults to "Lundazi Met".
+#' @param daily_data Data frame. The daily data to update.
 #' 
 #' @return A data frame containing summarized rainfall data for the specified station and definitions.
 #' @export
 #' @examples
 #' #update_rainfall_summaries_from_definition(country = "zm_workshops", station_id = "Lundazi Met")
 
-update_rainfall_summaries_from_definition <- function(country = "zm_workshops", station_id = "Lundazi Met") {
+update_rainfall_summaries_from_definition <- function(country = "zm_workshops", station_id = "Lundazi Met", daily_data) {
   # Retrieve the most recent definition data for the specified country and station
   definitions_data <- epicsawrap::get_definitions_data(country = country, station_id = station_id)
   
@@ -24,8 +25,8 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
   if (!is.null(definitions_data$start_rains$end_day)) {
     start_rains <- annual_rainfall_start_rains(
       definitions = definitions_data,
-      daily = observations_data_unstacked,
-      data_names = data_definitions(names(observations_data_unstacked), FALSE, FALSE)
+      daily = daily_data,
+      data_names = data_definitions(names(daily_data), FALSE, FALSE)
     )
     summaries <- c(summaries, "start_rains")
     summary_data <- join_null_data(summary_data, start_rains)
@@ -36,8 +37,8 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
   if (!is.null(definitions_data$end_rains$end_day)) {
     end_rains <- annual_rainfall_end_rains(
       definitions = definitions_data,
-      daily = observations_data_unstacked,
-      data_names = data_definitions(names(observations_data_unstacked), FALSE, FALSE)
+      daily = daily_data,
+      data_names = data_definitions(names(daily_data), FALSE, FALSE)
     )
     summaries <- c(summaries, "end_rains")
     summary_data <- join_null_data(summary_data, end_rains)
@@ -48,8 +49,8 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
   if (!is.null(definitions_data$end_season$end_day)) {
     end_season <- annual_rainfall_end_season(
       definitions = definitions_data,
-      daily = observations_data_unstacked,
-      data_names = data_definitions(names(observations_data_unstacked), FALSE, FALSE)
+      daily = daily_data,
+      data_names = data_definitions(names(daily_data), FALSE, FALSE)
     )
     summaries <- c(summaries, "end_season")
     summary_data <- join_null_data(summary_data, end_season)
@@ -61,8 +62,8 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
     seasonal_length <- annual_rainfall_seasonal_length(
       definitions = definitions_data,
       summary_data = summary_data,
-      daily = observations_data_unstacked,
-      data_names = data_definitions(names(observations_data_unstacked), FALSE, FALSE)
+      daily = daily_data,
+      data_names = data_definitions(names(daily_data), FALSE, FALSE)
     )
     summary_data <- join_null_data(summary_data, seasonal_length)
   }
@@ -75,9 +76,9 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
     seasonal_rain <- annual_rainfall_seasonal_rain(
       definitions = definitions_data,
       summary_data = summary_data,
-      daily = observations_data_unstacked,
+      daily = daily_data,
       summaries = summaries,
-      data_names = data_definitions(names(observations_data_unstacked), FALSE, FALSE)
+      data_names = data_definitions(names(daily_data), FALSE, FALSE)
     )
     summary_data <- join_null_data(summary_data, seasonal_rain)
   }
@@ -88,8 +89,8 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
        definitions_data$annual_rain$n_rain == "TRUE")) {
     annual_rain <- annual_rainfall_annual_rain(
       definitions = definitions_data,
-      daily = observations_data_unstacked,
-      data_names = data_definitions(names(observations_data_unstacked), FALSE, FALSE)
+      daily = daily_data,
+      data_names = data_definitions(names(daily_data), FALSE, FALSE)
     )
     summary_data <- join_null_data(summary_data, annual_rain)
   }
