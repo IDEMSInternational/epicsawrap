@@ -2,28 +2,46 @@
 % Please edit documentation in R/get_definitions_data.R
 \name{get_definitions_data}
 \alias{get_definitions_data}
-\title{Get Daily Definitions Data}
+\title{Get Definitions Data}
 \usage{
-get_definitions_data(country, station_id, definitions_id = NULL, file = NULL)
+get_definitions_data(
+  country,
+  station_id = NULL,
+  definition_id = NULL,
+  file = NULL
+)
 }
 \arguments{
-\item{country}{A character vector specifying the country or countries from which to get the definitions data. Options are any defined in \code{get_bucket_name()}. Common options are \code{"mz"} and \code{"zm"}.}
+\item{country}{A character vector of length 1 specifying the country from which to get the definitions data.
+Options depend on the implementation of \code{get_bucket_name()}, with common options being \code{"mz"} (Mozambique)
+and \code{"zm"} (Zambia).}
 
-\item{station_id}{A character string specifying the ID of the station for which to get the definitions data.}
+\item{station_id}{A character vector specifying the ID(s) of the station(s) for which to get the definitions data.
+If \code{NULL}, data is fetched using the \code{definition_id}. Defaults to \code{NULL}.}
 
-\item{definitions_id}{A character string specifying the ID of the definitions for which to get the definitions data. If \code{NULL} this is found from the metadata.}
+\item{definition_id}{A character string specifying the ID of the definitions to retrieve. If \code{NULL} and \code{station_id} is provided,
+the most recent definitions ID is determined from metadata. Defaults to \code{NULL}.}
 
-\item{file}{Default \code{NULL} meaning that the most recent definitions file will be found and imported. Otherwise specify as a string the file to import. In format: "STATIONNAME.TIMESTAMP" e.g. "1.20240311152831"}
+\item{file}{A character string specifying the name of a specific file to import, in the format \code{"STATIONNAME.TIMESTAMP"}.
+If \code{NULL}, the most recent definitions file is fetched automatically. Defaults to \code{NULL}.}
 }
 \value{
-A data frame containing daily data based on the station ID.
+A data frame or list containing the definitions data:
+\itemize{
+\item If \code{station_id} is provided, returns data specific to the station(s).
+\item If \code{station_id} is \code{NULL}, returns data specific to the \code{definition_id}.
+}
 }
 \description{
-This function retrieves definitions data for weather stations from a Google Cloud Storage (GCS) bucket. It includes timestamp handling to ensure that the most recent definitions file is imported.
+This function retrieves definitions data for weather stations or specific definitions IDs from a Google Cloud Storage (GCS) bucket.
+It includes logic to handle station-based retrieval or fetch data directly using a specified \code{definition_id}. It also handles
+timestamp management to ensure the most recent definitions file is imported.
 }
-\examples{
-# todo
+\details{
+\itemize{
+\item When \code{station_id} is provided, the function fetches the corresponding definitions data for each station.
+\item If \code{station_id} is \code{NULL}, the function directly retrieves data based on the provided \code{definition_id}.
+\item The function uses Google Cloud Storage to retrieve the files, ensuring that the most recent versions are accessed when \code{file} is \code{NULL}.
+\item For multiple stations, the function returns a combined data frame.
 }
-\seealso{
-\code{update_definitions_data} for updating definitions files.
 }

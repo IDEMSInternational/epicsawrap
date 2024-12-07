@@ -7,7 +7,8 @@
 \usage{
 update_season_start_probabilities_from_definition(
   country,
-  station_id,
+  station_id = NULL,
+  definition_id = NULL,
   daily_data = NULL,
   start_rains_data = NULL
 )
@@ -15,7 +16,9 @@ update_season_start_probabilities_from_definition(
 \arguments{
 \item{country}{Character. The name of the country for which definitions and observations are retrieved.}
 
-\item{station_id}{Character. The station ID for which data is retrieved. Defaults to "Lundazi Met".}
+\item{station_id}{Character. The station ID(s) for which data is retrieved. Can be \code{NULL} if \code{definition_id} is specified. Defaults to \code{NULL}.}
+
+\item{definition_id}{Character. The ID of the definitions to use for generating summaries. Only used if \code{station_id} is \code{NULL}. Defaults to \code{NULL}.}
 
 \item{daily_data}{Data frame. (Optional) Daily rainfall data, required if \code{start_rains_data} is not provided. Defaults to \code{NULL}.}
 

@@ -4,17 +4,23 @@
 #' for a specified country and station. It supports generating either annual or monthly summaries.
 #'
 #' @param country Character. The name of the country for which definitions and observations are retrieved. Defaults to "zm_workshops".
-#' @param station_id Character. The station ID for which data is retrieved. Defaults to "Lundazi Met".
+#' @param station_id Character. The station ID(s) for which data is retrieved. Can be `NULL` if `definition_id` is specified. Defaults to `NULL`.
+#' @param definition_id Character. The ID of the definitions to use for generating summaries. Only used if `station_id` is `NULL`. Defaults to `NULL`.
 #' @param daily_data Data frame. Daily temperature data, including columns for station, date, year, tmin, and tmax.
 #' @param to Character. Specifies whether the summaries should be generated for "annual" or "monthly" periods. Defaults to "annual".
 #' 
 #' @return A data frame containing temperature summaries based on the specified definitions and period (annual or monthly).
 #' @export
-update_total_temperature_summaries_from_definition <- function(country = "zm_workshops", station_id = "Lundazi Met", daily_data, to = c("annual", "monthly")) {
+update_total_temperature_summaries_from_definition <- function(country = "zm_workshops", station_id = NULL, definition_id = NULL, daily_data, to = c("annual", "monthly")) {
   to <- match.arg(to)
   
   # Retrieve the most recent definition data for the specified country and station
-  definitions_data <- epicsawrap::get_definitions_data(country = country, station_id = station_id)
+  if (!is.null(station_id) & !is.null(definition_id)) warning("Both station_id and definition_id are given. Defaulting to station_id.")
+  if (!is.null(station_id)){
+    definitions_data <- get_definitions_data(country = country, station_id = station_id)
+  } else {
+    definitions_data <- get_definitions_data(country = country, definition_id = definition_id)
+  }
   
   data_names <- data_definitions(names(daily_data), FALSE, FALSE)
   
@@ -59,7 +65,8 @@ update_total_temperature_summaries_from_definition <- function(country = "zm_wor
 #' A wrapper function to generate only annual temperature summaries based on definitions.
 #'
 #' @param country Character. The name of the country for which definitions and observations are retrieved.
-#' @param station_id Character. The station ID for which data is retrieved.
+#' @param station_id Character. The station ID(s) for which data is retrieved. Can be `NULL` if `definition_id` is specified. Defaults to `NULL`.
+#' @param definition_id Character. The ID of the definitions to use for generating summaries. Only used if `station_id` is `NULL`. Defaults to `NULL`.
 #' @param daily_data Data frame. Daily temperature data.
 #' 
 #' @return A data frame containing annual temperature summaries.
@@ -73,7 +80,8 @@ update_annual_temperature_summaries_from_definition <- function(country, station
 #' A wrapper function to generate temperature summaries by month and year based on definitions.
 #'
 #' @param country Character. The name of the country for which definitions and observations are retrieved.
-#' @param station_id Character. The station ID for which data is retrieved.
+#' @param station_id Character. The station ID(s) for which data is retrieved. Can be `NULL` if `definition_id` is specified. Defaults to `NULL`.
+#' @param definition_id Character. The ID of the definitions to use for generating summaries. Only used if `station_id` is `NULL`. Defaults to `NULL`.
 #' @param daily_data Data frame. Daily temperature data.
 #' 
 #' @return A data frame containing temperature summaries by month and year

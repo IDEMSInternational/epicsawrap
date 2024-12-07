@@ -4,7 +4,8 @@
 #' for a given country and station. It uses rainfall data or start-of-rains summaries to compute the probabilities.
 #'
 #' @param country Character. The name of the country for which definitions and observations are retrieved.
-#' @param station_id Character. The station ID for which data is retrieved. Defaults to "Lundazi Met".
+#' @param station_id Character. The station ID(s) for which data is retrieved. Can be `NULL` if `definition_id` is specified. Defaults to `NULL`.
+#' @param definition_id Character. The ID of the definitions to use for generating summaries. Only used if `station_id` is `NULL`. Defaults to `NULL`.
 #' @param daily_data Data frame. (Optional) Daily rainfall data, required if `start_rains_data` is not provided. Defaults to `NULL`.
 #' @param start_rains_data Data frame. (Optional) Precomputed start-of-rains data. If not provided, it is generated using `daily_data`. Defaults to `NULL`.
 #'
@@ -16,9 +17,14 @@
 #' - If `start_rains_data` is not provided, it computes the start-of-rains summaries using `daily_data`.
 #' - The function calculates probabilities for the specified days using the `rpicsa::probability_season_start` function.
 #'
-update_season_start_probabilities_from_definition <- function(country, station_id, daily_data = NULL, start_rains_data = NULL) {
+update_season_start_probabilities_from_definition <- function(country, station_id = NULL, definition_id = NULL, daily_data = NULL, start_rains_data = NULL) {
+  if (!is.null(station_id) & !is.null(definition_id)) warning("Both station_id and definition_id are given. Defaulting to station_id.")
   # Retrieve the most recent definition data for the specified country and station
-  definitions_data <- epicsawrap::get_definitions_data(country = country, station_id = station_id)
+  if (!is.null(station_id)){
+    definitions_data <- get_definitions_data(country = country, station_id = station_id)
+  } else {
+    definitions_data <- get_definitions_data(country = country, definition_id = definition_id)
+  }
   
   # If start-of-rains data is not provided, compute it using daily rainfall data
   if (is.null(start_rains_data)) {

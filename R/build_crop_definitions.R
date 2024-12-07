@@ -24,12 +24,17 @@ build_crop_definitions <- function(definition_file = NULL){
     planting_dates <- split_list(values$Var2)
     planting_length <- split_list(values$Var3)
   }
+  
   # Loop through variables and add to the list if defined
   for (variable in variables_list) {
-    if (exists(variable) && !is.na(get(variable))) {
-      data_list[["crops_success"]][[variable]] <- get(variable)
+    if (!is.null(definition_file)){
+      if (exists(variable) && !is.na(get(variable))) {
+        data_list[["crops_success"]][[variable]] <- get(variable)
+      } else {
+        data_list[["crops_success"]][[variable]] <- NA
+      }
     } else {
-      data_list[["crops_success"]][[variable]] <- NA
+        data_list[["crops_success"]][[variable]] <- NA
     }
   }
   return(data_list)
