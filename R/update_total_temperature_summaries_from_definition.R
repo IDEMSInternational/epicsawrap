@@ -19,7 +19,7 @@ update_total_temperature_summaries_from_definition <- function(country = "zm_wor
   if (!is.null(station_id)){
     definitions_data <- get_definitions_data(country = country, station_id = station_id)
   } else {
-    definitions_data <- get_definitions_data(country = country, definition_id = definition_id)
+    definitions_data <- get_definitions_data(country = country, definitions_id = definition_id)
   }
   
   data_names <- data_definitions(names(daily_data), FALSE, FALSE)
@@ -29,7 +29,7 @@ update_total_temperature_summaries_from_definition <- function(country = "zm_wor
   summaries_list <- c("min_tmin", "mean_tmin", "max_tmin",
                       "min_tmax", "mean_tmax", "max_tmax")
   for (summary in summaries_list){
-    definition_to <- unlist(definitions[[summary]]$to)
+    definition_to <- unlist(definitions_data[[summary]]$to)
     summary_type <- gsub("_.*$", "", summary)
     summary_variable <- gsub("^.*_", "", summary)
     
@@ -42,21 +42,24 @@ update_total_temperature_summaries_from_definition <- function(country = "zm_wor
                                                              tmin = if (summary_variable == "tmin") data_names$tmin else NULL,
                                                              summaries = summary_type,
                                                              to = to,
-                                                             na_rm = as.logical(definitions[[summary]]$na_rm),
-                                                             na_prop = definitions[[summary]]$na_prop,
-                                                             na_n = definitions[[summary]]$na_n,
-                                                             na_consec = definitions[[summary]]$na_consec,
-                                                             na_n_non = definitions[[summary]]$na_n_non)    
+                                                             na_rm = as.logical(definitions_data[[summary]]$na_rm),
+                                                             na_prop = definitions_data[[summary]]$na_prop,
+                                                             na_n = definitions_data[[summary]]$na_n,
+                                                             na_consec = definitions_data[[summary]]$na_consec,
+                                                             na_n_non = definitions_data[[summary]]$na_n_non)    
     }
   }
+  
+  print(length(summary_data))
   
   if (length(summary_data) > 1){
     summary_data <- Reduce(function(x, y) dplyr::full_join(x, y), summary_data)
   } else {
     summary_data <- summary_data[[1]]
   }
-  summary_data$year <- as.integer(summary_data$year)
-  if (!is.null(summary_data_monthly$month)) summary_data_monthly$month <- as.integer(forcats::as_factor(summary_data_monthly$month))
+
+  #summary_data$year <- as.integer(summary_data$year)
+  if (!is.null(summary_data$month)) summary_data$month <- as.integer(forcats::as_factor(summary_data$month))
   return(summary_data) 
 }
 

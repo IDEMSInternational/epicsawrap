@@ -80,7 +80,11 @@ annual_rainfall_start_rains <- function(definitions, daily, data_names){
     if (is.null(definitions$start_rains$max_rain)) stop("Missing value in start_rains definitions for max_rain. max_rain needed since dry_period = TRUE.")
     if (is.null(definitions$start_rains$period_max_dry_days)) stop("Missing value in start_rains definitions for period_max_dry_days. period_max_dry_days needed since dry_period = TRUE.")
   } 
-  start_rains <- rpicsa::start_rains(daily, date_time = data_names$date, station = data_names$station, year = data_names$year, rain = data_names$rain,
+  start_rains <- rpicsa::start_rains(daily,
+                                     date_time = data_names$date,
+                                     station = data_names$station,
+                                     year = data_names$year,
+                                     rain = data_names$rain,
                                      threshold = definitions$start_rains$threshold,
                                      start_day = definitions$start_rains$start_day,
                                      end_day = definitions$start_rains$end_day,

@@ -33,7 +33,7 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
   if (!is.null(station_id)){
     definitions_data <- get_definitions_data(country = country, station_id = station_id)
   } else {
-    definitions_data <- get_definitions_data(country = country, definition_id = definition_id)
+    definitions_data <- get_definitions_data(country = country, definitions_id = definition_id)
   }
   
   # Initialize variables for storing summary data and summaries

@@ -23,7 +23,7 @@ update_season_start_probabilities_from_definition <- function(country, station_i
   if (!is.null(station_id)){
     definitions_data <- get_definitions_data(country = country, station_id = station_id)
   } else {
-    definitions_data <- get_definitions_data(country = country, definition_id = definition_id)
+    definitions_data <- get_definitions_data(country = country, definitions_id = definition_id)
   }
   
   # If start-of-rains data is not provided, compute it using daily rainfall data
