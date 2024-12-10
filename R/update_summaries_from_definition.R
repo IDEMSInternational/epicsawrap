@@ -39,13 +39,14 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
   # Initialize variables for storing summary data and summaries
   summary_data <- NULL
   
+  data_names <- data_definitions(names(daily_data), FALSE, FALSE)
   # Calculate start of rains if the definition exists
   if ("start_rains" %in% summaries){
     if (!is.null(definitions_data$start_rains$end_day)) {
       start_rains <- annual_rainfall_start_rains(
         definitions = definitions_data,
         daily = daily_data,
-        data_names = data_definitions(names(daily_data), FALSE, FALSE)
+        data_names = data_names
       )
       summary_data <- join_null_data(summary_data, start_rains)
       summary_data$start_rains_doy <- as.integer(summary_data$start_rains_doy)
@@ -58,7 +59,7 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
       end_rains <- annual_rainfall_end_rains(
         definitions = definitions_data,
         daily = daily_data,
-        data_names = data_definitions(names(daily_data), FALSE, FALSE)
+        data_names = data_names
       )
       summary_data <- join_null_data(summary_data, end_rains)
       summary_data$end_rains_doy <- as.integer(summary_data$end_rains_doy)
@@ -71,7 +72,7 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
       end_season <- annual_rainfall_end_season(
         definitions = definitions_data,
         daily = daily_data,
-        data_names = data_definitions(names(daily_data), FALSE, FALSE)
+        data_names = data_names
       )
       summary_data <- join_null_data(summary_data, end_season)
       summary_data$end_season_doy <- as.integer(summary_data$end_season_doy)
@@ -86,7 +87,7 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
         definitions = definitions_data,
         summary_data = summary_data,
         daily = daily_data,
-        data_names = data_definitions(names(daily_data), FALSE, FALSE)
+        data_names = data_names
       )
       summary_data <- join_null_data(summary_data, seasonal_length)
     }
@@ -103,7 +104,7 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
         summary_data = summary_data,
         daily = daily_data,
         summaries = summaries,
-        data_names = data_definitions(names(daily_data), FALSE, FALSE)
+        data_names = data_names
       )
       summary_data <- join_null_data(summary_data, seasonal_rain)
     }
@@ -117,8 +118,11 @@ update_rainfall_summaries_from_definition <- function(country = "zm_workshops", 
       annual_rain <- annual_rainfall_annual_rain(
         definitions = definitions_data,
         daily = daily_data,
-        data_names = data_definitions(names(daily_data), FALSE, FALSE)
+        data_names = data_names
       )
+      if (is.factor(summary_data[[data_names$year]])){
+        if (!is.factor(annual_rain[[data_names$year]])) annual_rain[[data_names$year]] <- factor(annual_rain[[data_names$year]])
+      }
       summary_data <- join_null_data(summary_data, annual_rain)
     }
   }
