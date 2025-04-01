@@ -15,8 +15,26 @@ build_season_start_probabilities <- function(definition_file = NULL){
   data_list <- list()
   data_list[["season_start_probabilities"]] <- list()
   
+  get_seq_values <- function(value) {
+    if (length(value) < 3) return(value)
+    
+    from <- value[1]
+    to <- value[length(value)]
+    by <- (to - from) / (length(value) - 1)
+    
+    # Reconstruct the sequence
+    reconstructed <- seq(from, to, by)
+    
+    # Check if reconstructed sequence exactly matches original
+    if (all.equal(value, reconstructed) == TRUE) {
+      return(list(from = from, to = to, by = by))
+    } else {
+      return(value)
+    }
+  }
+  
   if (!is.null(definition_file)){
-    specified_day <- unique(definition_file$plant_day)
+    specified_day <- get_seq_values(unique(definition_file$plant_day))
     data_list[["season_start_probabilities"]][["specified_day"]] <- specified_day
   } else {
     data_list[["season_start_probabilities"]][["specified_day"]] <- NA
