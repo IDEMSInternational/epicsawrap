@@ -38,15 +38,15 @@ data_definitions <- function(data_names,
   
   # different accepted variations
   variations <- list(
-    station = c("station_name", "name", "station"),
+    station = c("station_name", "name", "station", "station_id"),
     date = c("date", "Date"),
-    year = c("year"),
-    month = c("month_abbr", "month"),
-    doy = c("DOY", "doy_366", "doy"),
+    year = c("year", "s_year"),
+    month = c("month_abbr", "month", "month_val"), #, starts_with("month")),
+    doy = c("DOY", "doy_366", "doy", "s_doy", "s_doy_366", "s_DOY"),
     day = c("day"),
-    rain = c("rain", "rainfall", "precipitation"),
-    tmax = c("tmax", "max_temperature", "maximum", "max", "temperature_max"),
-    tmin = c("tmin", "min_temperature", "minimum", "min", "temperature_min")
+    rain = c("rain", "rainfall", "precipitation", "PRECIP"),
+    tmax = c("tmax", "max_temperature", "maximum", "max", "temperature_max", "TMPMAX"),
+    tmin = c("tmin", "min_temperature", "minimum", "min", "temperature_min", "TMPMIN")
   )
   
   # Loop through each variable and its variations
@@ -68,8 +68,8 @@ data_definitions <- function(data_names,
         if (length(matches) > 1){
           pattern_parts <- unlist(strsplit(variations_pattern, "\\|"))
           matches1 <- data_names[data_names %in% pattern_parts]
-          
-          if (length(matches1) == 0){
+
+          if (length(matches1) != 1){
             warning_msg <- warning("multiple matches in variable names. Setting ", matches[1], " as ", var, ".")
             warning(warning_msg)
             matches <- matches[1]

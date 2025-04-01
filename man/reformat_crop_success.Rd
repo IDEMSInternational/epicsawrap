@@ -10,7 +10,8 @@ reformat_crop_success(
   total_rain_col,
   plant_day_col,
   plant_length_col,
-  prop_success_col
+  prop_success_with_start_col,
+  prop_success_no_start_col
 )
 }
 \arguments{

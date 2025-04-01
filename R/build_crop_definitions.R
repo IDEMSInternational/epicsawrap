@@ -46,7 +46,7 @@ build_crop_definitions <- function(definition_file = NULL){
     if (exists(variable) && !anyNA(get(variable))) {
       data_list[["crops_success"]][[variable]] <- get(variable)
     } else {
-      data_list[["crops_success"]][[variable]] <- NA
+        data_list[["crops_success"]][[variable]] <- NA
     }
   }
   return(data_list)
