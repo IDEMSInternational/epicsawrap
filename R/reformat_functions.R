@@ -81,7 +81,7 @@ reformat_annual_summaries <- function(data,
 #' @return The reformatted data frame.
 #' @export
 reformat_crop_success <- function(data, station_col = NULL, total_rain_col, plant_day_col,
-                                  plant_length_col, prop_success_col) {
+                                  plant_length_col, prop_success_with_start_col, prop_success_no_start_col) {
   # Rename columns
   data <- data %>%
     dplyr::rename(
@@ -89,7 +89,8 @@ reformat_crop_success <- function(data, station_col = NULL, total_rain_col, plan
       total_rain = {{total_rain_col}},
       plant_day = {{plant_day_col}},
       plant_length = {{plant_length_col}},
-      prop_success = {{prop_success_col}}
+      prop_success_with_start = {{prop_success_with_start_col}},
+      prop_success_no_start = {{prop_success_no_start_col}}
     )
   
   # Convert station to factor if it's not already
@@ -103,7 +104,8 @@ reformat_crop_success <- function(data, station_col = NULL, total_rain_col, plan
   data$plant_length <- as.integer(data$plant_length)
   
   # Convert prop_success to double if it's not already
-  data$prop_success <- as.double(data$prop_success)
+  data$prop_success_with_start <- as.double(data$prop_success_with_start)
+  data$prop_success_no_start <- as.double(data$prop_success_no_start)
   
   return(data)
 }
@@ -176,6 +178,6 @@ reformat_season_start <- function(data, station_col = NULL, year_col, plant_day_
                            plant_day_cond = plant_day_cond_col))) %>%
     unique() %>%
     dplyr::group_by(station, day = as.integer(day)) %>%
-    dplyr::summarise(proportion = sum(plant_day_cond, na.rm = TRUE)/n())
+    dplyr::summarise(proportion = sum(plant_day_cond, na.rm = TRUE)/dplyr::n())
   return(data)
 }

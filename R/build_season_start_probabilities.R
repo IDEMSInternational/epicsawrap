@@ -16,8 +16,7 @@ build_season_start_probabilities <- function(definition_file = NULL){
   data_list[["season_start_probabilities"]] <- list()
   
   if (!is.null(definition_file)){
-    values <- definition_file$out.attrs$dimnames
-    specified_day <- split_list(values$Var2)
+    specified_day <- unique(definition_file$plant_day)
     data_list[["season_start_probabilities"]][["specified_day"]] <- specified_day
   } else {
     data_list[["season_start_probabilities"]][["specified_day"]] <- NA

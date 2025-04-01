@@ -61,7 +61,6 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
                                       min_tmax_column = "min_tmax", mean_tmax_column = "mean_tmax", max_tmax_column = "max_tmax"){
   
   timestamp <- format(Sys.time(), format = "%Y%m%d%H%M%S") 
-
   definitions_data <- collate_definitions_data(data_by_year = data_by_year, data_by_year_month = data_by_year_month, crop_data = crop_data_name, rain = rain, year = year, month = month, summaries = summaries,
                                                            start_rains_column = start_rains_column, start_rains_status_column = start_rains_status_column, end_rains_column = end_rains_column,
                                                            end_rains_status_column = end_rains_status_column, 
@@ -69,13 +68,12 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
                                                            end_season_status_column = end_season_status_column, 
                                                            seasonal_length_column = seasonal_length_column, min_tmin_column = min_tmin_column, 
                                                            mean_tmin_column = mean_tmin_column, max_tmin_column = max_tmin_column, min_tmax_column = min_tmax_column, mean_tmax_column = mean_tmax_column, max_tmax_column = max_tmax_column )
-  
   # Save into bucket
   # commented out code was when we had this for multiple station_ids. We now just do for one definition_id.
   #purrr::map(.x = station_id,
   #           .f = ~add_definitions_to_bucket(country = country, station_id = .x, new_definitions = definitions_data, timestamp = timestamp))
   add_definitions_to_bucket(country = country, definitions_id = definitions_id, new_definitions = definitions_data, timestamp = timestamp)
-
+  
   # Ensure unique stations are obtained because we want to repeat for each station
   unique_stations <- unique(data_book$get_data_frame(data_by_year)[[station]])
   
@@ -119,7 +117,6 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
         }
       )
     }
-
     if ("crop_success" %in% summaries) {
       purrr::map(
         .x = unique_stations,
@@ -130,7 +127,6 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
         }
       )
     }
-    
     if ("start_season" %in% summaries) {
       purrr::map(
         .x = unique_stations,

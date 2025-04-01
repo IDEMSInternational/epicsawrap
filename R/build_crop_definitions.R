@@ -14,19 +14,36 @@
 #' # Assuming definition_file is a correctly structured list:
 #' #get_crop_definitions(definition_file)
 build_crop_definitions <- function(definition_file = NULL){
-  
   variables_list <- c("water_requirements", "planting_dates", "planting_length")
   data_list <- list()
   
-  if (!is.null(definition_file)){
-    values <- definition_file$out.attrs$dimnames
-    water_requirements <- split_list(values$Var1)
-    planting_dates <- split_list(values$Var2)
-    planting_length <- split_list(values$Var3)
+  get_seq_values <- function(value) {
+    if (length(value) < 3) return(value)
+    
+    from <- value[1]
+    to <- value[length(value)]
+    by <- (to - from) / (length(value) - 1)
+    
+    # Reconstruct the sequence
+    reconstructed <- seq(from, to, by)
+    
+    # Check if reconstructed sequence exactly matches original
+    if (all.equal(value, reconstructed) == TRUE) {
+      return(list(from = from, to = to, by = by))
+    } else {
+      return(value)
+    }
   }
+  
+  if (!is.null(definition_file)){
+    water_requirements <- get_seq_values(unique(definition_file$rain_total))
+    planting_dates <- get_seq_values(unique(definition_file$plant_day))
+    planting_length <- get_seq_values(unique(definition_file$plant_length))
+  }
+  
   # Loop through variables and add to the list if defined
   for (variable in variables_list) {
-    if (exists(variable) && !is.na(get(variable))) {
+    if (exists(variable) && !anyNA(get(variable))) {
       data_list[["crops_success"]][[variable]] <- get(variable)
     } else {
       data_list[["crops_success"]][[variable]] <- NA

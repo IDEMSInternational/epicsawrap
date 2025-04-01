@@ -121,11 +121,10 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
     temperature_summaries$mean_tmax$s_start_doy <- definitions_offset
   }
   
-  
   # if yes to crop success then ...
   if ("crop_success" %in% summaries){
     if (!is.null(crop_data)){
-      definitions_crop <- data_book$get_data_frame_metadata(crop_data)
+      definitions_crop <- data_book$get_data_frame(crop_data)
     } else {
       stop("Crop summaries requested but no crop_data file given.")
     }
@@ -133,11 +132,11 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
     definitions_crop <- NULL
   }
   crop_summaries <- build_crop_definitions(definitions_crop)
-  
+
   # if yes to probabilities
   if ("start_season" %in% summaries){
     if (!is.null(crop_data)){
-      definitions_crop <- data_book$get_data_frame_metadata(crop_data)
+      definitions_crop <- data_book$get_data_frame(crop_data)
     } else {
       stop("Season start summaries requested but no crop_data file given.")
     }

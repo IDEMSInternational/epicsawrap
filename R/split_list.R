@@ -13,6 +13,7 @@
 #' #parameter <- c("A1=100", "A2=200", "A3=150")
 #' #split_list(parameter)
 split_list <- function(parameter){
+  print(parameter)
   # Split each element of the vector on the equals sign
   split_values <- strsplit(parameter, "=")
   
