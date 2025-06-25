@@ -100,8 +100,7 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
                                                seasonal_rainday_col = seasonal_rainday_col,
                                                min_tmin_column = min_tmin_column, mean_tmin_column = mean_tmin_column, max_tmin_column = max_tmin_column,
                                                min_tmax_column = min_tmax_column, mean_tmax_column = mean_tmax_column, max_tmax_column = max_tmax_column)
-  return(definitions_data)
-  
+
   # Save into bucket
   # commented out code was when we had this for multiple station_ids. We now just do for one definition_id.
   #purrr::map(.x = station_id,
