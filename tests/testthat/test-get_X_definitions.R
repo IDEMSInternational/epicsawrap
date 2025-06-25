@@ -100,7 +100,7 @@ test_that("get_end_rains_definitions returns correct structure with end_rains", 
   expect_true(all(c("to", "na_rm", "na_n", "na_n_non", "na_consec", "na_prop") %in% names(result$min_tmax)))
   expect_true(all(c("to", "na_rm", "na_n", "na_n_non", "na_consec", "na_prop") %in% names(result$max_tmin)))
   expect_true(all(c("to", "na_rm", "na_n", "na_n_non", "na_consec", "na_prop") %in% names(result$max_tmax)))
-
+  
   expect_equal(result$mean_tmin$to, "annual")
   expect_equal(result$mean_tmin$na_rm, NA)
   expect_equal(result$mean_tmin$na_n, NA)
