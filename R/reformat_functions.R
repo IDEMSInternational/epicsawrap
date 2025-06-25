@@ -1,23 +1,26 @@
-#' Reformat annual summaries data
+#' Reformat Annual Climate Summaries
 #'
-#' This function reformats annual summaries data by renaming columns and converting data types.
-#' 
-#' @param data A data frame containing the annual summaries data.
+#' This function standardizes column names and converts data types for annual climate summaries.
+#' It prepares the dataset for further processing or export, ensuring consistency in variable naming
+#' and data formats (e.g., converting dates, rain counts, and DOY values).
+#'
+#' @param data A data frame containing annual summaries.
 #' @param station_col Name of the column containing station information.
 #' @param year_col Name of the column containing year information.
-#' @param start_rains_doy_col Name of the column containing start of rains day of year.
-#' @param start_rains_date_col Name of the column containing start of rains date.
-#' @param end_rains_doy_col Name of the column containing end of rains day of year.
-#' @param end_rains_date_col Name of the column containing end of rains date.
-#' @param end_season_doy_col Name of the column containing end of season day of year.
-#' @param end_season_date_col Name of the column containing end of season date.
-#' @param seasonal_rain_col Name of the column containing seasonal rain data.
-#' @param n_seasonal_rain_col Name of the column containing number of seasonal rain events.
-#' @param season_length_col Name of the column containing season length.
-#' @param annual_rain_col Name of the column containing annual rain data.
-#' @param n_rain_col Name of the column containing number of rain events.
+#' @param start_rains_doy_col Column for start of rains (day-of-year).
+#' @param start_rains_date_col Column for start of rains (date).
+#' @param end_rains_doy_col Column for end of rains (day-of-year).
+#' @param end_rains_date_col Column for end of rains (date).
+#' @param end_season_doy_col Column for end of season (day-of-year).
+#' @param end_season_date_col Column for end of season (date).
+#' @param seasonal_rain_col Column for total seasonal rainfall.
+#' @param n_seasonal_rain_col Column for number of seasonal rain days.
+#' @param season_length_col Column for season length (days).
+#' @param annual_rain_col Column for total annual rainfall.
+#' @param extreme_rain_days_col Column for number of extreme rain days.
+#' @param n_rain_col Column for total number of rain days.
 #'
-#' @return The reformatted data frame.
+#' @return A reformatted data frame with standardized column names and cleaned data types.
 #' @export
 reformat_annual_summaries <- function(data,
                                       station_col = NULL, year_col = NULL,
@@ -26,13 +29,14 @@ reformat_annual_summaries <- function(data,
                                       end_season_doy_col = NULL, end_season_date_col = NULL,
                                       seasonal_rain_col = NULL, n_seasonal_rain_col = NULL,
                                       season_length_col = NULL, annual_rain_col = NULL,
+                                      extreme_rain_days_col = NULL,
                                       n_rain_col = NULL) {
   # Rename columns
   data <- data %>%
     dplyr::select(dplyr::any_of(c(station_col, year_col, start_rains_doy_col, start_rains_date_col,
                            end_rains_doy_col, end_rains_date_col, end_season_doy_col,
                            end_season_date_col, seasonal_rain_col, n_seasonal_rain_col,
-                           season_length_col, annual_rain_col, n_rain_col))) %>%
+                           season_length_col, annual_rain_col, extreme_rain_days_col, n_rain_col))) %>%
     dplyr::rename(
       station = {{station_col}},
       year = {{year_col}},
@@ -46,6 +50,7 @@ reformat_annual_summaries <- function(data,
       n_seasonal_rain = {{n_seasonal_rain_col}},
       season_length = {{season_length_col}},
       annual_rain = {{annual_rain_col}},
+      extreme_rain_days = {{extreme_rain_days_col}},
       n_rain = {{n_rain_col}}
     )
   

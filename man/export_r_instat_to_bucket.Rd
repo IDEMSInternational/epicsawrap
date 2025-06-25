@@ -2,7 +2,7 @@
 % Please edit documentation in R/export_r_instat_to_bucket.R
 \name{export_r_instat_to_bucket}
 \alias{export_r_instat_to_bucket}
-\title{Export R-Instat Data to Google Cloud Storage Bucket}
+\title{Export R-Instat Data and Definitions to Google Cloud Storage Bucket}
 \usage{
 export_r_instat_to_bucket(
   data = NULL,
@@ -14,7 +14,7 @@ export_r_instat_to_bucket(
   year = NULL,
   month = NULL,
   summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature",
-    "extremes", "crop_success", "start_season"),
+    "crop_success", "start_season"),
   station_id = NULL,
   definitions_id,
   country,
@@ -24,13 +24,19 @@ export_r_instat_to_bucket(
   monthly_temperature_data = NULL,
   crop_success_data = NULL,
   season_start_data = NULL,
-  start_rains_column = "start_rain",
+  start_rains_column = "start_rains_doy",
   start_rains_status_column = "start_rain_status",
-  end_rains_column = "end_rains",
+  end_rains_column = "end_rains_doy",
   end_rains_status_column = "end_rains_status",
-  end_season_column = "end_season",
+  end_season_column = "end_season_doy",
   end_season_status_column = "end_season_status",
-  seasonal_length_column = "seasonal_length",
+  seasonal_length_column = "season_length",
+  rain_days_name = NULL,
+  extreme_rainfall_column = NULL,
+  annual_total_rain_col = NULL,
+  seasonal_total_rain_col = NULL,
+  annual_rainday_col = NULL,
+  seasonal_rainday_col = NULL,
   min_tmin_column = "min_tmin",
   mean_tmin_column = "mean_tmin",
   max_tmin_column = "max_tmin",
@@ -40,82 +46,110 @@ export_r_instat_to_bucket(
 )
 }
 \arguments{
-\item{data}{The main dataset. Depreciated. can be removed after updates to R-Instat dialog.}
+\item{data}{The original data frame (Optional. Only required for definitions in calculations for number of rainy days and extremes. Default \code{NULL}).}
 
-\item{data_by_year}{The dataset grouped by year.}
+\item{data_by_year}{The name of the dataset grouped by year. Required for definitions and rainfall/temperature summaries.}
 
-\item{data_by_year_month}{The dataset grouped by year and month.}
+\item{data_by_year_month}{The name of the dataset grouped by year and month (optional). Required for monthly temperature summaries.}
 
-\item{crop_data_name}{Name of the crop data used for definitions when \code{summaries = "crop_success"}.}
+\item{crop_data_name}{The name of the crop data used for crop success and season start probabilities.}
 
-\item{rain}{The rainfall data.}
+\item{rain}{The name of the rainfall column.}
 
-\item{station}{The station variable.}
+\item{station}{The name of the station column used to split and export data.}
 
-\item{year}{The year data.}
+\item{year}{The name of the year column.}
 
-\item{month}{The month data.}
+\item{month}{The name of the month column.}
 
-\item{summaries}{A character vector specifying the types of summaries to include.}
+\item{summaries}{A character vector of summaries to include. Options: \code{"annual_rainfall"}, \code{"annual_temperature"}, \code{"monthly_temperature"}, \code{"crop_success"}, \code{"start_season"}.}
 
-\item{station_id}{\code{character} The id's of the stations to analyse. Either a
-single value or a vector.}
+\item{station_id}{Character vector of station IDs to process.}
 
-\item{definitions_id}{\code{character} The ID to give to the definition file.}
+\item{definitions_id}{A string identifying the definition version (used for filename and metadata tracking).}
 
-\item{country}{\code{character(1)} The country code of the data.}
+\item{country}{The ISO country code (e.g., \code{"GH"} for Ghana).}
 
-\item{include_summary_data}{Logical indicating whether to include summary data in the export.}
+\item{include_summary_data}{Logical; if \code{TRUE}, also uploads summary data in addition to definitions.}
 
-\item{annual_rainfall_data}{Annual rainfall summary data.}
+\item{annual_rainfall_data}{Data frame of annual rainfall summary data.}
 
-\item{annual_temperature_data}{Annual temperature summary data.}
+\item{annual_temperature_data}{Data frame of annual temperature summary data.}
 
-\item{monthly_temperature_data}{Monthly temperature summary data.}
+\item{monthly_temperature_data}{Data frame of monthly temperature summary data.}
 
-\item{crop_success_data}{The proportion crop data output. Used if \code{summaries = "crop_success"} when \code{include_summary_data = TRUE}. This is called \code{crop_prop} by default in R-Instat.}
+\item{crop_success_data}{Data frame of crop success proportions (usually called \code{crop_prop} in R-Instat).}
 
-\item{season_start_data}{The crop data to be read into \code{"season_start_probabilities"}. This is called \code{crop_def} by default in R-Instat.}
+\item{season_start_data}{Data frame used for season start probabilities (usually \code{crop_def}).}
 
-\item{start_rains_column}{The name of the start of rains column in the data.}
+\item{start_rains_column}{Column name for start of rains (DOY).}
 
-\item{start_rains_status_column}{The name of the start of rains status column in the data.}
+\item{start_rains_status_column}{Column name indicating success status for start of rains.}
 
-\item{end_rains_column}{The name of the end of rains column in the data.}
+\item{end_rains_column}{Column name for end of rains (DOY).}
 
-\item{end_rains_status_column}{The name of the end of rains status column in the data.}
+\item{end_rains_status_column}{Column name indicating success status for end of rains.}
 
-\item{end_season_column}{The name of the end of season column in the data.}
+\item{end_season_column}{Column name for end of season (DOY).}
 
-\item{end_season_status_column}{The name of the end of season status column in the data.}
+\item{end_season_status_column}{Column name indicating success status for end of season.}
 
-\item{seasonal_length_column}{The name of the seasonal length column in the data.}
+\item{seasonal_length_column}{Column name indicating seasonal length (in days).}
 
-\item{min_tmin_column}{The name of the minimum of minimum temperature column in the data.}
+\item{rain_days_name}{Column name used to define a rain day threshold (optional).}
 
-\item{mean_tmin_column}{The name of the mean of minimum temperature column in the data.}
+\item{extreme_rainfall_column}{Column name used to define an extreme rainfall threshold (optional).}
 
-\item{max_tmin_column}{The name of the maximum of minimum temperature column in the data.}
+\item{annual_total_rain_col}{Column name used for annual total rainfall values (optional).}
 
-\item{min_tmax_column}{The name of the minimum of maximum temperature column in the data.}
+\item{seasonal_total_rain_col}{Column name for seasonal total rainfall values (optional).}
 
-\item{mean_tmax_column}{The name of the mean of maximum temperature column in the data.}
+\item{annual_rainday_col}{Column name for annual rain day count (optional).}
 
-\item{max_tmax_column}{The name of the maximum of maximum temperature column in the data.}
+\item{seasonal_rainday_col}{Column name for seasonal rain day count (optional).}
+
+\item{min_tmin_column}{Column name for minimum of minimum temperatures.}
+
+\item{mean_tmin_column}{Column name for mean of minimum temperatures.}
+
+\item{max_tmin_column}{Column name for maximum of minimum temperatures.}
+
+\item{min_tmax_column}{Column name for minimum of maximum temperatures.}
+
+\item{mean_tmax_column}{Column name for mean of maximum temperatures.}
+
+\item{max_tmax_column}{Column name for maximum of maximum temperatures.}
 }
 \value{
-A message confirming that the data has been uploaded to the bucket.
+A string message confirming that the definitions and summaries (if included) were uploaded to the cloud storage bucket.
 }
 \description{
-This function exports R-Instat data to a specified Google Cloud Storage bucket.
-It collates the data and saves it as a JSON file on the local machine, then uploads
-the file to the specified bucket.
+This function collates R-Instat climatic definitions and (optionally) summary data,
+saves the result as a JSON file, and uploads it to a specified Google Cloud Storage bucket.
+It supports multiple summary types such as rainfall, temperature, crop success, and season start probabilities.
 }
 \details{
-This function collates the specified data into a JSON format and saves it to the local machine.
-Then it uploads the JSON file to the specified Google Cloud Storage bucket. If \code{include_summary_data} is TRUE,
-it also uploads additional summary data to the bucket.
+This function:
+\enumerate{
+\item Collates all relevant climatic definition metadata using \code{collate_definitions_data()}.
+\item Uploads definitions to the bucket using \code{add_definitions_to_bucket()}.
+\item Updates metadata to record the new definition ID for each station.
+\item (Optionally) uploads associated summary datasets per station (if \code{include_summary_data = TRUE}).
+}
+The upload timestamp is included in all files to ensure version tracking. Each summary is saved per station.
 }
 \examples{
-# Provide examples here if needed
+\dontrun{
+export_r_instat_to_bucket(
+  data_by_year = "ghana_by_station_year",
+  crop_data_name = "crop_def",
+  rain = "rain", station = "station", year = "year", month = "month",
+  summaries = c("annual_rainfall", "crop_success"),
+  country = "GH", definitions_id = "def_202506", station_id = c("ST01", "ST02"),
+  include_summary_data = TRUE,
+  annual_rainfall_data = ghana_rainfall_summaries,
+  crop_success_data = crop_prop,
+  season_start_data = crop_def
+)
+}
 }

@@ -21,7 +21,7 @@ sum_rain_definitions <- function(time = "annual_rain", total_rain,
   # if (n_rain){
   #   rain_day <- extract_value(data$count$rain_day[[2]], " >= ", FALSE)
   # }
-  sum_rain <- c(sum_rain, n_raindays)
+  sum_rain <- c(sum_rain)
   
   na_rm <- extract_value(sum_rain$function_exp, "na.rm = ", FALSE)
   na_n <- extract_value(sum_rain$function_exp, "na_max_n = ", TRUE)
@@ -29,7 +29,7 @@ sum_rain_definitions <- function(time = "annual_rain", total_rain,
   na_consec <- extract_value(sum_rain$function_exp, "na_consecutive_n = ", TRUE)
   na_prop <- extract_value(sum_rain$function_exp, "na_max_prop = ", TRUE)
   
-  variables_list = c("total_rain", "n_rain", "rain_day", "na_rm",
+  variables_list = c("total_rain", "n_rain", "na_rm",
                      "na_n", "na_n_non", "na_consec", "na_prop")
   
   # Create an empty list
@@ -44,5 +44,6 @@ sum_rain_definitions <- function(time = "annual_rain", total_rain,
       data_list[[time]][[variable]] <- NA
     }
   }
+  data_list[[time]][["rain_day"]] <- as.numeric(n_raindays)
   return(data_list)
 }

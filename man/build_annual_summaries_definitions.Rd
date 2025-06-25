@@ -2,51 +2,103 @@
 % Please edit documentation in R/build_annual_summaries_definitions.R
 \name{build_annual_summaries_definitions}
 \alias{build_annual_summaries_definitions}
-\title{Get annual summaries definitions}
+\title{Build Annual Summaries Definitions for Climatic Analysis}
 \usage{
 build_annual_summaries_definitions(
   data_name,
   data_by_year,
-  rain_name = data_book$get_climatic_column_name(data_name = data_name, col_name =
-    "rain"),
+  rain_name = "rain",
+  definitions_in_raw = NULL,
+  rain_days_name = "count",
+  extreme_rain_name = "extreme_rain",
+  annual_total_rain_col = NULL,
+  seasonal_total_rain_col = NULL,
+  annual_rainday_col = NULL,
+  seasonal_rainday_col = NULL,
   start_rains_column,
   start_rains_status_column,
   end_rains_column,
   end_rains_status_column,
   end_season_column,
   end_season_status_column,
-  seasonal_length_column
+  seasonal_length_column,
+  extreme_rainfall_column
 )
 }
 \arguments{
-\item{data_name}{The name of the data.}
+\item{data_name}{Name of the dataset being referenced. (Retained for compatibility; not currently used directly.)}
 
-\item{data_by_year}{A list containing definitions for start of rains, end of rains, end of season, and seasonal length.}
+\item{data_by_year}{A named list of summary definitions from the yearly-aggregated dataset, typically from \code{get_r_instat_definitions()}.}
 
-\item{rain_name}{The name of the rainfall column in the data.}
+\item{rain_name}{Name of the rainfall column in the dataset.}
 
-\item{start_rains_column}{The name of the start of rains column in the data}
+\item{definitions_in_raw}{(Optional) Raw definition metadata, typically obtained using \code{get_r_instat_definitions()} on the unaggregated dataset. Required if \code{extreme_rainfall_column} is used.}
 
-\item{start_rains_status_column}{The name of the start of rains status column in the data}
+\item{rain_days_name}{Name of the indicator used to define rain days (e.g., \code{"count"}). Default is \code{"count"}.}
 
-\item{end_rains_column}{The name of the end of rains column in the data}
+\item{extreme_rain_name}{Name of the indicator used to define extreme rain days. Default is \code{"extreme_rain"}.}
 
-\item{end_rains_status_column}{The name of the end of rains status column in the data.}
+\item{annual_total_rain_col}{Column name for total annual rainfall (optional).}
 
-\item{end_season_column}{The name of the end of season column in the data.}
+\item{seasonal_total_rain_col}{Column name for total seasonal rainfall (optional).}
 
-\item{end_season_status_column}{The name of the end of seasons status column in the data.}
+\item{annual_rainday_col}{Column name for count of annual rain days (optional).}
 
-\item{seasonal_length_column}{The name of the seasonal length column in the data}
+\item{seasonal_rainday_col}{Column name for count of seasonal rain days (optional).}
+
+\item{start_rains_column}{Column name representing the start of rains (DOY).}
+
+\item{start_rains_status_column}{Column indicating status for start of rains.}
+
+\item{end_rains_column}{Column name representing the end of rains (DOY).}
+
+\item{end_rains_status_column}{Column indicating status for end of rains.}
+
+\item{end_season_column}{Column name representing the end of the season (DOY).}
+
+\item{end_season_status_column}{Column indicating status for end of season.}
+
+\item{seasonal_length_column}{Column name representing seasonal length (in days).}
+
+\item{extreme_rainfall_column}{(Optional) Name of the column used in the raw definitions to define extreme rainfall threshold (e.g., \code{"(rainfall >= 40)"}).}
 }
 \value{
-A list of annual summaries definitions.
+A named list of annual summaries including:
+\describe{
+\item{start_rains}{Definition for start of rains, with optional status logic.}
+\item{end_rains}{Definition for end of rains.}
+\item{end_season}{Definition for end of season.}
+\item{season_length}{Definition for seasonal length.}
+\item{annual_rain}{Definition for total rainfall and rain days.}
+\item{extreme_rain}{Definition for extreme rain day count, if available.}
+}
 }
 \description{
-Retrieves annual summaries definitions including start of rains, end of rains, end of season, seasonal length,
-and annual rainfall summaries.
+Constructs a structured list of annual summary definitions for use in climate-related analyses.
+These summaries typically include: start of rains, end of rains, end of season, seasonal length,
+total rainfall, count of rain days, and number of extreme rain days. It supports both standard
+and derived indicators, with optional metadata drawn from calculations in the raw dataset.
+}
+\details{
+This function merges multiple sub-definitions, combining both time-based and rainfall-based
+summaries into one unified structure. If rain day or extreme rainfall definitions are specified,
+it pulls metadata from \code{definitions_in_raw} to determine appropriate thresholds or logic.
 }
 \examples{
-# Example usage:
-#get_annual_summaries_definitions("data_name", data_by_year, data)
+\dontrun{
+defs <- build_annual_summaries_definitions(
+  data_name = "ghana",
+  data_by_year = get_r_instat_definitions("ghana_by_station_year"),
+  rain_name = "rain",
+  start_rains_column = "start_rains_doy",
+  start_rains_status_column = "start_rain_status",
+  end_rains_column = "end_rains_doy",
+  end_rains_status_column = "end_rain_status",
+  end_season_column = "end_season_doy",
+  end_season_status_column = "end_season_status",
+  seasonal_length_column = "season_length",
+  extreme_rainfall_column = "extreme_rain"
+)
+}
+
 }

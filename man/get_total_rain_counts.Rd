@@ -7,36 +7,86 @@
 \usage{
 get_total_rain_counts(
   data_by_year = NULL,
-  rain_name = data_book$get_climatic_column_name(data_name = "ghana", col_name = "rain")
+  rain_name = data_book$get_climatic_column_name(data_name = "ghana", col_name = "rain"),
+  annual_total_rain_col = NULL,
+  seasonal_total_rain_col = NULL,
+  annual_rainday_col = NULL,
+  seasonal_rainday_col = NULL,
+  definitions_in_raw = NULL,
+  rain_days_name = NULL
 )
 
 get_total_rain_counts(
   data_by_year = NULL,
-  rain_name = data_book$get_climatic_column_name(data_name = "ghana", col_name = "rain")
+  rain_name = data_book$get_climatic_column_name(data_name = "ghana", col_name = "rain"),
+  annual_total_rain_col = NULL,
+  seasonal_total_rain_col = NULL,
+  annual_rainday_col = NULL,
+  seasonal_rainday_col = NULL,
+  definitions_in_raw = NULL,
+  rain_days_name = NULL
 )
 }
 \arguments{
-\item{data_by_year}{List containing data by year.}
+\item{data_by_year}{A list of summary definitions typically returned by \code{get_r_instat_definitions()} for the annual dataset.}
 
-\item{rain_name}{Character string specifying the name of the rainfall data.}
+\item{rain_name}{Character string giving the name of the rainfall column in the dataset.}
+
+\item{annual_total_rain_col}{(Optional) Column name identifying the total annual rainfall.}
+
+\item{seasonal_total_rain_col}{(Optional) Column name identifying the total seasonal rainfall.}
+
+\item{annual_rainday_col}{(Optional) Column name identifying the total count of annual rain days.}
+
+\item{seasonal_rainday_col}{(Optional) Column name identifying the total count of seasonal rain days.}
+
+\item{definitions_in_raw}{(Optional) The raw metadata definitions (from unaggregated data) used to extract the rain day threshold.}
+
+\item{rain_days_name}{(Optional) Name of the indicator (e.g., \code{"count"}) used to define a rain day threshold in the raw metadata.}
 
 \item{data_name}{The name of the main data frame.}
 }
 \value{
 A list representation of annual rain definitions.
 
-A list containing definitions of total rain counts for annual and seasonal periods.
+A named list containing:
+\describe{
+\item{annual_rain}{A list of summary parameters for total rainfall and rain day count in the year.}
+\item{seasonal_rain}{A list of summary parameters for total rainfall and rain day count during the season.}
+}
+Each of these lists may include elements like \code{total_rain}, \code{n_rain}, \code{rain_day}, \code{na_rm}, \code{na_n}, etc.,
+depending on what was found in the metadata. If definitions are missing or ambiguous, values will be set to \code{NA}.
 }
 \description{
 Retrieves annual rain definitions.
 
-This function retrieves the definition for the total rainfall as well as the
-total number of rainy days for both annual and seasonal periods.
+This function retrieves metadata definitions related to total rainfall and the number of rainy days
+for both annual and seasonal periods. It attempts to identify the appropriate summary definitions
+from a list of calculated values, checking for filters or column naming conventions that distinguish
+between annual and seasonal data. It also supports extraction of the threshold used to define a "rain day"
+based on raw definition metadata.
+}
+\details{
+The function looks for matches to known rainfall-related columns (e.g., \code{"sum_rain"}, \code{"n_rain"}) within the provided
+list of definitions. Filtering logic is used to heuristically determine whether the definition applies to seasonal or annual data
+based on filters such as \code{start_rain} and \code{end_} or numeric day-of-year ranges.
+
+If \code{definitions_in_raw} and \code{rain_days_name} are provided, the function will also extract the threshold used to define
+a rain day (e.g., \verb{>= 1mm}) from the raw metadata.
 }
 \examples{
 # Example usage:
 #get_total_rain_counts(annual_rain, ghana_defs)
 
-#data <- your_data
-#get_total_rain_counts(data_name = "ghana", data_by_year = data, rain_name = "rain")
+\dontrun{
+defs <- get_total_rain_counts(
+  data_by_year = get_r_instat_definitions("ghana_by_station_year"),
+  rain_name = "rain",
+  annual_total_rain_col = "sum_rain",
+  annual_rainday_col = "count_rain",
+  definitions_in_raw = get_r_instat_definitions("ghana"),
+  rain_days_name = "count"
+)
+}
+
 }

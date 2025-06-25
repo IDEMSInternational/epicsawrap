@@ -1,54 +1,89 @@
 #' Collate Definitions Data for Climatic Analysis from R-Instat
 #'
-#' This function aggregates various climatic data definitions, including annual summaries, 
-#' temperature summaries, crop data, and probabilities of season starts. It is designed to work
-#' within a specific context that involves climatic data processing and analysis, particularly
-#' focusing on data related to Ghana's climate. The function uses multiple sources of data
-#' and calculations to generate a comprehensive list-formatted summary.
+#' This function aggregates climatic metadata definitions used in R-Instat into a structured list format.
+#' It supports annual rainfall, temperature summaries (annual and monthly), crop success proportions, 
+#' and seasonal onset probabilities. The resulting definitions can be exported or used in downstream analysis.
 #'
-#' @param data_by_year The name of the data set that contains data aggregated by year, default is "ghana_by_station_year".
-#' @param data_by_year_month The name of the data set that contains data aggregated by year and month, default is NULL.
-#' @param crop_data The name of the crop data set, default is "crop_def".
-#' @param rain The name of the column containing rainfall data.
-#' @param year The name of the column containing year data.
-#' @param month The name of the column containing month data.
-#' @param summaries The name of the summaries to show. Options are `"annual_rainfall"`, `"annual_temperature"`, `"monthly_temperature"`, `"extremes"`, `"crop_success"`, `"start_season"`.
-#' @param start_rains_column The name of the start of rains column in the data.
-#' @param start_rains_status_column The name of the start of rains status column in the data.
-#' @param end_rains_column The name of the end of rains column in the data.
-#' @param end_rains_status_column The name of the end of rains status column in the data.
-#' @param end_season_column The name of the end of season column in the data.
-#' @param end_season_status_column The name of the end of seasons status column in the data.
-#' @param seasonal_length_column The name of the seasonal length column in the data.
-#' @param min_tmin_column The name of the minimum of minimum temperature column in the data.
-#' @param max_tmin_column The name of the maximum of minimum temperature column in the data.
-#' @param mean_tmin_column The name of the mean of minimum temperature column in the data.
-#' @param min_tmax_column The name of the minimum of maximum temperature column in the data.
-#' @param max_tmax_column The name of the maximum of maximum temperature column in the data.
-#' @param mean_tmax_column The name of the mean of maximum temperature column in the data.
-#' 
-#'@export
-#' @return A list that contains the aggregated data definitions.
+#' This function is especially designed for use in sub-Saharan African contexts like Ghana, but is general enough 
+#' to be reused in other national datasets following similar structures.
+#'
+#' @param data_by_year The name of the dataset aggregated by year. This is the main source for rainfall and annual temperature definitions.
+#' @param data_by_year_month The name of the dataset aggregated by year and month. Required for monthly temperature summaries.
+#' @param crop_data The name of the crop-related data set (e.g., `"crop_def"`), used for crop success and season start definitions.
+#' @param rain The name of the rainfall column.
+#' @param year The name of the year column.
+#' @param month The name of the month column.
+#' @param summaries A character vector specifying which summaries to extract. Options include: 
+#' `"annual_rainfall"`, `"annual_temperature"`, `"monthly_temperature"`, `"crop_success"`, `"start_season"`.
+#' @param start_rains_column Name of the start-of-rains column (e.g., `"start_rains_doy"`).
+#' @param start_rains_status_column Name of the column indicating the start-of-rains success status.
+#' @param end_rains_column Name of the end-of-rains column.
+#' @param end_rains_status_column Name of the column indicating end-of-rains status.
+#' @param end_season_column Name of the end-of-season column.
+#' @param end_season_status_column Name of the column indicating end-of-season status.
+#' @param seasonal_length_column Name of the seasonal length column.
+#' @param rain_days_name (Optional) Name of the rain-day threshold variable, if applicable.
+#' @param extreme_rainfall_column (Optional) Name of the extreme rainfall threshold variable, if applicable.
+#' @param data (Optional) Dataset name used to extract definitions for rain days or extreme rainfall if needed.
+#' @param annual_total_rain_col (Optional) Column name for total annual rainfall values.
+#' @param seasonal_total_rain_col (Optional) Column name for seasonal total rainfall values.
+#' @param annual_rainday_col (Optional) Column name for total annual rain day counts.
+#' @param seasonal_rainday_col (Optional) Column name for seasonal rain day counts.
+#' @param min_tmin_column Column name for the minimum of daily minimum temperatures.
+#' @param mean_tmin_column Column name for the mean of daily minimum temperatures.
+#' @param max_tmin_column Column name for the maximum of daily minimum temperatures.
+#' @param min_tmax_column Column name for the minimum of daily maximum temperatures.
+#' @param mean_tmax_column Column name for the mean of daily maximum temperatures.
+#' @param max_tmax_column Column name for the maximum of daily maximum temperatures.
+#'
+#' @return A named list of definition components used for climate summary calculations. 
+#' This may include sections such as `annual_rain`, `start_rains`, `crop_success_probabilities`, etc.,
+#' depending on the summaries selected.
+#'
+#' @details
+#' This function calls sub-functions to parse and interpret definitions from R-Instat's metadata system,
+#' resolving duplicate definitions and offset terms, and integrating additional logic for rainfall and temperature components.
+#'
 #' @examples
-#' #data_book <- list(get_climatic_column_name = function(data_name, col_name) { return(col_name) },
-#' #                  get_calculations = function(data_name) { list() },
-#' #                  get_data_frame_metadata = function(data_name) { list() })
-#' #collate_definitions_data(data_book = data_book)
-#' 
+#' \dontrun{
+#' definitions <- collate_definitions_data(
+#'   data_by_year = "ghana_by_station_year",
+#'   crop_data = "crop_def",
+#'   rain = "rain",
+#'   year = "year",
+#'   month = "month",
+#'   summaries = c("annual_rainfall", "crop_success")
+#' )
+#' }
+#'
+#' @export
 collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                      data_by_year_month = NULL,
                                      crop_data = "crop_def",
                                      rain = data_book$get_climatic_column_name(data_name = "ghana", "rain"),
                                      year = data_book$get_climatic_column_name("ghana", "year"),
                                      month = data_book$get_climatic_column_name("ghana", "month"),
-                                     summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "extremes", "crop_success", "start_season"),
-                                     start_rains_column = "start_rain", start_rains_status_column = "start_rain_status",
-                                     end_rains_column = "end_rains", end_rains_status_column = "end_rain_status", end_season_column = "end_season", 
-                                     end_season_status_column = "end_season_status", seasonal_length_column = "seasonal_length",
+                                     summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "crop_success", "start_season"),
+                                     start_rains_column = "start_rains_doy", start_rains_status_column = "start_rain_status",
+                                     end_rains_column = "end_rains_doy", end_rains_status_column = "end_rain_status", end_season_column = "end_season_doy", 
+                                     end_season_status_column = "end_season_status", seasonal_length_column = "season_length",
+                                     rain_days_name = NULL, extreme_rainfall_column = NULL, data = NULL,
+                                     annual_total_rain_col = NULL, seasonal_total_rain_col = NULL,
+                                     annual_rainday_col = NULL, seasonal_rainday_col = NULL,
                                      min_tmin_column = "min_tmin", mean_tmin_column = "mean_tmin", max_tmin_column = "max_tmin",
                                      min_tmax_column = "min_tmax", mean_tmax_column = "mean_tmax", max_tmax_column = "max_tmax"){
   
+
+  # get definitions from calculations
   definitions_year <- get_r_instat_definitions(data_book$get_calculations(data_by_year))
+
+  definitions_in_raw <- NULL
+  if (!is.null(rain_days_name) || !is.null(extreme_rainfall_column)) {
+    if (!is.null(data)) {
+      definitions_in_raw <- get_r_instat_definitions(data_book$get_calculations(data))
+    }
+  }
+  
   definitions_offset <- get_offset_term(data_by_year)
   
   if (length(names(definitions_year)) != length(unique(names(definitions_year)))){
@@ -70,7 +105,14 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                                            end_rains_status_column = end_rains_status_column,
                                                            end_season_column = end_season_column,
                                                            end_season_status_column = end_season_status_column,
-                                                           seasonal_length_column = seasonal_length_column)
+                                                           seasonal_length_column = seasonal_length_column,
+                                                           definitions_in_raw = definitions_in_raw,
+                                                           rain_days_name = rain_days_name,
+                                                           extreme_rainfall_column = extreme_rainfall_column,
+                                                           annual_total_rain_col = annual_total_rain_col,
+                                                           seasonal_total_rain_col = seasonal_total_rain_col,
+                                                           annual_rainday_col = annual_rainday_col,
+                                                           seasonal_rainday_col = seasonal_rainday_col)
     if(!is.null(definitions_offset) || definitions_offset != 1){
       annual_summaries$start_rains$s_start_doy <- definitions_offset
       annual_summaries$end_rains$s_start_doy <- definitions_offset

@@ -1,0 +1,19 @@
+{
+  "crops_success": {
+    "water_requirements": {
+      "val1": 300,
+      "val2": 500,
+      "val3": 700
+    },
+    "planting_dates": {
+      "val1": 92,
+      "val2": 122,
+      "val3": 153
+    },
+    "planting_length": {
+      "val1": 120,
+      "val2": 180
+    },
+    "start_check": true
+  }
+}
