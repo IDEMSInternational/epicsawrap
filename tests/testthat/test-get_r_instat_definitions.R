@@ -84,3 +84,4 @@ test_that("get_r_instat_definitions handles 'filter' type calculations without s
   expect_true("filter_2" %in% names(result))
   expect_equal(result$filter_2, "x > 10")
 })
+
