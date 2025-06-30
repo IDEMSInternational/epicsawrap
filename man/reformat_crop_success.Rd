@@ -25,7 +25,9 @@ reformat_crop_success(
 
 \item{plant_length_col}{Name of the column containing plant length data.}
 
-\item{prop_success_col}{Name of the column containing proportion of success data.}
+\item{prop_success_with_start_col}{Name of the column containing proportion of success data (with start as \code{TRUE}).}
+
+\item{prop_success_no_start_col}{Name of the column containing proportion of success data (with start as \code{FALSE}).}
 }
 \value{
 The reformatted data frame.

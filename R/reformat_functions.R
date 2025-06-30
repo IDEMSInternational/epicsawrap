@@ -81,7 +81,8 @@ reformat_annual_summaries <- function(data,
 #' @param total_rain_col Name of the column containing total rain data.
 #' @param plant_day_col Name of the column containing plant day data.
 #' @param plant_length_col Name of the column containing plant length data.
-#' @param prop_success_col Name of the column containing proportion of success data.
+#' @param prop_success_with_start_col Name of the column containing proportion of success data (with start as `TRUE`).
+#' @param prop_success_no_start_col Name of the column containing proportion of success data (with start as `FALSE`).
 #'
 #' @return The reformatted data frame.
 #' @export
