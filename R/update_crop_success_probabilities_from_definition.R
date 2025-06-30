@@ -1,10 +1,10 @@
 update_crop_success_probabilities_from_definition <- function(country, station_id = NULL, definitions_id = NULL, daily_data, summary_rains_data = NULL) {
-  if (!is.null(station_id) & !is.null(definition_id)) warning("Both station_id and definition_id are given. Defaulting to station_id.")
+  if (!is.null(station_id) & !is.null(definitions_id)) warning("Both station_id and definitions_id are given. Defaulting to station_id.")
   # Retrieve the most recent definition data for the specified country and station
   if (!is.null(station_id)){
     definitions_data <- get_definitions_data(country = country, station_id = station_id)
   } else {
-    definitions_data <- get_definitions_data(country = country, definition_id = definition_id)
+    definitions_data <- get_definitions_data(country = country, definitions_id = definitions_id)
   }
   
   # If start-of-rains data is not provided, compute it using daily rainfall data
