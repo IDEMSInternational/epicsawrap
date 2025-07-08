@@ -19,10 +19,10 @@ get_end_season_definitions <- function(end_season = NULL){
     end_day <- extract_value(end_season$filter_2, " <= ")
     output <- "both"
     water_balance_max <- extract_value(end_season$filter[[1]], "wb <= ")
-    capacity <- extract_value(end_season$filter$wb$wb_max$rain_max[[2]], "yes=")
-    evaporation_value <- extract_value(end_season$filter$wb$wb_max[[1]], "rain_max - ")
+    capacity <- extract_value(end_season$filter$conditions_check$wb$wb_max$rain_max[[2]], "yes=")
+    evaporation_value <- extract_value(end_season$filter$conditions_check$wb$wb_max[[1]], "rain_max - ")
     if (is.na(evaporation_value)){
-      evaporation_value <- extract_value(end_season$filter$wb$wb_max[[1]], "no=", FALSE)
+      evaporation_value <- extract_value(end_season$filter$conditions_check$wb$wb_max[[1]], "no=", FALSE)
       evaporation <- "variable"
     } else {
       evaporation <- "value"
