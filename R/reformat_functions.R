@@ -21,6 +21,9 @@
 #' @param extreme_rain_days_col Column for number of extreme rain days.
 #' @param extreme_tmin_days_col Column for number of extreme tmin days.
 #' @param extreme_tmax_days_col Column for number of extreme tmax days.
+#' @param longest_rain_spell_col Column for the longest rainfall spell.
+#' @param longest_tmin_spell_col Column for the longest tmin spell.
+#' @param longest_tmax_spell_col Column for the longest tmax spell.
 #'
 #' @return A reformatted data frame with standardized column names and cleaned data types.
 #' @export
@@ -33,14 +36,16 @@ reformat_annual_summaries <- function(data,
                                       season_length_col = NULL, annual_rain_col = NULL,
                                       n_rain_col = NULL,
                                       extreme_rain_days_col = NULL,
-                                      extreme_tmin_days_col = NULL, extreme_tmax_days_col = NULL) {
+                                      extreme_tmin_days_col = NULL, extreme_tmax_days_col = NULL,
+                                      longest_rain_spell_col = NULL, longest_tmin_spell_col = NULL, longest_tmax_spell_col = NULL) {
   # Rename columns
   data <- data %>%
     dplyr::select(dplyr::any_of(c(station_col, year_col, start_rains_doy_col, start_rains_date_col,
                            end_rains_doy_col, end_rains_date_col, end_season_doy_col,
                            end_season_date_col, seasonal_rain_col, n_seasonal_rain_col,
                            season_length_col, annual_rain_col, n_rain_col, extreme_rain_days_col, 
-                           extreme_tmin_days_col, extreme_tmax_days_col))) %>%
+                           extreme_tmin_days_col, extreme_tmax_days_col, longest_rain_spell_col, 
+                           longest_tmin_spell_col, longest_tmax_spell_col))) %>%
     dplyr::rename(
       station = {{station_col}},
       year = {{year_col}},
@@ -57,7 +62,10 @@ reformat_annual_summaries <- function(data,
       n_rain = {{n_rain_col}},
       extreme_rain_days = {{extreme_rain_days_col}},
       extreme_tmin_days = {{extreme_tmin_days_col}},
-      extreme_tmax_days = {{extreme_tmax_days_col}}
+      extreme_tmax_days = {{extreme_tmax_days_col}},
+      long_spell_rains = {{longest_rain_spell_col}},
+      long_spell_tmin = {{longest_tmin_spell_col}},
+      long_spell_tmax = {{longest_tmax_spell_col}}
     )
   
   # Convert station to factor if it's not already

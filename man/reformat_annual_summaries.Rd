@@ -21,7 +21,10 @@ reformat_annual_summaries(
   n_rain_col = NULL,
   extreme_rain_days_col = NULL,
   extreme_tmin_days_col = NULL,
-  extreme_tmax_days_col = NULL
+  extreme_tmax_days_col = NULL,
+  longest_rain_spell_col = NULL,
+  longest_tmin_spell_col = NULL,
+  longest_tmax_spell_col = NULL
 )
 }
 \arguments{
@@ -58,6 +61,12 @@ reformat_annual_summaries(
 \item{extreme_tmin_days_col}{Column for number of extreme tmin days.}
 
 \item{extreme_tmax_days_col}{Column for number of extreme tmax days.}
+
+\item{longest_rain_spell_col}{Column for the longest rainfall spell.}
+
+\item{longest_tmin_spell_col}{Column for the longest tmin spell.}
+
+\item{longest_tmax_spell_col}{Column for the longest tmax spell.}
 }
 \value{
 A reformatted data frame with standardized column names and cleaned data types.

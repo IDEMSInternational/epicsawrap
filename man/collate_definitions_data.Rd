@@ -20,6 +20,9 @@ collate_definitions_data(
   end_season_column = "end_season_doy",
   end_season_status_column = "end_season_status",
   seasonal_length_column = "season_length",
+  longest_rain_spell_col = "long_spell_rains",
+  longest_tmin_spell_col = "long_spell_tmin",
+  longest_tmax_spell_col = "long_spell_tmax",
   rain_days_name = NULL,
   extreme_rainfall_column = NULL,
   extreme_tmin_column = NULL,
@@ -66,6 +69,12 @@ collate_definitions_data(
 \item{end_season_status_column}{Name of the column indicating end-of-season status.}
 
 \item{seasonal_length_column}{Name of the seasonal length column.}
+
+\item{longest_rain_spell_col}{Column name indicating the longest spell (for rainfall in days).}
+
+\item{longest_tmin_spell_col}{Column name indicating the longest spell (for tmin in days).}
+
+\item{longest_tmax_spell_col}{Column name indicating the longest spell (for tmax in days).}
 
 \item{rain_days_name}{(Optional) Name of the rain-day threshold variable, if applicable.}
 

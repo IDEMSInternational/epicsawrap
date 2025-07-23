@@ -69,7 +69,6 @@ update_total_temperature_summaries_from_definition <- function(country = "zm_wor
 #'
 #' @param country Character. The name of the country for which definitions and observations are retrieved.
 #' @param station_id Character. The station ID(s) for which data is retrieved. Can be `NULL` if `definition_id` is specified. Defaults to `NULL`.
-#' @param definition_id Character. The ID of the definitions to use for generating summaries. Only used if `station_id` is `NULL`. Defaults to `NULL`.
 #' @param daily_data Data frame. Daily temperature data.
 #' 
 #' @return A data frame containing annual temperature summaries.
@@ -84,7 +83,6 @@ update_annual_temperature_summaries_from_definition <- function(country, station
 #'
 #' @param country Character. The name of the country for which definitions and observations are retrieved.
 #' @param station_id Character. The station ID(s) for which data is retrieved. Can be `NULL` if `definition_id` is specified. Defaults to `NULL`.
-#' @param definition_id Character. The ID of the definitions to use for generating summaries. Only used if `station_id` is `NULL`. Defaults to `NULL`.
 #' @param daily_data Data frame. Daily temperature data.
 #' 
 #' @return A data frame containing temperature summaries by month and year

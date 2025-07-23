@@ -29,6 +29,9 @@
 #' @param end_season_column Column name for end of season (DOY).
 #' @param end_season_status_column Column name indicating success status for end of season.
 #' @param seasonal_length_column Column name indicating seasonal length (in days).
+#' @param longest_rain_spell_col Column name indicating the longest spell (for rainfall in days).
+#' @param longest_tmin_spell_col Column name indicating the longest spell (for tmin in days).
+#' @param longest_tmax_spell_col Column name indicating the longest spell (for tmax in days).
 #' @param rain_days_name Column name used to define a rain day threshold (optional).
 #' @param extreme_rainfall_column Column name used to define an extreme rainfall threshold (optional).
 #' @param extreme_tmin_column Column name used to define an extreme tmin threshold (optional).
@@ -79,12 +82,19 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
                                       include_summary_data = FALSE,
                                       annual_rainfall_data = NULL, annual_temperature_data = NULL, monthly_temperature_data = NULL,
                                       crop_success_data = NULL, season_start_data = NULL,
+                                      
+                                      # from annual_rainfall data
                                       start_rains_column = "start_rains_doy", start_rains_status_column = "start_rain_status",
                                       end_rains_column = "end_rains_doy", end_rains_status_column = "end_rains_status", end_season_column = "end_season_doy",
                                       end_season_status_column = "end_season_status", seasonal_length_column = "season_length",
+                                      longest_rain_spell_col = "long_spell_rains", longest_tmin_spell_col = "long_spell_tmin", longest_tmax_spell_col = "long_spell_tmax",
+                                      
+                                      # from main data frame
                                       rain_days_name = NULL, extreme_rainfall_column = NULL, extreme_tmin_column = NULL, extreme_tmax_column = NULL, 
                                       annual_total_rain_col = NULL, seasonal_total_rain_col = NULL,
                                       annual_rainday_col = NULL, seasonal_rainday_col = NULL,
+                                      
+                                      # for temperature
                                       min_tmin_column = "min_tmin", mean_tmin_column = "mean_tmin", max_tmin_column = "max_tmin",
                                       min_tmax_column = "min_tmax", mean_tmax_column = "mean_tmax", max_tmax_column = "max_tmax"){
   
@@ -95,6 +105,9 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
                                                end_season_column = end_season_column,
                                                end_season_status_column = end_season_status_column, 
                                                seasonal_length_column = seasonal_length_column, 
+                                               longest_rain_spell_col = longest_rain_spell_col, 
+                                               longest_tmin_spell_col = longest_tmin_spell_col, 
+                                               longest_tmax_spell_col = longest_tmax_spell_col,
                                                rain_days_name = rain_days_name, extreme_rainfall_column = extreme_rainfall_column, 
                                                extreme_tmin_column = extreme_tmin_column, extreme_tmax_column = extreme_tmax_column, data = data,
                                                annual_total_rain_col = annual_total_rain_col,
@@ -103,7 +116,7 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
                                                seasonal_rainday_col = seasonal_rainday_col,
                                                min_tmin_column = min_tmin_column, mean_tmin_column = mean_tmin_column, max_tmin_column = max_tmin_column,
                                                min_tmax_column = min_tmax_column, mean_tmax_column = mean_tmax_column, max_tmax_column = max_tmax_column)
-  
+
   # Save into bucket
   # commented out code was when we had this for multiple station_ids. We now just do for one definition_id.
   #purrr::map(.x = station_id,
