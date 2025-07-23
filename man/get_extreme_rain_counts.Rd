@@ -6,7 +6,8 @@
 \usage{
 get_extreme_rain_counts(
   definitions_in_raw = NULL,
-  extreme_rainfall_column = "extreme_rain"
+  extreme_rainfall_column = "extreme_rain",
+  list_name = "extreme_rain"
 )
 }
 \arguments{
@@ -15,6 +16,8 @@ get_extreme_rain_counts(
 
 \item{extreme_rainfall_column}{The name of the rainfall definition to extract from.
 Default is \code{"extreme_rain"}.}
+
+\item{list_name}{The name to give the new item in the list.}
 }
 \value{
 A list with one element named \code{"extreme_rain"}, containing:

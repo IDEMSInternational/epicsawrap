@@ -31,6 +31,9 @@
 #' @param seasonal_total_rain_col (Optional) Column name for seasonal total rainfall values.
 #' @param annual_rainday_col (Optional) Column name for total annual rain day counts.
 #' @param seasonal_rainday_col (Optional) Column name for seasonal rain day counts.
+#' @param longest_rain_spell_col Column name indicating the longest spell (for rainfall in days).
+#' @param longest_tmin_spell_col Column name indicating the longest spell (for tmin in days).
+#' @param longest_tmax_spell_col Column name indicating the longest spell (for tmax in days).
 #' @param min_tmin_column Column name for the minimum of daily minimum temperatures.
 #' @param mean_tmin_column Column name for the mean of daily minimum temperatures.
 #' @param max_tmin_column Column name for the maximum of daily minimum temperatures.
@@ -69,6 +72,8 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                      start_rains_column = "start_rains_doy", start_rains_status_column = "start_rain_status",
                                      end_rains_column = "end_rains_doy", end_rains_status_column = "end_rain_status", end_season_column = "end_season_doy", 
                                      end_season_status_column = "end_season_status", seasonal_length_column = "season_length",
+                                     longest_rain_spell_col = "long_spell_rains", longest_tmin_spell_col = "long_spell_tmin",
+                                     longest_tmax_spell_col = "long_spell_tmax",
                                      rain_days_name = NULL, extreme_rainfall_column = NULL, extreme_tmin_column = NULL,
                                      extreme_tmax_column = NULL, data = NULL,
                                      annual_total_rain_col = NULL, seasonal_total_rain_col = NULL,
@@ -109,6 +114,9 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                                            end_season_column = end_season_column,
                                                            end_season_status_column = end_season_status_column,
                                                            seasonal_length_column = seasonal_length_column,
+                                                           longest_rain_spell_col = longest_rain_spell_col, 
+                                                           longest_tmin_spell_col = longest_tmin_spell_col,
+                                                           longest_tmax_spell_col = longest_tmax_spell_col,
                                                            definitions_in_raw = definitions_in_raw,
                                                            rain_days_name = rain_days_name,
                                                            extreme_rainfall_column = extreme_rainfall_column,

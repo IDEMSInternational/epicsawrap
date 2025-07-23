@@ -9,6 +9,7 @@
 #'   `get_r_instat_definitions()` on the unaggregated dataset.
 #' @param extreme_rainfall_column The name of the rainfall definition to extract from.
 #'   Default is `"extreme_rain"`.
+#' @param list_name The name to give the new item in the list.
 #'
 #' @return A list with one element named `"extreme_rain"`, containing:
 #' \describe{
@@ -25,6 +26,7 @@
 #'
 #' @export
 get_extreme_rain_counts <- function(definitions_in_raw = NULL,
-                                    extreme_rainfall_column = "extreme_rain") {
-  get_rain_counts(definitions_in_raw, extreme_rainfall_column, "extreme_rain")
+                                    extreme_rainfall_column = "extreme_rain",
+                                    list_name = "extreme_rain") {
+  get_rain_counts(definitions_in_raw, extreme_rainfall_column, list_name = list_name)
 }

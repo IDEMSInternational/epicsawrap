@@ -22,6 +22,9 @@ build_annual_summaries_definitions(
   end_season_column = NULL,
   end_season_status_column = NULL,
   seasonal_length_column = NULL,
+  longest_rain_spell_col = NULL,
+  longest_tmin_spell_col = NULL,
+  longest_tmax_spell_col = NULL,
   extreme_rainfall_column = NULL,
   extreme_tmin_column = NULL,
   extreme_tmax_column = NULL
@@ -61,6 +64,12 @@ build_annual_summaries_definitions(
 \item{end_season_status_column}{Column indicating status for end of season.}
 
 \item{seasonal_length_column}{Column name representing seasonal length (in days).}
+
+\item{longest_rain_spell_col}{Column name indicating the longest spell (for rainfall in days).}
+
+\item{longest_tmin_spell_col}{Column name indicating the longest spell (for tmin in days).}
+
+\item{longest_tmax_spell_col}{Column name indicating the longest spell (for tmax in days).}
 
 \item{extreme_rainfall_column}{(Optional) Name of the column used in the raw definitions to define extreme rainfall threshold (e.g., \code{"(rainfall >= 40)"}).}
 

@@ -22,6 +22,9 @@
 #' @param end_season_column Column name representing the end of the season (DOY).
 #' @param end_season_status_column Column indicating status for end of season.
 #' @param seasonal_length_column Column name representing seasonal length (in days).
+#' @param longest_rain_spell_col Column name indicating the longest spell (for rainfall in days).
+#' @param longest_tmin_spell_col Column name indicating the longest spell (for tmin in days).
+#' @param longest_tmax_spell_col Column name indicating the longest spell (for tmax in days).
 #' @param extreme_rainfall_column (Optional) Name of the column used in the raw definitions to define extreme rainfall threshold (e.g., `"(rainfall >= 40)"`).
 #' @param extreme_tmin_column (Optional) Name of the column used in the raw definitions to define extreme tmin threshold (e.g., `"(tmin <= 15)"`).
 #' @param extreme_tmax_column (Optional) Name of the column used in the raw definitions to define extreme tmax threshold (e.g., `"(tmax >= 30)"`).
@@ -71,6 +74,7 @@ build_annual_summaries_definitions <- function(data_name, data_by_year,
                                                start_rains_column = NULL, start_rains_status_column = NULL,
                                                end_rains_column = NULL, end_rains_status_column = NULL, end_season_column = NULL,
                                                end_season_status_column = NULL, seasonal_length_column = NULL,
+                                               longest_rain_spell_col = NULL, longest_tmin_spell_col = NULL, longest_tmax_spell_col = NULL,
                                                extreme_rainfall_column = NULL, extreme_tmin_column = NULL, extreme_tmax_column = NULL){
   start_of_rains <- NULL
   end_rains <- NULL
@@ -97,6 +101,11 @@ build_annual_summaries_definitions <- function(data_name, data_by_year,
                                              seasonal_rainday_col = seasonal_rainday_col,
                                              definitions_in_raw = definitions_in_raw,
                                              rain_days_name = rain_days_name)
+  
+  # For getting spells definitions
+  longest_rain_spell <- get_longest_spell_definitions(data_by_year, longest_rain_spell_col, "longest_rain_spell")
+  longest_tmin_spell <- get_longest_spell_definitions(data_by_year, longest_tmin_spell_col, "longest_tmin_spell")
+  longest_tmax_spell <- get_longest_spell_definitions(data_by_year, longest_tmax_spell_col, "longest_tmax_spell")
 
   # We want this to work for extreme_rain_name, but we need access to the raw data for this.
   # We don't need the raw data. Just access to it so we can get the calculations. Perhaps then this is optional to them if they want to 
@@ -105,10 +114,12 @@ build_annual_summaries_definitions <- function(data_name, data_by_year,
   # We only need the raw data for the summaries in it!
   # if they are protective over their raw data. (we do not need the data itself, just the summaries within it)
   extreme_rain_counts <- get_extreme_rain_counts(definitions_in_raw, extreme_rainfall_column)
-  extreme_tmin_counts <- get_extreme_rain_counts(definitions_in_raw, extreme_tmin_column)
-  extreme_tmax_counts <- get_extreme_rain_counts(definitions_in_raw, extreme_tmax_column)
+  extreme_tmin_counts <- get_extreme_rain_counts(definitions_in_raw, extreme_tmin_column, "extreme_tmin")
+  extreme_tmax_counts <- get_extreme_rain_counts(definitions_in_raw, extreme_tmax_column, "extreme_tmax")
   
   # Get the list of summaries:
-  summaries_list <- c(start_of_rains, end_rains, end_season, seasonal_length, total_rain_counts, extreme_rain_counts, extreme_tmin_counts, extreme_tmax_counts)
+  summaries_list <- c(start_of_rains, end_rains, end_season, seasonal_length, total_rain_counts,
+                      extreme_rain_counts, extreme_tmin_counts, extreme_tmax_counts,
+                      longest_rain_spell, longest_tmin_spell, longest_tmax_spell)
   return(summaries_list)
 }

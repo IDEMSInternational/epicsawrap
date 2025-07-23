@@ -31,6 +31,9 @@ export_r_instat_to_bucket(
   end_season_column = "end_season_doy",
   end_season_status_column = "end_season_status",
   seasonal_length_column = "season_length",
+  longest_rain_spell_col = "long_spell_rains",
+  longest_tmin_spell_col = "long_spell_tmin",
+  longest_tmax_spell_col = "long_spell_tmax",
   rain_days_name = NULL,
   extreme_rainfall_column = NULL,
   extreme_tmin_column = NULL,
@@ -97,6 +100,12 @@ export_r_instat_to_bucket(
 \item{end_season_status_column}{Column name indicating success status for end of season.}
 
 \item{seasonal_length_column}{Column name indicating seasonal length (in days).}
+
+\item{longest_rain_spell_col}{Column name indicating the longest spell (for rainfall in days).}
+
+\item{longest_tmin_spell_col}{Column name indicating the longest spell (for tmin in days).}
+
+\item{longest_tmax_spell_col}{Column name indicating the longest spell (for tmax in days).}
 
 \item{rain_days_name}{Column name used to define a rain day threshold (optional).}
 

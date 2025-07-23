@@ -17,8 +17,6 @@ update_monthly_temperature_summaries_from_definition(
 \item{station_id}{Character. The station ID(s) for which data is retrieved. Can be \code{NULL} if \code{definition_id} is specified. Defaults to \code{NULL}.}
 
 \item{daily_data}{Data frame. Daily temperature data.}
-
-\item{definition_id}{Character. The ID of the definitions to use for generating summaries. Only used if \code{station_id} is \code{NULL}. Defaults to \code{NULL}.}
 }
 \value{
 A data frame containing temperature summaries by month and year
