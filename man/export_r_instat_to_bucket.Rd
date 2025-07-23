@@ -33,6 +33,8 @@ export_r_instat_to_bucket(
   seasonal_length_column = "season_length",
   rain_days_name = NULL,
   extreme_rainfall_column = NULL,
+  extreme_tmin_column = NULL,
+  extreme_tmax_column = NULL,
   annual_total_rain_col = NULL,
   seasonal_total_rain_col = NULL,
   annual_rainday_col = NULL,
@@ -99,6 +101,10 @@ export_r_instat_to_bucket(
 \item{rain_days_name}{Column name used to define a rain day threshold (optional).}
 
 \item{extreme_rainfall_column}{Column name used to define an extreme rainfall threshold (optional).}
+
+\item{extreme_tmin_column}{Column name used to define an extreme tmin threshold (optional).}
+
+\item{extreme_tmax_column}{Column name used to define an extreme tmax threshold (optional).}
 
 \item{annual_total_rain_col}{Column name used for annual total rainfall values (optional).}
 

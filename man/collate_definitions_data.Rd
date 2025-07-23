@@ -22,6 +22,8 @@ collate_definitions_data(
   seasonal_length_column = "season_length",
   rain_days_name = NULL,
   extreme_rainfall_column = NULL,
+  extreme_tmin_column = NULL,
+  extreme_tmax_column = NULL,
   data = NULL,
   annual_total_rain_col = NULL,
   seasonal_total_rain_col = NULL,
@@ -69,7 +71,11 @@ collate_definitions_data(
 
 \item{extreme_rainfall_column}{(Optional) Name of the extreme rainfall threshold variable, if applicable.}
 
-\item{data}{(Optional) Dataset name used to extract definitions for rain days or extreme rainfall if needed.}
+\item{extreme_tmin_column}{(Optional) Name of the extreme tmin threshold variable, if applicable.}
+
+\item{extreme_tmax_column}{(Optional) Name of the extreme tmax threshold variable, if applicable.}
+
+\item{data}{(Optional) Dataset name used to extract definitions for rain days or extreme values (rainfall, tmin, or tmax) if needed.}
 
 \item{annual_total_rain_col}{(Optional) Column name for total annual rainfall values.}
 

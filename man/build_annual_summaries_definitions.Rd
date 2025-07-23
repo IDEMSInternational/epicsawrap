@@ -15,14 +15,16 @@ build_annual_summaries_definitions(
   seasonal_total_rain_col = NULL,
   annual_rainday_col = NULL,
   seasonal_rainday_col = NULL,
-  start_rains_column,
-  start_rains_status_column,
-  end_rains_column,
-  end_rains_status_column,
-  end_season_column,
-  end_season_status_column,
-  seasonal_length_column,
-  extreme_rainfall_column
+  start_rains_column = NULL,
+  start_rains_status_column = NULL,
+  end_rains_column = NULL,
+  end_rains_status_column = NULL,
+  end_season_column = NULL,
+  end_season_status_column = NULL,
+  seasonal_length_column = NULL,
+  extreme_rainfall_column = NULL,
+  extreme_tmin_column = NULL,
+  extreme_tmax_column = NULL
 )
 }
 \arguments{
@@ -61,6 +63,10 @@ build_annual_summaries_definitions(
 \item{seasonal_length_column}{Column name representing seasonal length (in days).}
 
 \item{extreme_rainfall_column}{(Optional) Name of the column used in the raw definitions to define extreme rainfall threshold (e.g., \code{"(rainfall >= 40)"}).}
+
+\item{extreme_tmin_column}{(Optional) Name of the column used in the raw definitions to define extreme tmin threshold (e.g., \code{"(tmin <= 15)"}).}
+
+\item{extreme_tmax_column}{(Optional) Name of the column used in the raw definitions to define extreme tmax threshold (e.g., \code{"(tmax >= 30)"}).}
 }
 \value{
 A named list of annual summaries including:
@@ -97,7 +103,9 @@ defs <- build_annual_summaries_definitions(
   end_season_column = "end_season_doy",
   end_season_status_column = "end_season_status",
   seasonal_length_column = "season_length",
-  extreme_rainfall_column = "extreme_rain"
+  extreme_rainfall_column = "extreme_rain",
+  extreme_tmin_column = "extreme_tmin",
+  extreme_tmax_column = "extreme_tmax"
 )
 }
 

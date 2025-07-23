@@ -24,7 +24,9 @@
 #' @param seasonal_length_column Name of the seasonal length column.
 #' @param rain_days_name (Optional) Name of the rain-day threshold variable, if applicable.
 #' @param extreme_rainfall_column (Optional) Name of the extreme rainfall threshold variable, if applicable.
-#' @param data (Optional) Dataset name used to extract definitions for rain days or extreme rainfall if needed.
+#' @param extreme_tmin_column (Optional) Name of the extreme tmin threshold variable, if applicable.
+#' @param extreme_tmax_column (Optional) Name of the extreme tmax threshold variable, if applicable.
+#' @param data (Optional) Dataset name used to extract definitions for rain days or extreme values (rainfall, tmin, or tmax) if needed.
 #' @param annual_total_rain_col (Optional) Column name for total annual rainfall values.
 #' @param seasonal_total_rain_col (Optional) Column name for seasonal total rainfall values.
 #' @param annual_rainday_col (Optional) Column name for total annual rain day counts.
@@ -67,7 +69,8 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                      start_rains_column = "start_rains_doy", start_rains_status_column = "start_rain_status",
                                      end_rains_column = "end_rains_doy", end_rains_status_column = "end_rain_status", end_season_column = "end_season_doy", 
                                      end_season_status_column = "end_season_status", seasonal_length_column = "season_length",
-                                     rain_days_name = NULL, extreme_rainfall_column = NULL, data = NULL,
+                                     rain_days_name = NULL, extreme_rainfall_column = NULL, extreme_tmin_column = NULL,
+                                     extreme_tmax_column = NULL, data = NULL,
                                      annual_total_rain_col = NULL, seasonal_total_rain_col = NULL,
                                      annual_rainday_col = NULL, seasonal_rainday_col = NULL,
                                      min_tmin_column = "min_tmin", mean_tmin_column = "mean_tmin", max_tmin_column = "max_tmin",
@@ -78,7 +81,7 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
   definitions_year <- get_r_instat_definitions(data_book$get_calculations(data_by_year))
 
   definitions_in_raw <- NULL
-  if (!is.null(rain_days_name) || !is.null(extreme_rainfall_column)) {
+  if (!is.null(rain_days_name) || !is.null(extreme_rainfall_column) || !is.null(extreme_tmin_column) || !is.null(extreme_tmax_column)) {
     if (!is.null(data)) {
       definitions_in_raw <- get_r_instat_definitions(data_book$get_calculations(data))
     }
@@ -109,6 +112,8 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                                            definitions_in_raw = definitions_in_raw,
                                                            rain_days_name = rain_days_name,
                                                            extreme_rainfall_column = extreme_rainfall_column,
+                                                           extreme_tmin_column = extreme_tmin_column,
+                                                           extreme_tmax_column = extreme_tmax_column,
                                                            annual_total_rain_col = annual_total_rain_col,
                                                            seasonal_total_rain_col = seasonal_total_rain_col,
                                                            annual_rainday_col = annual_rainday_col,
@@ -186,8 +191,6 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
     definitions_crop <- NULL
   }
   season_start_summaries <- build_season_start_probabilities(definitions_crop)
-  
-  # extremes then ...
   
   # overall:
   data_list <- c(annual_summaries, temperature_summaries, crop_summaries, season_start_summaries)

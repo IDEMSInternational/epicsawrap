@@ -17,8 +17,10 @@
 #' @param n_seasonal_rain_col Column for number of seasonal rain days.
 #' @param season_length_col Column for season length (days).
 #' @param annual_rain_col Column for total annual rainfall.
-#' @param extreme_rain_days_col Column for number of extreme rain days.
 #' @param n_rain_col Column for total number of rain days.
+#' @param extreme_rain_days_col Column for number of extreme rain days.
+#' @param extreme_tmin_days_col Column for number of extreme tmin days.
+#' @param extreme_tmax_days_col Column for number of extreme tmax days.
 #'
 #' @return A reformatted data frame with standardized column names and cleaned data types.
 #' @export
@@ -29,14 +31,16 @@ reformat_annual_summaries <- function(data,
                                       end_season_doy_col = NULL, end_season_date_col = NULL,
                                       seasonal_rain_col = NULL, n_seasonal_rain_col = NULL,
                                       season_length_col = NULL, annual_rain_col = NULL,
+                                      n_rain_col = NULL,
                                       extreme_rain_days_col = NULL,
-                                      n_rain_col = NULL) {
+                                      extreme_tmin_days_col = NULL, extreme_tmax_days_col = NULL) {
   # Rename columns
   data <- data %>%
     dplyr::select(dplyr::any_of(c(station_col, year_col, start_rains_doy_col, start_rains_date_col,
                            end_rains_doy_col, end_rains_date_col, end_season_doy_col,
                            end_season_date_col, seasonal_rain_col, n_seasonal_rain_col,
-                           season_length_col, annual_rain_col, extreme_rain_days_col, n_rain_col))) %>%
+                           season_length_col, annual_rain_col, n_rain_col, extreme_rain_days_col, 
+                           extreme_tmin_days_col, extreme_tmax_days_col))) %>%
     dplyr::rename(
       station = {{station_col}},
       year = {{year_col}},
@@ -50,8 +54,10 @@ reformat_annual_summaries <- function(data,
       n_seasonal_rain = {{n_seasonal_rain_col}},
       season_length = {{season_length_col}},
       annual_rain = {{annual_rain_col}},
+      n_rain = {{n_rain_col}},
       extreme_rain_days = {{extreme_rain_days_col}},
-      n_rain = {{n_rain_col}}
+      extreme_tmin_days = {{extreme_tmin_days_col}},
+      extreme_tmax_days = {{extreme_tmax_days_col}}
     )
   
   # Convert station to factor if it's not already

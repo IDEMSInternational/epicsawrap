@@ -18,8 +18,10 @@ reformat_annual_summaries(
   n_seasonal_rain_col = NULL,
   season_length_col = NULL,
   annual_rain_col = NULL,
+  n_rain_col = NULL,
   extreme_rain_days_col = NULL,
-  n_rain_col = NULL
+  extreme_tmin_days_col = NULL,
+  extreme_tmax_days_col = NULL
 )
 }
 \arguments{
@@ -49,9 +51,13 @@ reformat_annual_summaries(
 
 \item{annual_rain_col}{Column for total annual rainfall.}
 
+\item{n_rain_col}{Column for total number of rain days.}
+
 \item{extreme_rain_days_col}{Column for number of extreme rain days.}
 
-\item{n_rain_col}{Column for total number of rain days.}
+\item{extreme_tmin_days_col}{Column for number of extreme tmin days.}
+
+\item{extreme_tmax_days_col}{Column for number of extreme tmax days.}
 }
 \value{
 A reformatted data frame with standardized column names and cleaned data types.

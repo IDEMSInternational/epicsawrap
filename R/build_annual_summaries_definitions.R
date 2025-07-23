@@ -23,6 +23,8 @@
 #' @param end_season_status_column Column indicating status for end of season.
 #' @param seasonal_length_column Column name representing seasonal length (in days).
 #' @param extreme_rainfall_column (Optional) Name of the column used in the raw definitions to define extreme rainfall threshold (e.g., `"(rainfall >= 40)"`).
+#' @param extreme_tmin_column (Optional) Name of the column used in the raw definitions to define extreme tmin threshold (e.g., `"(tmin <= 15)"`).
+#' @param extreme_tmax_column (Optional) Name of the column used in the raw definitions to define extreme tmax threshold (e.g., `"(tmax >= 30)"`).
 #'
 #' @return A named list of annual summaries including:
 #' \describe{
@@ -52,7 +54,9 @@
 #'   end_season_column = "end_season_doy",
 #'   end_season_status_column = "end_season_status",
 #'   seasonal_length_column = "season_length",
-#'   extreme_rainfall_column = "extreme_rain"
+#'   extreme_rainfall_column = "extreme_rain",
+#'   extreme_tmin_column = "extreme_tmin",
+#'   extreme_tmax_column = "extreme_tmax"
 #' )
 #' }
 #'
@@ -64,18 +68,26 @@ build_annual_summaries_definitions <- function(data_name, data_by_year,
                                                extreme_rain_name = "extreme_rain", # the name of indicator for if it was an extreme rainy day or not, created for the n_rain_days, etc from our main data frame
                                                annual_total_rain_col = NULL, seasonal_total_rain_col = NULL,
                                                annual_rainday_col = NULL, seasonal_rainday_col = NULL,
-                                               start_rains_column, start_rains_status_column,
-                                               end_rains_column, end_rains_status_column, end_season_column,
-                                               end_season_status_column, seasonal_length_column, extreme_rainfall_column){
-  start_of_rains <- get_start_rains_definitions(data_by_year[[start_rains_column]])
+                                               start_rains_column = NULL, start_rains_status_column = NULL,
+                                               end_rains_column = NULL, end_rains_status_column = NULL, end_season_column = NULL,
+                                               end_season_status_column = NULL, seasonal_length_column = NULL,
+                                               extreme_rainfall_column = NULL, extreme_tmin_column = NULL, extreme_tmax_column = NULL){
+  start_of_rains <- NULL
+  end_rains <- NULL
+  end_season <- NULL
+  seasonal_length <- NULL
+  total_rain_counts <- NULL
+  extreme_rain_counts <- NULL
+  extreme_tmin_counts <- NULL
+  extreme_tmax_counts <- NULL
+  if (!is.null(start_rains_column)) start_of_rains <- get_start_rains_definitions(data_by_year[[start_rains_column]])
+  if (!is.null(end_rains_column)) end_rains <- get_end_rains_definitions(data_by_year[[end_rains_column]])
+  if (!is.null(end_season_column)) end_season <- get_end_season_definitions(data_by_year[[end_season_column]])
+  if (!is.null(seasonal_length_column)) seasonal_length <- get_season_length_definitions(data_by_year[[seasonal_length_column]])
 
-  end_rains <- get_end_rains_definitions(data_by_year[[end_rains_column]])
-  end_season <- get_end_season_definitions(data_by_year[[end_season_column]])
-  seasonal_length <- get_season_length_definitions(data_by_year[[seasonal_length_column]])
-
-  if (!is.null(data_by_year[[start_rains_status_column]])) start_of_rains$start_rains$include_status <- TRUE
-  if (!is.null(data_by_year[[end_rains_status_column]])) end_rains$end_rains$include_status <- TRUE
-  if (!is.null(data_by_year[[end_season_status_column]])) end_season$end_season$include_status <- TRUE
+  if (!is.null(start_rains_status_column) && !is.null(data_by_year[[start_rains_status_column]])) start_of_rains$start_rains$include_status <- TRUE
+  if (!is.null(end_rains_status_column) && !is.null(data_by_year[[end_rains_status_column]])) end_rains$end_rains$include_status <- TRUE
+  if (!is.null(end_season_status_column) && !is.null(data_by_year[[end_season_status_column]])) end_season$end_season$include_status <- TRUE
   
   # for annual rainfall / rainy days in year:
   total_rain_counts <- get_total_rain_counts(data_by_year, rain_name,
@@ -93,8 +105,10 @@ build_annual_summaries_definitions <- function(data_name, data_by_year,
   # We only need the raw data for the summaries in it!
   # if they are protective over their raw data. (we do not need the data itself, just the summaries within it)
   extreme_rain_counts <- get_extreme_rain_counts(definitions_in_raw, extreme_rainfall_column)
+  extreme_tmin_counts <- get_extreme_rain_counts(definitions_in_raw, extreme_tmin_column)
+  extreme_tmax_counts <- get_extreme_rain_counts(definitions_in_raw, extreme_tmax_column)
   
   # Get the list of summaries:
-  summaries_list <- c(start_of_rains, end_rains, end_season, seasonal_length, total_rain_counts, extreme_rain_counts)
+  summaries_list <- c(start_of_rains, end_rains, end_season, seasonal_length, total_rain_counts, extreme_rain_counts, extreme_tmin_counts, extreme_tmax_counts)
   return(summaries_list)
 }
