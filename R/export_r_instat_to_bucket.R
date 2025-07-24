@@ -80,6 +80,8 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
                                       summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "crop_success", "start_season"),
                                       station_id = NULL, definitions_id, country,
                                       include_summary_data = FALSE,
+                                      
+                                      # the different data frames that can be read in
                                       annual_rainfall_data = NULL, annual_temperature_data = NULL, monthly_temperature_data = NULL,
                                       crop_success_data = NULL, season_start_data = NULL,
                                       
@@ -171,7 +173,7 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
       purrr::map(
         .x = unique_stations,
         .f = ~{station_id <- .x
-        filtered_data <- crop_success_data %>% filter(station == station_id)
+        filtered_data <- crop_success_data %>% dplyr::filter(station == station_id)
         add_summaries_to_bucket(country = country, station_id = station_id, data = filtered_data,
                                 summary = "crop_success_probabilities", timestamp = timestamp)
         }
@@ -181,7 +183,7 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
       purrr::map(
         .x = unique_stations,
         .f = ~{station_id <- .x
-        filtered_data <- season_start_data %>% filter(station == station_id)
+        filtered_data <- season_start_data %>% dplyr::filter(station == station_id)
         add_summaries_to_bucket(country = country, station_id = station_id, data = filtered_data,
                                 summary = "season_start_probabilities", timestamp = timestamp)
         }
