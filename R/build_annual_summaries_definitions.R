@@ -7,7 +7,6 @@
 #'
 #' @param data_name Name of the dataset being referenced. (Retained for compatibility; not currently used directly.)
 #' @param data_by_year A named list of summary definitions from the yearly-aggregated dataset, typically from `get_r_instat_definitions()`.
-#' @param rain_name Name of the rainfall column in the dataset.
 #' @param definitions_in_raw (Optional) Raw definition metadata, typically obtained using `get_r_instat_definitions()` on the unaggregated dataset. Required if `extreme_rainfall_column` is used.
 #' @param rain_days_name Name of the indicator used to define rain days (e.g., `"count"`). Default is `"count"`.
 #' @param extreme_rain_name Name of the indicator used to define extreme rain days. Default is `"extreme_rain"`.
@@ -49,7 +48,6 @@
 #' defs <- build_annual_summaries_definitions(
 #'   data_name = "ghana",
 #'   data_by_year = get_r_instat_definitions("ghana_by_station_year"),
-#'   rain_name = "rain",
 #'   start_rains_column = "start_rains_doy",
 #'   start_rains_status_column = "start_rain_status",
 #'   end_rains_column = "end_rains_doy",
@@ -65,7 +63,6 @@
 #'
 #' @export
 build_annual_summaries_definitions <- function(data_name, data_by_year,
-                                               rain_name = "rain", # the name of the rain name from our main data frame
                                                definitions_in_raw = NULL,
                                                rain_days_name = "count", # the name of the indicator for rainy days (e.g., count) created for the n_rain_days, etc from our main data frame
                                                extreme_rain_name = "extreme_rain", # the name of indicator for if it was an extreme rainy day or not, created for the n_rain_days, etc from our main data frame
@@ -94,7 +91,7 @@ build_annual_summaries_definitions <- function(data_name, data_by_year,
   if (!is.null(end_season_status_column) && !is.null(data_by_year[[end_season_status_column]])) end_season$end_season$include_status <- TRUE
   
   # for annual rainfall / rainy days in year:
-  total_rain_counts <- get_total_rain_counts(data_by_year, rain_name,
+  total_rain_counts <- get_total_rain_counts(data_by_year,
                                              annual_total_rain_col = annual_total_rain_col,
                                              seasonal_total_rain_col = seasonal_total_rain_col,
                                              annual_rainday_col = annual_rainday_col,

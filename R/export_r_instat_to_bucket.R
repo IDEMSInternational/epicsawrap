@@ -8,7 +8,6 @@
 #' @param data_by_year The name of the dataset grouped by year. Required for definitions and rainfall/temperature summaries.
 #' @param data_by_year_month The name of the dataset grouped by year and month (optional). Required for monthly temperature summaries.
 #' @param crop_data_name The name of the crop data used for crop success and season start probabilities.
-#' @param rain The name of the rainfall column.
 #' @param station The name of the station column used to split and export data.
 #' @param year The name of the year column.
 #' @param month The name of the month column.
@@ -66,7 +65,7 @@
 #' export_r_instat_to_bucket(
 #'   data_by_year = "ghana_by_station_year",
 #'   crop_data_name = "crop_def",
-#'   rain = "rain", station = "station", year = "year", month = "month",
+#'   station = "station", year = "year", month = "month",
 #'   summaries = c("annual_rainfall", "crop_success"),
 #'   country = "GH", definitions_id = "def_202506", station_id = c("ST01", "ST02"),
 #'   include_summary_data = TRUE,
@@ -76,7 +75,7 @@
 #' )
 #' }
 export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_month = NULL, crop_data_name = NULL,
-                                      rain = NULL, station = NULL, year = NULL, month = NULL,
+                                      station = NULL, year = NULL, month = NULL,
                                       summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "crop_success", "start_season"),
                                       station_id = NULL, definitions_id, country,
                                       include_summary_data = FALSE,
@@ -101,7 +100,7 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
                                       min_tmax_column = "min_tmax", mean_tmax_column = "mean_tmax", max_tmax_column = "max_tmax"){
   
   timestamp <- format(Sys.time(), format = "%Y%m%d%H%M%S") 
-  definitions_data <- collate_definitions_data(data_by_year = data_by_year, data_by_year_month = data_by_year_month, crop_data = crop_data_name, rain = rain, year = year, month = month, summaries = summaries,
+  definitions_data <- collate_definitions_data(data_by_year = data_by_year, data_by_year_month = data_by_year_month, crop_data = crop_data_name, year = year, month = month, summaries = summaries,
                                                start_rains_column = start_rains_column, start_rains_status_column = start_rains_status_column, end_rains_column = end_rains_column,
                                                end_rains_status_column = end_rains_status_column, 
                                                end_season_column = end_season_column,

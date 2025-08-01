@@ -10,7 +10,6 @@
 #' @param data_by_year The name of the dataset aggregated by year. This is the main source for rainfall and annual temperature definitions.
 #' @param data_by_year_month The name of the dataset aggregated by year and month. Required for monthly temperature summaries.
 #' @param crop_data The name of the crop-related data set (e.g., `"crop_def"`), used for crop success and season start definitions.
-#' @param rain The name of the rainfall column.
 #' @param year The name of the year column.
 #' @param month The name of the month column.
 #' @param summaries A character vector specifying which summaries to extract. Options include: 
@@ -54,7 +53,6 @@
 #' definitions <- collate_definitions_data(
 #'   data_by_year = "ghana_by_station_year",
 #'   crop_data = "crop_def",
-#'   rain = "rain",
 #'   year = "year",
 #'   month = "month",
 #'   summaries = c("annual_rainfall", "crop_success")
@@ -65,7 +63,6 @@
 collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                      data_by_year_month = NULL,
                                      crop_data = "crop_def",
-                                     rain = data_book$get_climatic_column_name(data_name = "ghana", "rain"),
                                      year = data_book$get_climatic_column_name("ghana", "year"),
                                      month = data_book$get_climatic_column_name("ghana", "month"),
                                      summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "crop_success", "start_season"),
@@ -106,7 +103,6 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
   # if yes to annual summaries - give the data frame "ghana_by_station_year"
   if ("annual_rainfall" %in% summaries){
     annual_summaries <- build_annual_summaries_definitions(data_by_year = definitions_year,
-                                                           rain_name = rain,
                                                            start_rains_column = start_rains_column,
                                                            start_rains_status_column = start_rains_status_column,
                                                            end_rains_column = end_rains_column,

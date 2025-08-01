@@ -7,7 +7,6 @@
 #' based on raw definition metadata.
 #'
 #' @param data_by_year A list of summary definitions typically returned by `get_r_instat_definitions()` for the annual dataset.
-#' @param rain_name Character string giving the name of the rainfall column in the dataset.
 #' @param annual_total_rain_col (Optional) Column name identifying the total annual rainfall.
 #' @param seasonal_total_rain_col (Optional) Column name identifying the total seasonal rainfall.
 #' @param annual_rainday_col (Optional) Column name identifying the total count of annual rain days.
@@ -35,7 +34,6 @@
 #' \dontrun{
 #' defs <- get_total_rain_counts(
 #'   data_by_year = get_r_instat_definitions("ghana_by_station_year"),
-#'   rain_name = "rain",
 #'   annual_total_rain_col = "sum_rain",
 #'   annual_rainday_col = "count_rain",
 #'   definitions_in_raw = get_r_instat_definitions("ghana"),
@@ -45,7 +43,6 @@
 #'
 #' @export
 get_total_rain_counts <- function(data_by_year = NULL,
-                                  rain_name = data_book$get_climatic_column_name(data_name = "ghana", col_name = "rain"),
                                   annual_total_rain_col = NULL, seasonal_total_rain_col = NULL,
                                   annual_rainday_col = NULL, seasonal_rainday_col = NULL,
                                   definitions_in_raw = NULL, rain_days_name = NULL){
