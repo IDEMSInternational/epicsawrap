@@ -10,6 +10,8 @@ get_temp_summaries(temp_summary_name, data, to = c("annual", "monthly"))
 \item{temp_summary_name}{Character vector specifying the name of the temperature summary.}
 
 \item{data}{A list of temperature summaries by definition (e.g., year or month).}
+
+\item{to}{A vector stating if it is annual or monthly summaries.}
 }
 \value{
 A list containing temperature summary information.

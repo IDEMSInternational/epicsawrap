@@ -58,6 +58,4 @@ Calculates total temperature summaries based on provided parameters.
 }
 \examples{
 # Example usage:
-#total_temperature_summaries(tmin = "tmin", tmax = "tmax",
-#                             data_by_year = my_definition_list, data_by_year_month = my_definition_list_2)
 }

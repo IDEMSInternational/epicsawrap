@@ -4,6 +4,7 @@
 #'
 #' @param temp_summary_name Character vector specifying the name of the temperature summary.
 #' @param data A list of temperature summaries by definition (e.g., year or month).
+#' @param to A vector stating if it is annual or monthly summaries.
 #' @return A list containing temperature summary information.
 
 #' @examples

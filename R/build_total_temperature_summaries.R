@@ -20,8 +20,6 @@
 #' 
 #' @examples
 #' # Example usage:
-#' #total_temperature_summaries(tmin = "tmin", tmax = "tmax",
-#' #                             data_by_year = my_definition_list, data_by_year_month = my_definition_list_2)
 build_total_temperature_summaries <- function(data_by_year,
                                               data_by_year_month,
                                               min_tmin_column,
