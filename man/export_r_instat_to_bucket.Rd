@@ -9,10 +9,7 @@ export_r_instat_to_bucket(
   data_by_year,
   data_by_year_month = NULL,
   crop_data_name = NULL,
-  rain = NULL,
   station = NULL,
-  year = NULL,
-  month = NULL,
   summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature",
     "crop_success", "start_season"),
   station_id = NULL,
@@ -47,7 +44,13 @@ export_r_instat_to_bucket(
   max_tmin_column = "max_tmin",
   min_tmax_column = "min_tmax",
   mean_tmax_column = "mean_tmax",
-  max_tmax_column = "max_tmax"
+  max_tmax_column = "max_tmax",
+  min_monthly_tmin_column = "min_tmin",
+  mean_monthly_tmin_column = "mean_tmin",
+  max_monthly_tmin_column = "max_tmin",
+  min_monthly_tmax_column = "min_tmax",
+  mean_monthly_tmax_column = "mean_tmax",
+  max_monthly_tmax_column = "max_tmax"
 )
 }
 \arguments{
@@ -59,13 +62,7 @@ export_r_instat_to_bucket(
 
 \item{crop_data_name}{The name of the crop data used for crop success and season start probabilities.}
 
-\item{rain}{The name of the rainfall column.}
-
 \item{station}{The name of the station column used to split and export data.}
-
-\item{year}{The name of the year column.}
-
-\item{month}{The name of the month column.}
 
 \item{summaries}{A character vector of summaries to include. Options: \code{"annual_rainfall"}, \code{"annual_temperature"}, \code{"monthly_temperature"}, \code{"crop_success"}, \code{"start_season"}.}
 
@@ -134,6 +131,18 @@ export_r_instat_to_bucket(
 \item{mean_tmax_column}{Column name for mean of maximum temperatures.}
 
 \item{max_tmax_column}{Column name for maximum of maximum temperatures.}
+
+\item{min_monthly_tmin_column}{Column name for minimum of minimum temperatures (for monthly temperature data).}
+
+\item{mean_monthly_tmin_column}{Column name for mean of minimum temperatures (for monthly temperature data).}
+
+\item{max_monthly_tmin_column}{Column name for maximum of minimum temperatures (for monthly temperature data).}
+
+\item{min_monthly_tmax_column}{Column name for minimum of maximum temperatures (for monthly temperature data).}
+
+\item{mean_monthly_tmax_column}{Column name for mean of maximum temperatures (for monthly temperature data).}
+
+\item{max_monthly_tmax_column}{Column name for maximum of maximum temperatures (for monthly temperature data).}
 }
 \value{
 A string message confirming that the definitions and summaries (if included) were uploaded to the cloud storage bucket.
@@ -158,7 +167,7 @@ The upload timestamp is included in all files to ensure version tracking. Each s
 export_r_instat_to_bucket(
   data_by_year = "ghana_by_station_year",
   crop_data_name = "crop_def",
-  rain = "rain", station = "station", year = "year", month = "month",
+  station = "station",
   summaries = c("annual_rainfall", "crop_success"),
   country = "GH", definitions_id = "def_202506", station_id = c("ST01", "ST02"),
   include_summary_data = TRUE,

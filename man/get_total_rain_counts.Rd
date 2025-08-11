@@ -7,7 +7,6 @@
 \usage{
 get_total_rain_counts(
   data_by_year = NULL,
-  rain_name = data_book$get_climatic_column_name(data_name = "ghana", col_name = "rain"),
   annual_total_rain_col = NULL,
   seasonal_total_rain_col = NULL,
   annual_rainday_col = NULL,
@@ -18,7 +17,6 @@ get_total_rain_counts(
 
 get_total_rain_counts(
   data_by_year = NULL,
-  rain_name = data_book$get_climatic_column_name(data_name = "ghana", col_name = "rain"),
   annual_total_rain_col = NULL,
   seasonal_total_rain_col = NULL,
   annual_rainday_col = NULL,
@@ -29,8 +27,6 @@ get_total_rain_counts(
 }
 \arguments{
 \item{data_by_year}{A list of summary definitions typically returned by \code{get_r_instat_definitions()} for the annual dataset.}
-
-\item{rain_name}{Character string giving the name of the rainfall column in the dataset.}
 
 \item{annual_total_rain_col}{(Optional) Column name identifying the total annual rainfall.}
 
@@ -45,6 +41,8 @@ get_total_rain_counts(
 \item{rain_days_name}{(Optional) Name of the indicator (e.g., \code{"count"}) used to define a rain day threshold in the raw metadata.}
 
 \item{data_name}{The name of the main data frame.}
+
+\item{rain_name}{The rain variable in the data frame.}
 }
 \value{
 A list representation of annual rain definitions.
@@ -81,7 +79,6 @@ a rain day (e.g., \verb{>= 1mm}) from the raw metadata.
 \dontrun{
 defs <- get_total_rain_counts(
   data_by_year = get_r_instat_definitions("ghana_by_station_year"),
-  rain_name = "rain",
   annual_total_rain_col = "sum_rain",
   annual_rainday_col = "count_rain",
   definitions_in_raw = get_r_instat_definitions("ghana"),

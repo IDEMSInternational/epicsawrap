@@ -10,8 +10,6 @@
 #' @param data_by_year The name of the dataset aggregated by year. This is the main source for rainfall and annual temperature definitions.
 #' @param data_by_year_month The name of the dataset aggregated by year and month. Required for monthly temperature summaries.
 #' @param crop_data The name of the crop-related data set (e.g., `"crop_def"`), used for crop success and season start definitions.
-#' @param year The name of the year column.
-#' @param month The name of the month column.
 #' @param summaries A character vector specifying which summaries to extract. Options include: 
 #' `"annual_rainfall"`, `"annual_temperature"`, `"monthly_temperature"`, `"crop_success"`, `"start_season"`.
 #' @param start_rains_column Name of the start-of-rains column (e.g., `"start_rains_doy"`).
@@ -39,6 +37,12 @@
 #' @param min_tmax_column Column name for the minimum of daily maximum temperatures.
 #' @param mean_tmax_column Column name for the mean of daily maximum temperatures.
 #' @param max_tmax_column Column name for the maximum of daily maximum temperatures.
+#' @param min_monthly_tmin_column Column name for minimum of minimum temperatures (for monthly temperature data).
+#' @param max_monthly_tmin_column Column name for maximum of minimum temperatures (for monthly temperature data).
+#' @param mean_monthly_tmin_column Column name for mean of minimum temperatures (for monthly temperature data).
+#' @param min_monthly_tmax_column Column name for minimum of maximum temperatures (for monthly temperature data).
+#' @param max_monthly_tmax_column Column name for maximum of maximum temperatures (for monthly temperature data).
+#' @param mean_monthly_tmax_column Column name for mean of maximum temperatures (for monthly temperature data).
 #'
 #' @return A named list of definition components used for climate summary calculations. 
 #' This may include sections such as `annual_rain`, `start_rains`, `crop_success_probabilities`, etc.,
@@ -53,8 +57,6 @@
 #' definitions <- collate_definitions_data(
 #'   data_by_year = "ghana_by_station_year",
 #'   crop_data = "crop_def",
-#'   year = "year",
-#'   month = "month",
 #'   summaries = c("annual_rainfall", "crop_success")
 #' )
 #' }
@@ -63,8 +65,6 @@
 collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                      data_by_year_month = NULL,
                                      crop_data = "crop_def",
-                                     year = data_book$get_climatic_column_name("ghana", "year"),
-                                     month = data_book$get_climatic_column_name("ghana", "month"),
                                      summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "crop_success", "start_season"),
                                      start_rains_column = "start_rains_doy", start_rains_status_column = "start_rain_status",
                                      end_rains_column = "end_rains_doy", end_rains_status_column = "end_rain_status", end_season_column = "end_season_doy", 
@@ -75,8 +75,20 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                      extreme_tmax_column = NULL, data = NULL,
                                      annual_total_rain_col = NULL, seasonal_total_rain_col = NULL,
                                      annual_rainday_col = NULL, seasonal_rainday_col = NULL,
-                                     min_tmin_column = "min_tmin", mean_tmin_column = "mean_tmin", max_tmin_column = "max_tmin",
-                                     min_tmax_column = "min_tmax", mean_tmax_column = "mean_tmax", max_tmax_column = "max_tmax"){
+                                     
+                                     # for temperature
+                                     min_tmin_column = "min_tmin",
+                                     mean_tmin_column = "mean_tmin",
+                                     max_tmin_column = "max_tmin",
+                                     min_tmax_column = "min_tmax",
+                                     mean_tmax_column = "mean_tmax",
+                                     max_tmax_column = "max_tmax",
+                                     min_monthly_tmin_column = "min_tmin",
+                                     mean_monthly_tmin_column = "mean_tmin",
+                                     max_monthly_tmin_column = "max_tmin",
+                                     min_monthly_tmax_column = "min_tmax",
+                                     mean_monthly_tmax_column = "mean_tmax",
+                                     max_monthly_tmax_column = "max_tmax"){
   
 
   # get definitions from calculations
@@ -155,21 +167,24 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
   }
   temperature_summaries <- build_total_temperature_summaries(data_by_year = annual_temp,
                                                              data_by_year_month = definitions_year_month,
-                                                             year = year,
-                                                             month = month,
                                                              min_tmin_column = min_tmin_column, 
                                                              mean_tmin_column = mean_tmin_column, 
                                                              max_tmin_column = max_tmin_column,
                                                              min_tmax_column = min_tmax_column, 
                                                              mean_tmax_column = mean_tmax_column, 
-                                                             max_tmax_column = max_tmax_column)
+                                                             max_tmax_column = max_tmax_column,
+                                                             min_monthly_tmin_column = min_monthly_tmin_column, 
+                                                             mean_monthly_tmin_column = mean_monthly_tmin_column, 
+                                                             max_monthly_tmin_column = max_monthly_tmin_column,
+                                                             min_monthly_tmax_column = min_monthly_tmax_column, 
+                                                             mean_monthly_tmax_column = mean_monthly_tmax_column, 
+                                                             max_monthly_tmax_column = max_monthly_tmax_column)
   if((!is.null(definitions_offset) || definitions_offset != 1) & (any(grepl("_temperature", summaries)))){
-    temperature_summaries$min_tmin$s_start_doy <- definitions_offset
-    temperature_summaries$max_tmin$s_start_doy <- definitions_offset
-    temperature_summaries$min_tmax$s_start_doy <- definitions_offset
-    temperature_summaries$max_tmax$s_start_doy <- definitions_offset
-    temperature_summaries$mean_tmin$s_start_doy <- definitions_offset
-    temperature_summaries$mean_tmax$s_start_doy <- definitions_offset
+    set_doy <- function(x) { x$s_start_doy <- definitions_offset; x }
+    keys <- c("min_tmin", "mean_tmin", "max_tmin", "min_tmax", "mean_tmax", "max_tmax")
+    
+    temperature_summaries$annual_temperature_summaries[keys]  <- lapply(temperature_summaries$annual[keys],  set_doy)
+    temperature_summaries$monthly_temperature_summaries[keys] <- lapply(temperature_summaries$monthly[keys], set_doy)
   }
   
   # if yes to crop success then ...

@@ -9,8 +9,6 @@
 #' @param data_by_year_month The name of the dataset grouped by year and month (optional). Required for monthly temperature summaries.
 #' @param crop_data_name The name of the crop data used for crop success and season start probabilities.
 #' @param station The name of the station column used to split and export data.
-#' @param year The name of the year column.
-#' @param month The name of the month column.
 #' @param summaries A character vector of summaries to include. Options: `"annual_rainfall"`, `"annual_temperature"`, `"monthly_temperature"`, `"crop_success"`, `"start_season"`.
 #' @param station_id Character vector of station IDs to process.
 #' @param definitions_id A string identifying the definition version (used for filename and metadata tracking).
@@ -45,6 +43,12 @@
 #' @param min_tmax_column Column name for minimum of maximum temperatures.
 #' @param max_tmax_column Column name for maximum of maximum temperatures.
 #' @param mean_tmax_column Column name for mean of maximum temperatures.
+#' @param min_monthly_tmin_column Column name for minimum of minimum temperatures (for monthly temperature data).
+#' @param max_monthly_tmin_column Column name for maximum of minimum temperatures (for monthly temperature data).
+#' @param mean_monthly_tmin_column Column name for mean of minimum temperatures (for monthly temperature data).
+#' @param min_monthly_tmax_column Column name for minimum of maximum temperatures (for monthly temperature data).
+#' @param max_monthly_tmax_column Column name for maximum of maximum temperatures (for monthly temperature data).
+#' @param mean_monthly_tmax_column Column name for mean of maximum temperatures (for monthly temperature data).
 #'
 #' @return A string message confirming that the definitions and summaries (if included) were uploaded to the cloud storage bucket.
 #'
@@ -65,7 +69,7 @@
 #' export_r_instat_to_bucket(
 #'   data_by_year = "ghana_by_station_year",
 #'   crop_data_name = "crop_def",
-#'   station = "station", year = "year", month = "month",
+#'   station = "station",
 #'   summaries = c("annual_rainfall", "crop_success"),
 #'   country = "GH", definitions_id = "def_202506", station_id = c("ST01", "ST02"),
 #'   include_summary_data = TRUE,
@@ -74,10 +78,19 @@
 #'   season_start_data = crop_def
 #' )
 #' }
-export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_month = NULL, crop_data_name = NULL,
-                                      station = NULL, year = NULL, month = NULL,
-                                      summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "crop_success", "start_season"),
-                                      station_id = NULL, definitions_id, country,
+export_r_instat_to_bucket <- function(data = NULL, 
+                                      data_by_year,
+                                      data_by_year_month = NULL,
+                                      crop_data_name = NULL,
+                                      station = NULL,
+                                      summaries = c("annual_rainfall",
+                                                    "annual_temperature",
+                                                    "monthly_temperature",
+                                                    "crop_success",
+                                                    "start_season"),
+                                      station_id = NULL,
+                                      definitions_id,
+                                      country,
                                       include_summary_data = FALSE,
                                       
                                       # the different data frames that can be read in
@@ -96,12 +109,29 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
                                       annual_rainday_col = NULL, seasonal_rainday_col = NULL,
                                       
                                       # for temperature
-                                      min_tmin_column = "min_tmin", mean_tmin_column = "mean_tmin", max_tmin_column = "max_tmin",
-                                      min_tmax_column = "min_tmax", mean_tmax_column = "mean_tmax", max_tmax_column = "max_tmax"){
+                                      min_tmin_column = "min_tmin",
+                                      mean_tmin_column = "mean_tmin",
+                                      max_tmin_column = "max_tmin",
+                                      min_tmax_column = "min_tmax",
+                                      mean_tmax_column = "mean_tmax",
+                                      max_tmax_column = "max_tmax",
+                                      min_monthly_tmin_column = "min_tmin",
+                                      mean_monthly_tmin_column = "mean_tmin",
+                                      max_monthly_tmin_column = "max_tmin",
+                                      min_monthly_tmax_column = "min_tmax",
+                                      mean_monthly_tmax_column = "mean_tmax",
+                                      max_monthly_tmax_column = "max_tmax"){
   
   timestamp <- format(Sys.time(), format = "%Y%m%d%H%M%S") 
-  definitions_data <- collate_definitions_data(data_by_year = data_by_year, data_by_year_month = data_by_year_month, crop_data = crop_data_name, year = year, month = month, summaries = summaries,
-                                               start_rains_column = start_rains_column, start_rains_status_column = start_rains_status_column, end_rains_column = end_rains_column,
+  definitions_data <- collate_definitions_data(data_by_year = data_by_year,
+                                               data_by_year_month = data_by_year_month,
+                                               crop_data = crop_data_name,
+                                               summaries = summaries,
+                                               
+                                               # annual summaires bits
+                                               start_rains_column = start_rains_column,
+                                               start_rains_status_column = start_rains_status_column,
+                                               end_rains_column = end_rains_column,
                                                end_rains_status_column = end_rains_status_column, 
                                                end_season_column = end_season_column,
                                                end_season_status_column = end_season_status_column, 
@@ -109,14 +139,31 @@ export_r_instat_to_bucket <- function(data = NULL, data_by_year, data_by_year_mo
                                                longest_rain_spell_col = longest_rain_spell_col, 
                                                longest_tmin_spell_col = longest_tmin_spell_col, 
                                                longest_tmax_spell_col = longest_tmax_spell_col,
-                                               rain_days_name = rain_days_name, extreme_rainfall_column = extreme_rainfall_column, 
-                                               extreme_tmin_column = extreme_tmin_column, extreme_tmax_column = extreme_tmax_column, data = data,
+                                               rain_days_name = rain_days_name,
+                                               extreme_rainfall_column = extreme_rainfall_column, 
+                                               extreme_tmin_column = extreme_tmin_column,
+                                               extreme_tmax_column = extreme_tmax_column,
+                                               data = data,
                                                annual_total_rain_col = annual_total_rain_col,
                                                seasonal_total_rain_col = seasonal_total_rain_col,
                                                annual_rainday_col = annual_rainday_col,
                                                seasonal_rainday_col = seasonal_rainday_col,
-                                               min_tmin_column = min_tmin_column, mean_tmin_column = mean_tmin_column, max_tmin_column = max_tmin_column,
-                                               min_tmax_column = min_tmax_column, mean_tmax_column = mean_tmax_column, max_tmax_column = max_tmax_column)
+                                               
+                                               # annual temperature summaries definitions
+                                               min_tmin_column = min_tmin_column,
+                                               mean_tmin_column = mean_tmin_column,
+                                               max_tmin_column = max_tmin_column,
+                                               min_tmax_column = min_tmax_column,
+                                               mean_tmax_column = mean_tmax_column,
+                                               max_tmax_column = max_tmax_column,
+                                               
+                                               # monthly temperature summaries definitions
+                                               min_monthly_tmin_column = min_monthly_tmin_column,
+                                               mean_monthly_tmin_column = mean_monthly_tmin_column,
+                                               max_monthly_tmin_column = max_monthly_tmin_column,
+                                               min_monthly_tmax_column = min_monthly_tmax_column,
+                                               mean_monthly_tmax_column = mean_monthly_tmax_column,
+                                               max_monthly_tmax_column = max_monthly_tmax_column)
 
   # Save into bucket
   # commented out code was when we had this for multiple station_ids. We now just do for one definition_id.

@@ -5,8 +5,6 @@
 \title{Calculate total temperature summaries}
 \usage{
 build_total_temperature_summaries(
-  year = data_book$get_climatic_column_name(data_name, "year"),
-  month = data_book$get_climatic_column_name(data_name, "month"),
   data_by_year,
   data_by_year_month,
   min_tmin_column,
@@ -14,14 +12,16 @@ build_total_temperature_summaries(
   max_tmin_column,
   min_tmax_column,
   mean_tmax_column,
-  max_tmax_column
+  max_tmax_column,
+  min_monthly_tmin_column,
+  mean_monthly_tmin_column,
+  max_monthly_tmin_column,
+  min_monthly_tmax_column,
+  mean_monthly_tmax_column,
+  max_monthly_tmax_column
 )
 }
 \arguments{
-\item{year}{Character vector specifying the year.}
-
-\item{month}{Character vector specifying the month.}
-
 \item{data_by_year}{A list of temperature summaries by definition (e.g., year).}
 
 \item{data_by_year_month}{An optional second list of temperature summaries by definition (e.g., year and month).}
@@ -37,6 +37,18 @@ build_total_temperature_summaries(
 \item{mean_tmax_column}{The name of the mean of maximum temperature column in the data.}
 
 \item{max_tmax_column}{The name of the maximum of maximum temperature column in the data.}
+
+\item{min_monthly_tmin_column}{Column name for minimum of minimum temperatures (for monthly temperature data).}
+
+\item{mean_monthly_tmin_column}{Column name for mean of minimum temperatures (for monthly temperature data).}
+
+\item{max_monthly_tmin_column}{Column name for maximum of minimum temperatures (for monthly temperature data).}
+
+\item{min_monthly_tmax_column}{Column name for minimum of maximum temperatures (for monthly temperature data).}
+
+\item{mean_monthly_tmax_column}{Column name for mean of maximum temperatures (for monthly temperature data).}
+
+\item{max_monthly_tmax_column}{Column name for maximum of maximum temperatures (for monthly temperature data).}
 }
 \value{
 A list containing total temperature summaries.
@@ -46,6 +58,6 @@ Calculates total temperature summaries based on provided parameters.
 }
 \examples{
 # Example usage:
-#total_temperature_summaries(tmin = "tmin", tmax = "tmax", year = "year", month = "month", 
+#total_temperature_summaries(tmin = "tmin", tmax = "tmax",
 #                             data_by_year = my_definition_list, data_by_year_month = my_definition_list_2)
 }
