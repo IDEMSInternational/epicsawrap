@@ -114,6 +114,9 @@ data_book$crops_definitions(data_name="observations_unstacked_data", year="s_yea
                             start_day="start_rain",
                             season_data_name="observations_unstacked_data_by_station_id_s_year",
                             start_check="both", end_day="end_season")
+
+
+
 #saveRDS(file="C:/Users/lclem/OneDrive/Documents/Zambia_data.RDS", object=data_book)
 
 # read in EPICSA token to access google buckets

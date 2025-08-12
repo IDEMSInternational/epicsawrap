@@ -8,9 +8,6 @@ collate_definitions_data(
   data_by_year = "ghana_by_station_year",
   data_by_year_month = NULL,
   crop_data = "crop_def",
-  rain = data_book$get_climatic_column_name(data_name = "ghana", "rain"),
-  year = data_book$get_climatic_column_name("ghana", "year"),
-  month = data_book$get_climatic_column_name("ghana", "month"),
   summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature",
     "crop_success", "start_season"),
   start_rains_column = "start_rains_doy",
@@ -37,7 +34,13 @@ collate_definitions_data(
   max_tmin_column = "max_tmin",
   min_tmax_column = "min_tmax",
   mean_tmax_column = "mean_tmax",
-  max_tmax_column = "max_tmax"
+  max_tmax_column = "max_tmax",
+  min_monthly_tmin_column = "min_tmin",
+  mean_monthly_tmin_column = "mean_tmin",
+  max_monthly_tmin_column = "max_tmin",
+  min_monthly_tmax_column = "min_tmax",
+  mean_monthly_tmax_column = "mean_tmax",
+  max_monthly_tmax_column = "max_tmax"
 )
 }
 \arguments{
@@ -46,12 +49,6 @@ collate_definitions_data(
 \item{data_by_year_month}{The name of the dataset aggregated by year and month. Required for monthly temperature summaries.}
 
 \item{crop_data}{The name of the crop-related data set (e.g., \code{"crop_def"}), used for crop success and season start definitions.}
-
-\item{rain}{The name of the rainfall column.}
-
-\item{year}{The name of the year column.}
-
-\item{month}{The name of the month column.}
 
 \item{summaries}{A character vector specifying which summaries to extract. Options include:
 \code{"annual_rainfall"}, \code{"annual_temperature"}, \code{"monthly_temperature"}, \code{"crop_success"}, \code{"start_season"}.}
@@ -105,6 +102,18 @@ collate_definitions_data(
 \item{mean_tmax_column}{Column name for the mean of daily maximum temperatures.}
 
 \item{max_tmax_column}{Column name for the maximum of daily maximum temperatures.}
+
+\item{min_monthly_tmin_column}{Column name for minimum of minimum temperatures (for monthly temperature data).}
+
+\item{mean_monthly_tmin_column}{Column name for mean of minimum temperatures (for monthly temperature data).}
+
+\item{max_monthly_tmin_column}{Column name for maximum of minimum temperatures (for monthly temperature data).}
+
+\item{min_monthly_tmax_column}{Column name for minimum of maximum temperatures (for monthly temperature data).}
+
+\item{mean_monthly_tmax_column}{Column name for mean of maximum temperatures (for monthly temperature data).}
+
+\item{max_monthly_tmax_column}{Column name for maximum of maximum temperatures (for monthly temperature data).}
 }
 \value{
 A named list of definition components used for climate summary calculations.
@@ -128,9 +137,6 @@ resolving duplicate definitions and offset terms, and integrating additional log
 definitions <- collate_definitions_data(
   data_by_year = "ghana_by_station_year",
   crop_data = "crop_def",
-  rain = "rain",
-  year = "year",
-  month = "month",
   summaries = c("annual_rainfall", "crop_success")
 )
 }

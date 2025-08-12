@@ -82,12 +82,11 @@ test_that("get_end_rains_definitions handles different structures correctly", {
 
 # Test cases
 test_that("get_end_rains_definitions returns correct structure with end_rains", {
-  result <- get_temperature_summary_definitions(year = "year",
-                                                month = "month",
-                                                data_by_year = ghana_by_year_example,
+  result <- build_total_temperature_summaries(data_by_year = ghana_by_year_example,
                                                 min_tmin_column = "min_min_temperature", mean_tmin_column = "mean_min_temperature",
                                                 max_tmin_column = "max_min_temperature", min_tmax_column = "min_max_temperature",
                                                 mean_tmax_column = "mean_max_temperature", max_tmax_column = "min_max_temperature")
+  result <- result$annual_temperature_summaries
   expect_true("mean_tmin" %in% names(result))
   expect_true("mean_tmax" %in% names(result))
   expect_true("min_tmin" %in% names(result))
@@ -126,12 +125,6 @@ test_that("get_end_season_definitions returns correct structure with end_season"
   expect_true(all(c("start_day", "end_day", "water_balance_max", "capacity", "evaporation", "evaporation_value") %in% names(result$end_season)))
 })
 
-test_that("get_end_season_definitions returns NA for missing variables", {
-  result <- get_end_season_definitions(NULL)
-  expect_true("end_season" %in% names(result))
-  expect_true(all(is.na(unlist(result$end_season))))
-})
-
 test_that("get_end_season_definitions extracts correct values", {
   result <- get_end_season_definitions(zambia_by_year_example$end_season)
   expect_equal(result$end_season$start_day, 245)
@@ -140,6 +133,12 @@ test_that("get_end_season_definitions extracts correct values", {
   expect_equal(result$end_season$capacity, 100)
   expect_equal(result$end_season$evaporation, "value")
   expect_equal(result$end_season$evaporation_value, 5)
+})
+
+test_that("get_end_season_definitions returns NA for missing variables", {
+  result <- get_end_season_definitions(NULL)
+  expect_true("end_season" %in% names(result))
+  expect_true(all(is.na(unlist(result$end_season))))
 })
 
 test_that("get_end_rains_definitions throws error for end_season", {

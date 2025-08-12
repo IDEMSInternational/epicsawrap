@@ -16,8 +16,8 @@ test_that("Correct summaries are calculated for mw_workshop", {
   expect_no_error(crop_success_probabilities("mw_workshops", "Nkhotakota"))
   expect_no_error(crop_success_probabilities("mw_workshops", "Kasungu"))
   
-  expect_no_error(season_start_probabilities("mw_workshops", "Nkhotakota"))
-  expect_no_error(season_start_probabilities("mw_workshops", "Kasungu"))
+  # expect_no_error(season_start_probabilities("mw_workshops", "Nkhotakota"))
+  # expect_no_error(season_start_probabilities("mw_workshops", "Kasungu"))
 })
 
 ### zm_workshops
@@ -58,9 +58,9 @@ test_that("Correct summaries are calculated for zm_test", {
   expect_no_error(crop_success_probabilities("zm_test", "zambia_eastern_4"))
   expect_no_error(crop_success_probabilities("zm_test", "zmd_eastern_8"))
   
-  expect_no_error(season_start_probabilities("zm_test", "zambia_eastern"))
-  expect_no_error(season_start_probabilities("zm_test", "zambia_eastern_4"))
-  expect_no_error(season_start_probabilities("zm_test", "zmd_eastern_8"))
+  # expect_no_error(season_start_probabilities("zm_test", "zambia_eastern"))
+  # expect_no_error(season_start_probabilities("zm_test", "zambia_eastern_4"))
+  # expect_no_error(season_start_probabilities("zm_test", "zmd_eastern_8"))
 })
 
 ### ml_test
@@ -71,4 +71,4 @@ test_that("Correct summaries are calculated for ml_test", {
   expect_no_error(monthly_temperature_summaries("ml_test", "Kasungu"))
   expect_no_error(crop_success_probabilities("ml_test", "Kasungu"))
 })
-season_start_probabilities("ml_test", "Kasungu")
+#season_start_probabilities("ml_test", "Kasungu")

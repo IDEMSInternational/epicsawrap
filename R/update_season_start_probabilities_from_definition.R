@@ -15,44 +15,44 @@
 #' @details
 #' - The function retrieves definition data to identify the days of interest for calculating the start-of-season probabilities.
 #' - If `start_rains_data` is not provided, it computes the start-of-rains summaries using `daily_data`.
-#' - The function calculates probabilities for the specified days using the `rpicsa::probability_season_start` function.
+#' - The function calculates probabilities for the specified days using the `probability_season_start` function in `rpicsa`
 #'
 update_season_start_probabilities_from_definition <- function(country, station_id = NULL, definition_id = NULL, daily_data = NULL, start_rains_data = NULL) {
-  if (!is.null(station_id) & !is.null(definition_id)) warning("Both station_id and definition_id are given. Defaulting to station_id.")
-  # Retrieve the most recent definition data for the specified country and station
-  if (!is.null(station_id)){
-    definitions_data <- get_definitions_data(country = country, station_id = station_id)
-  } else {
-    definitions_data <- get_definitions_data(country = country, definitions_id = definition_id)
-  }
-  
-  # If start-of-rains data is not provided, compute it using daily rainfall data
-  if (is.null(start_rains_data)) {
-    start_rains_data <- update_rainfall_summaries_from_definition(
-      country = country, 
-      station_id = station_id, 
-      daily_data = daily_data, 
-      summaries = "start_rains"
-    )
-  }
-  
-  # Extract the column names for the start-of-rains data
-  data_names <- data_definitions(names(start_rains_data), FALSE, FALSE)
-  
-  # Retrieve the specified days for calculating season start probabilities
-  start_dates <- as.numeric(definitions_data$season_start_probabilities$specified_day)
-  if (length(start_dates) == 0) {
-    warning("No specified days given for season start probability. No updates required.")
-  }
-  
-  # Calculate season start probabilities
-  summary_data <- rpicsa::probability_season_start(
-    data = start_rains_data,
-    station = data_names$station,
-    start_rains = "start_rains_doy",
-    doy_format = "doy_366", # Assuming day-of-year format is precomputed in start_rains summaries
-    specified_day = as.integer(start_dates)
-  )
-  
+  # if (!is.null(station_id) & !is.null(definition_id)) warning("Both station_id and definition_id are given. Defaulting to station_id.")
+  # # Retrieve the most recent definition data for the specified country and station
+  # if (!is.null(station_id)){
+  #   definitions_data <- get_definitions_data(country = country, station_id = station_id)
+  # } else {
+  #   definitions_data <- get_definitions_data(country = country, definitions_id = definition_id)
+  # }
+  # 
+  # # If start-of-rains data is not provided, compute it using daily rainfall data
+  # if (is.null(start_rains_data)) {
+  #   start_rains_data <- update_rainfall_summaries_from_definition(
+  #     country = country, 
+  #     station_id = station_id, 
+  #     daily_data = daily_data, 
+  #     summaries = "start_rains"
+  #   )
+  # }
+  # 
+  # # Extract the column names for the start-of-rains data
+  # data_names <- data_definitions(names(start_rains_data), FALSE, FALSE)
+  # 
+  # # Retrieve the specified days for calculating season start probabilities
+  # start_dates <- as.numeric(definitions_data$season_start_probabilities$specified_day)
+  # if (length(start_dates) == 0) {
+  #   warning("No specified days given for season start probability. No updates required.")
+  # }
+  # 
+  # # Calculate season start probabilities
+  # summary_data <- rpicsa::probability_season_start(
+  #   data = start_rains_data,
+  #   station = data_names$station,
+  #   start_rains = "start_rains_doy",
+  #   doy_format = "doy_366", # Assuming day-of-year format is precomputed in start_rains summaries
+  #   specified_day = as.integer(start_dates)
+  # )
+  # 
   return(summary_data)
 }

@@ -35,6 +35,6 @@ for a given country and station. It uses rainfall data or start-of-rains summari
 \itemize{
 \item The function retrieves definition data to identify the days of interest for calculating the start-of-season probabilities.
 \item If \code{start_rains_data} is not provided, it computes the start-of-rains summaries using \code{daily_data}.
-\item The function calculates probabilities for the specified days using the \code{rpicsa::probability_season_start} function.
+\item The function calculates probabilities for the specified days using the \code{probability_season_start} function in \code{rpicsa}
 }
 }

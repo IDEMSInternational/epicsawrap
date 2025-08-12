@@ -3,44 +3,28 @@
 #' Retrieves temperature summaries based on provided parameters.
 #'
 #' @param temp_summary_name Character vector specifying the name of the temperature summary.
-#' @param year Numeric vector specifying the year.
-#' @param month Numeric vector specifying the month.
-#' @param data_by_year A list of temperature summaries by definition (e.g., year).
-#' @param data_by_year_month An optional second list of temperature summaries by definition (e.g., year and month).
+#' @param data A list of temperature summaries by definition (e.g., year or month).
+#' @param to A vector stating if it is annual or monthly summaries.
 #' @return A list containing temperature summary information.
 
 #' @examples
 #' # Example usage:
-#' #get_temp_summaries("summary_name", year = 2023, month = 5, data_by_year = my_definition_list)
-get_temp_summaries <- function(temp_summary_name, year, month,
-                               data_by_year, data_by_year_month = NULL){
+get_temp_summaries <- function(temp_summary_name, data, to = c("annual", "monthly")){
   
   temp_summary_name_list <- NULL
   variables_list = c("to", "na_rm", "na_n", "na_n_non", "na_consec", "na_prop")
   
   # if there is neither, return the definitions in an empty file
-  if (is.null(data_by_year) && is.null(data_by_year_month)){
+  if (is.null(data)){
     for (variable in variables_list) {
       temp_summary_name_list[[variable]] <- NA
     }
   } else {
     # Note, we take the na.rm bits from data_by_year
-    temp_summary <- data_by_year[[temp_summary_name]]
-    temp_summary_2 <- data_by_year_month[[temp_summary_name]]
-    if (is.null(temp_summary)){
-      temp_summary <- temp_summary_2
-      temp_summary$by_1 <- temp_summary$by_2
-    }
-    to <- c()
+    temp_summary <- data[[temp_summary_name]]
+    temp_summary_2 <- data[[temp_summary_name]]
     if (!is.null(temp_summary)){
-      if (year %in% unlist(temp_summary[grep("^by_", names(temp_summary))]) | year %in% unlist(temp_summary_2[grep("^by_", names(temp_summary_2))])){
-        to <- c(to, "annual")
-      }
-      if (!is.null(month)){
-        if (month %in% unlist(temp_summary[grep("^by_", names(temp_summary))]) | month %in% unlist(temp_summary_2[grep("^by_", names(temp_summary_2))])){
-          to <- c(to, "monthly")
-        } 
-      }
+      to <- to
       na_rm <- extract_value(temp_summary$function_exp, "na.rm = ", FALSE)
       na_n <- extract_value(temp_summary$function_exp, "na_max_n = ", TRUE)
       na_n_non <- extract_value(temp_summary$function_exp, "na_min_n = ", TRUE)
@@ -54,6 +38,8 @@ get_temp_summaries <- function(temp_summary_name, year, month,
         }
       }
     } else {
+      temp_summary <- temp_summary_2
+      temp_summary$by_1 <- temp_summary$by_2
       for (variable in variables_list) {
         temp_summary_name_list[[variable]] <- NA
       }

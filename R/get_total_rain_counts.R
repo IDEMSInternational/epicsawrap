@@ -1,41 +1,51 @@
-#' Extract Total Rainfall and Rain Day Definitions
+#' Extract Annual and Seasonal Rainfall Definitions
 #'
-#' This function retrieves metadata definitions related to total rainfall and the number of rainy days
-#' for both annual and seasonal periods. It attempts to identify the appropriate summary definitions
-#' from a list of calculated values, checking for filters or column naming conventions that distinguish
-#' between annual and seasonal data. It also supports extraction of the threshold used to define a "rain day"
-#' based on raw definition metadata.
+#' This function retrieves metadata definitions for total rainfall and the number of rainy days, 
+#' separately for annual and seasonal periods. It searches the supplied summary definitions for 
+#' rainfall-related indicators, using naming conventions and filter criteria to distinguish 
+#' annual from seasonal data. Optionally, it also extracts the rain-day threshold (e.g., `>= 1 mm`) 
+#' from raw metadata.
+#' 
+#' @param data_by_year A named list of summary definitions, typically returned by 
+#'   [get_r_instat_definitions()], for the annual dataset.
+#' @param annual_total_rain_col (Optional) Column name for total annual rainfall.
+#' @param seasonal_total_rain_col (Optional) Column name for total seasonal rainfall.
+#' @param annual_rainday_col (Optional) Column name for the annual rain-day count.
+#' @param seasonal_rainday_col (Optional) Column name for the seasonal rain-day count.
+#' @param definitions_in_raw (Optional) Raw metadata definitions (from unaggregated data), 
+#'   used to extract the rain-day threshold.
+#' @param rain_days_name (Optional) Name of the indicator in the raw metadata (e.g., `"count"`) 
+#'   used to define a rain-day threshold.
 #'
-#' @param data_by_year A list of summary definitions typically returned by `get_r_instat_definitions()` for the annual dataset.
-#' @param rain_name Character string giving the name of the rainfall column in the dataset.
-#' @param annual_total_rain_col (Optional) Column name identifying the total annual rainfall.
-#' @param seasonal_total_rain_col (Optional) Column name identifying the total seasonal rainfall.
-#' @param annual_rainday_col (Optional) Column name identifying the total count of annual rain days.
-#' @param seasonal_rainday_col (Optional) Column name identifying the total count of seasonal rain days.
-#' @param definitions_in_raw (Optional) The raw metadata definitions (from unaggregated data) used to extract the rain day threshold.
-#' @param rain_days_name (Optional) Name of the indicator (e.g., `"count"`) used to define a rain day threshold in the raw metadata.
-#'
-#' @return A named list containing:
+#' @return A named list with two elements:
 #' \describe{
-#'   \item{annual_rain}{A list of summary parameters for total rainfall and rain day count in the year.}
-#'   \item{seasonal_rain}{A list of summary parameters for total rainfall and rain day count during the season.}
+#'   \item{annual_rain}{List of summary parameters for annual rainfall totals and rain-day counts.}
+#'   \item{seasonal_rain}{List of summary parameters for seasonal rainfall totals and rain-day counts.}
 #' }
-#' Each of these lists may include elements like `total_rain`, `n_rain`, `rain_day`, `na_rm`, `na_n`, etc.,
-#' depending on what was found in the metadata. If definitions are missing or ambiguous, values will be set to `NA`.
+#' Each of these lists may include:
+#' \itemize{
+#'   \item `total_rain` – indicator for total rainfall.
+#'   \item `n_rain` – indicator for number of rain days.
+#'   \item `rain_day` – rain-day threshold definition.
+#'   \item `na_rm`, `na_n`, `na_n_non`, `na_consec`, `na_prop` – metadata about missing-value handling.
+#' }
+#' If a definition cannot be found or is ambiguous, the corresponding values will be set to `NA`.
 #'
 #' @details
-#' The function looks for matches to known rainfall-related columns (e.g., `"sum_rain"`, `"n_rain"`) within the provided
-#' list of definitions. Filtering logic is used to heuristically determine whether the definition applies to seasonal or annual data
-#' based on filters such as `start_rain` and `end_` or numeric day-of-year ranges.
-#'
-#' If `definitions_in_raw` and `rain_days_name` are provided, the function will also extract the threshold used to define
-#' a rain day (e.g., `>= 1mm`) from the raw metadata.
+#' The function attempts to match rainfall indicators using the column names provided 
+#' (e.g., `"sum_rain"`, `"count_rain"`).  
+#' Heuristics are then applied to decide if a match refers to annual or seasonal data:
+#' \itemize{
+#'   \item Definitions filtered by variables like `start_rain` and `end_` are considered seasonal.
+#'   \item Definitions without such filters are assumed to be annual.
+#' }
+#' If `definitions_in_raw` and `rain_days_name` are provided, the function calls 
+#' [get_rain_counts()] on the raw metadata to retrieve the rain-day threshold.
 #'
 #' @examples
 #' \dontrun{
 #' defs <- get_total_rain_counts(
 #'   data_by_year = get_r_instat_definitions("ghana_by_station_year"),
-#'   rain_name = "rain",
 #'   annual_total_rain_col = "sum_rain",
 #'   annual_rainday_col = "count_rain",
 #'   definitions_in_raw = get_r_instat_definitions("ghana"),
@@ -44,8 +54,8 @@
 #' }
 #'
 #' @export
+
 get_total_rain_counts <- function(data_by_year = NULL,
-                                  rain_name = data_book$get_climatic_column_name(data_name = "ghana", col_name = "rain"),
                                   annual_total_rain_col = NULL, seasonal_total_rain_col = NULL,
                                   annual_rainday_col = NULL, seasonal_rainday_col = NULL,
                                   definitions_in_raw = NULL, rain_days_name = NULL){

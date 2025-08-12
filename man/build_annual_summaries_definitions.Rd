@@ -7,7 +7,6 @@
 build_annual_summaries_definitions(
   data_name,
   data_by_year,
-  rain_name = "rain",
   definitions_in_raw = NULL,
   rain_days_name = "count",
   extreme_rain_name = "extreme_rain",
@@ -34,8 +33,6 @@ build_annual_summaries_definitions(
 \item{data_name}{Name of the dataset being referenced. (Retained for compatibility; not currently used directly.)}
 
 \item{data_by_year}{A named list of summary definitions from the yearly-aggregated dataset, typically from \code{get_r_instat_definitions()}.}
-
-\item{rain_name}{Name of the rainfall column in the dataset.}
 
 \item{definitions_in_raw}{(Optional) Raw definition metadata, typically obtained using \code{get_r_instat_definitions()} on the unaggregated dataset. Required if \code{extreme_rainfall_column} is used.}
 
@@ -104,7 +101,6 @@ it pulls metadata from \code{definitions_in_raw} to determine appropriate thresh
 defs <- build_annual_summaries_definitions(
   data_name = "ghana",
   data_by_year = get_r_instat_definitions("ghana_by_station_year"),
-  rain_name = "rain",
   start_rains_column = "start_rains_doy",
   start_rains_status_column = "start_rain_status",
   end_rains_column = "end_rains_doy",
