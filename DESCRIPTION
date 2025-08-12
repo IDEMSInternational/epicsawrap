@@ -22,9 +22,10 @@ Imports:
     purrr (>= 1.00),
     rlang,
     RMySQL,
-    rpicsa,
     stringr,
-    testthat,
     tidyr
 Remotes:
     IDEMSInternational/rpicsa
+Suggests:
+    rpicsa,
+    testthat (>= 3.0.0)
