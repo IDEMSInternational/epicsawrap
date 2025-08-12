@@ -26,19 +26,22 @@ get_total_rain_counts(
 )
 }
 \arguments{
-\item{data_by_year}{A list of summary definitions typically returned by \code{get_r_instat_definitions()} for the annual dataset.}
+\item{data_by_year}{A named list of summary definitions, typically returned by
+\code{\link[=get_r_instat_definitions]{get_r_instat_definitions()}}, for the annual dataset.}
 
-\item{annual_total_rain_col}{(Optional) Column name identifying the total annual rainfall.}
+\item{annual_total_rain_col}{(Optional) Column name for total annual rainfall.}
 
-\item{seasonal_total_rain_col}{(Optional) Column name identifying the total seasonal rainfall.}
+\item{seasonal_total_rain_col}{(Optional) Column name for total seasonal rainfall.}
 
-\item{annual_rainday_col}{(Optional) Column name identifying the total count of annual rain days.}
+\item{annual_rainday_col}{(Optional) Column name for the annual rain-day count.}
 
-\item{seasonal_rainday_col}{(Optional) Column name identifying the total count of seasonal rain days.}
+\item{seasonal_rainday_col}{(Optional) Column name for the seasonal rain-day count.}
 
-\item{definitions_in_raw}{(Optional) The raw metadata definitions (from unaggregated data) used to extract the rain day threshold.}
+\item{definitions_in_raw}{(Optional) Raw metadata definitions (from unaggregated data),
+used to extract the rain-day threshold.}
 
-\item{rain_days_name}{(Optional) Name of the indicator (e.g., \code{"count"}) used to define a rain day threshold in the raw metadata.}
+\item{rain_days_name}{(Optional) Name of the indicator in the raw metadata (e.g., \code{"count"})
+used to define a rain-day threshold.}
 
 \item{data_name}{The name of the main data frame.}
 
@@ -47,30 +50,39 @@ get_total_rain_counts(
 \value{
 A list representation of annual rain definitions.
 
-A named list containing:
+A named list with two elements:
 \describe{
-\item{annual_rain}{A list of summary parameters for total rainfall and rain day count in the year.}
-\item{seasonal_rain}{A list of summary parameters for total rainfall and rain day count during the season.}
+\item{annual_rain}{List of summary parameters for annual rainfall totals and rain-day counts.}
+\item{seasonal_rain}{List of summary parameters for seasonal rainfall totals and rain-day counts.}
 }
-Each of these lists may include elements like \code{total_rain}, \code{n_rain}, \code{rain_day}, \code{na_rm}, \code{na_n}, etc.,
-depending on what was found in the metadata. If definitions are missing or ambiguous, values will be set to \code{NA}.
+Each of these lists may include:
+\itemize{
+\item \code{total_rain} – indicator for total rainfall.
+\item \code{n_rain} – indicator for number of rain days.
+\item \code{rain_day} – rain-day threshold definition.
+\item \code{na_rm}, \code{na_n}, \code{na_n_non}, \code{na_consec}, \code{na_prop} – metadata about missing-value handling.
+}
+If a definition cannot be found or is ambiguous, the corresponding values will be set to \code{NA}.
 }
 \description{
 Retrieves annual rain definitions.
 
-This function retrieves metadata definitions related to total rainfall and the number of rainy days
-for both annual and seasonal periods. It attempts to identify the appropriate summary definitions
-from a list of calculated values, checking for filters or column naming conventions that distinguish
-between annual and seasonal data. It also supports extraction of the threshold used to define a "rain day"
-based on raw definition metadata.
+This function retrieves metadata definitions for total rainfall and the number of rainy days,
+separately for annual and seasonal periods. It searches the supplied summary definitions for
+rainfall-related indicators, using naming conventions and filter criteria to distinguish
+annual from seasonal data. Optionally, it also extracts the rain-day threshold (e.g., \verb{>= 1 mm})
+from raw metadata.
 }
 \details{
-The function looks for matches to known rainfall-related columns (e.g., \code{"sum_rain"}, \code{"n_rain"}) within the provided
-list of definitions. Filtering logic is used to heuristically determine whether the definition applies to seasonal or annual data
-based on filters such as \code{start_rain} and \code{end_} or numeric day-of-year ranges.
-
-If \code{definitions_in_raw} and \code{rain_days_name} are provided, the function will also extract the threshold used to define
-a rain day (e.g., \verb{>= 1mm}) from the raw metadata.
+The function attempts to match rainfall indicators using the column names provided
+(e.g., \code{"sum_rain"}, \code{"count_rain"}).
+Heuristics are then applied to decide if a match refers to annual or seasonal data:
+\itemize{
+\item Definitions filtered by variables like \code{start_rain} and \code{end_} are considered seasonal.
+\item Definitions without such filters are assumed to be annual.
+}
+If \code{definitions_in_raw} and \code{rain_days_name} are provided, the function calls
+\code{\link[=get_rain_counts]{get_rain_counts()}} on the raw metadata to retrieve the rain-day threshold.
 }
 \examples{
 # Example usage:
