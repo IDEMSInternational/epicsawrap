@@ -21,19 +21,19 @@
 #' @examples
 #' # Example usage:
 build_total_temperature_summaries <- function(data_by_year,
-                                              data_by_year_month,
-                                              min_tmin_column,
-                                              mean_tmin_column,
-                                              max_tmin_column,
-                                              min_tmax_column,
-                                              mean_tmax_column,
-                                              max_tmax_column,
-                                              min_monthly_tmin_column,
-                                              mean_monthly_tmin_column,
-                                              max_monthly_tmin_column,
-                                              min_monthly_tmax_column,
-                                              mean_monthly_tmax_column,
-                                              max_monthly_tmax_column){
+                                              data_by_year_month = NULL,
+                                              min_tmin_column = NULL,
+                                              mean_tmin_column = NULL,
+                                              max_tmin_column = NULL,
+                                              min_tmax_column = NULL,
+                                              mean_tmax_column = NULL,
+                                              max_tmax_column = NULL,
+                                              min_monthly_tmin_column = NULL,
+                                              mean_monthly_tmin_column = NULL,
+                                              max_monthly_tmin_column = NULL,
+                                              min_monthly_tmax_column = NULL,
+                                              mean_monthly_tmax_column = NULL,
+                                              max_monthly_tmax_column = NULL){
   build_block <- function(min_col, mean_col, max_col, var, data, to) {
     cols <- c(min = min_col, mean = mean_col, max = max_col)
     purrr::map(cols, ~ get_temp_summaries(.x, data, to = to)) |>
