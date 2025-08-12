@@ -92,24 +92,29 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
   
 
   # get definitions from calculations
-  definitions_year <- get_r_instat_definitions(data_book$get_calculations(data_by_year))
+  if (!is.null(data_by_year)){
+    definitions_year <- get_r_instat_definitions(data_book$get_calculations(data_by_year))
+    definitions_offset <- get_offset_term(data_by_year)
+    
+    if (length(names(definitions_year)) != length(unique(names(definitions_year)))){
+      # Identify duplicates
+      duplicates <- names(definitions_year)[duplicated(names(definitions_year)) | duplicated(names(definitions_year), fromLast = TRUE)]
+      # Get unique duplicates
+      unique_duplicates <- unique(duplicates)
+      warning(paste0("Some elements are repeated: (", unique_duplicates, "). Taking the most recent version."))
+      definitions_year <- definitions_year[!duplicated(definitions_year, fromLast = TRUE)]
+    }
+    
+  }  else {
+    definitions_year <- NULL
+    definitions_offset <- 1 #TODO: what if offset in monthly temp?
+  }
 
   definitions_in_raw <- NULL
   if (!is.null(rain_days_name) || !is.null(extreme_rainfall_column) || !is.null(extreme_tmin_column) || !is.null(extreme_tmax_column)) {
     if (!is.null(data)) {
       definitions_in_raw <- get_r_instat_definitions(data_book$get_calculations(data))
     }
-  }
-  
-  definitions_offset <- get_offset_term(data_by_year)
-  
-  if (length(names(definitions_year)) != length(unique(names(definitions_year)))){
-    # Identify duplicates
-    duplicates <- names(definitions_year)[duplicated(names(definitions_year)) | duplicated(names(definitions_year), fromLast = TRUE)]
-    # Get unique duplicates
-    unique_duplicates <- unique(duplicates)
-    warning(paste0("Some elements are repeated: (", unique_duplicates, "). Taking the most recent version."))
-    definitions_year <- definitions_year[!duplicated(definitions_year, fromLast = TRUE)]
   }
   
   # if yes to annual summaries - give the data frame "ghana_by_station_year"
