@@ -1,6 +1,6 @@
 Package: epicsawrap
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.5
+Version: 0.0.6
 Authors@R: c(
     person("Lily", "Clements", , "lily@idems.international", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8864-0552")))
@@ -22,10 +22,10 @@ Imports:
     purrr (>= 1.00),
     rlang,
     RMySQL,
+    rpicsa,
     stringr,
     tidyr
 Remotes:
     IDEMSInternational/rpicsa
 Suggests:
-    rpicsa,
     testthat (>= 3.0.0)

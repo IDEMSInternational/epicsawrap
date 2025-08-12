@@ -15,7 +15,7 @@
 #' @details
 #' - The function retrieves definition data to identify the days of interest for calculating the start-of-season probabilities.
 #' - If `start_rains_data` is not provided, it computes the start-of-rains summaries using `daily_data`.
-#' - The function calculates probabilities for the specified days using the `rpicsa::probability_season_start` function.
+#' - The function calculates probabilities for the specified days using the `probability_season_start` function in `rpicsa`
 #'
 update_season_start_probabilities_from_definition <- function(country, station_id = NULL, definition_id = NULL, daily_data = NULL, start_rains_data = NULL) {
   if (!is.null(station_id) & !is.null(definition_id)) warning("Both station_id and definition_id are given. Defaulting to station_id.")
