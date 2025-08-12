@@ -5,7 +5,7 @@
 #' rainfall-related indicators, using naming conventions and filter criteria to distinguish 
 #' annual from seasonal data. Optionally, it also extracts the rain-day threshold (e.g., `>= 1 mm`) 
 #' from raw metadata.
-#'
+#' 
 #' @param data_by_year A named list of summary definitions, typically returned by 
 #'   [get_r_instat_definitions()], for the annual dataset.
 #' @param annual_total_rain_col (Optional) Column name for total annual rainfall.
