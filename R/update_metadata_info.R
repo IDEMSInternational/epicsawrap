@@ -33,35 +33,36 @@ update_metadata_info <- function(country,
   
   # Select and rename columns from metadata_data if necessary
   metadata_data <- metadata_data %>%
-    select(any_of(selected_vars))
-  metadata_data <- metadata_data %>% rename_with(~ "station_id", station_var)
+    dplyr::select(any_of(selected_vars))
+  metadata_data <- metadata_data %>% 
+    dplyr::rename_with(~ "station_name", station_var)
   if (!is.null(latitude_var)) metadata_data <- metadata_data %>% dplyr::rename_with(~ "latitude", latitude_var)
   if (!is.null(longitude_var)) metadata_data <- metadata_data %>% dplyr::rename_with(~ "longitude", longitude_var)
   if (!is.null(elevation_var)) metadata_data <- metadata_data %>% dplyr::rename_with(~ "elevation", elevation_var)
   if (!is.null(district_var)) metadata_data <- metadata_data %>% dplyr::rename_with(~ "district", district_var)
     
-  updated_metadata <- complete_metadata_from_bucket %>% dplyr::full_join(metadata_data, by = "station_id")
+  updated_metadata <- complete_metadata_from_bucket %>% dplyr::full_join(metadata_data, by = "station_name")
   
-  # Join the dataframes on station_id
+  # Join the dataframes on station_name
   # Conditionally mutate and select columns based on their presence
   if (!is.null(latitude_var)) {
     updated_metadata <- updated_metadata %>%
-      dplyr::mutate(latitude = coalesce(latitude.y, latitude.x)) %>%
+      dplyr::mutate(latitude = dplyr::coalesce(latitude.y, latitude.x)) %>%
       dplyr::select(-c(latitude.x, latitude.y))
   }
   if (!is.null(longitude_var)) {
     updated_metadata <- updated_metadata %>%
-      dplyr::mutate(longitude = coalesce(longitude.y, longitude.x)) %>%
+      dplyr::mutate(longitude = dplyr::coalesce(longitude.y, longitude.x)) %>%
       dplyr::select(-c(longitude.x, longitude.y))
   }
   if (!is.null(elevation_var)) {
     updated_metadata <- updated_metadata %>%
-      dplyr::mutate(elevation = coalesce(elevation.y, elevation.x)) %>%
+      dplyr::mutate(elevation = dplyr::coalesce(elevation.y, elevation.x)) %>%
       dplyr::select(-c(elevation.x, elevation.y))
   }
   if (!is.null(district_var)) {
     updated_metadata <- updated_metadata %>%
-      dplyr::mutate(district = coalesce(district.y, district.x)) %>%
+      dplyr::mutate(district = dplyr::coalesce(district.y, district.x)) %>%
       dplyr::select(-c(district.x, district.y))
   }
   
