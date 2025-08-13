@@ -79,7 +79,7 @@
 #' )
 #' }
 export_r_instat_to_bucket <- function(data = NULL, 
-                                      data_by_year,
+                                      data_by_year = NULL,
                                       data_by_year_month = NULL,
                                       crop_data_name = NULL,
                                       station = NULL,
@@ -172,8 +172,9 @@ export_r_instat_to_bucket <- function(data = NULL,
   add_definitions_to_bucket(country = country, definitions_id = definitions_id, new_definitions = definitions_data, timestamp = timestamp)
   
   # Ensure unique stations are obtained because we want to repeat for each station
-  unique_stations <- unique(data_book$get_data_frame(data_by_year)[[station]])
-  
+  if (!is.null(data_by_year)) unique_stations <- unique(data_book$get_data_frame(data_by_year)[[station]])
+  else unique_stations <- unique(data_book$get_data_frame(data_by_year_month)[[station]])
+    
   # TODO: need to add in metadata additions
   purrr::map(.x = unique_stations,
              .f = ~{station_id <- .x

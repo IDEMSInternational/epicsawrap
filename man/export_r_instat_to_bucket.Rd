@@ -6,7 +6,7 @@
 \usage{
 export_r_instat_to_bucket(
   data = NULL,
-  data_by_year,
+  data_by_year = NULL,
   data_by_year_month = NULL,
   crop_data_name = NULL,
   station = NULL,
