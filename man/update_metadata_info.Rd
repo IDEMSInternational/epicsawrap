@@ -2,41 +2,36 @@
 % Please edit documentation in R/update_metadata_info.R
 \name{update_metadata_info}
 \alias{update_metadata_info}
-\title{Update Station Metadata}
+\title{Update Station Metadata (add/update and optionally remove stations)}
 \usage{
 update_metadata_info(
   country,
-  metadata_data,
-  station_var,
+  metadata_data = NULL,
+  station_var = NULL,
   latitude_var = NULL,
   longitude_var = NULL,
   elevation_var = NULL,
-  district_var = NULL
+  district_var = NULL,
+  remove_stations = NULL,
+  allow_new = TRUE
 )
 }
 \arguments{
-\item{country}{A character vector specifying the country or countries from which to update the metadata. Options are defined in \code{get_bucket_name()} (e.g., \code{"zm"}, \code{"mw"}).}
+\item{country}{Character scalar (e.g. "zm", "mw").}
 
-\item{metadata_data}{A data frame containing new metadata for the stations. This data should include columns for station identifiers and other metadata fields like latitude, longitude, etc.}
+\item{metadata_data}{Optional data frame of new/updated metadata. Default NULL for remove-only runs.}
 
-\item{station_var}{Optional. The name of the column in \code{metadata_data} corresponding to station IDs. Defaults to \code{NULL}.}
+\item{station_var}{Optional name of station id column in \code{metadata_data}. Required if \code{metadata_data} is provided.}
 
-\item{latitude_var}{Optional. The name of the column in \code{metadata_data} containing latitude values. Defaults to \code{NULL}.}
+\item{latitude_var, longitude_var, elevation_var, district_var}{Optional names in \code{metadata_data}.}
 
-\item{longitude_var}{Optional. The name of the column in \code{metadata_data} containing longitude values. Defaults to \code{NULL}.}
+\item{remove_stations}{Optional character vector of station ID (canonical) to remove after updates.}
 
-\item{elevation_var}{Optional. The name of the column in \code{metadata_data} containing elevation values. Defaults to \code{NULL}.}
-
-\item{district_var}{Optional. The name of the column in \code{metadata_data} containing district information. Defaults to \code{NULL}.}
+\item{allow_new}{Logical; if FALSE, do not add stations that don't already exist. Default TRUE.}
 }
 \value{
-A data frame with updated metadata for the specified stations.
+Updated metadata data frame (also uploaded).
 }
 \description{
-This function updates the metadata for specified stations in a given country by merging new data from \code{metadata_data} with existing metadata.
-}
-\examples{
-# Assuming get_bucket_name and station_metadata functions are defined:
-# update_metadata_info("zm", c("BINGA", "KARIBA"), new_metadata_data, 
-#                     station_var = "stationName", latitude_var = "lat", longitude_var = "lon")
+Update Station Metadata (add/update and optionally remove stations)
 }
