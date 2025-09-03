@@ -30,7 +30,7 @@ grouping_by_station <- instatCalculations::instat_calculation$new(type="by", cal
 grouping_by_station <- instatCalculations::instat_calculation$new(type="by", calculated_from=list("observations_unstacked_data"="station_id"))
 roll_sum_rain <- instatCalculations::instat_calculation$new(type="calculation", function_exp="RcppRoll::roll_sumr(x=PRECIP, n=3, fill=NA, na.rm=FALSE)", result_name="roll_sum_rain", calculated_from=list("observations_unstacked_data"="PRECIP"), manipulations=list(grouping_by_station))
 rain_day <- instatCalculations::instat_calculation$new(type="calculation", function_exp="PRECIP >= 0.5", result_name="rain_day", calculated_from=list("observations_unstacked_data"="PRECIP"))
-dry_spell <- instatCalculations::instat_calculation$new(type="calculation", function_exp="rpicsa::spells(x=rain_day == 0)", result_name="dry_spell", sub_calculations=list(rain_day))
+dry_spell <- instatCalculations::instat_calculation$new(type="calculation", function_exp="instatClimatic::spells(x=rain_day == 0)", result_name="dry_spell", sub_calculations=list(rain_day))
 roll_max_dry_spell <- instatCalculations::instat_calculation$new(type="calculation", function_exp="dplyr::lead(x=RcppRoll::roll_maxl(n=30, x=dry_spell, fill=NA))", result_name="roll_max_dry_spell", sub_calculations=list(dry_spell))
 conditions_filter <- instatCalculations::instat_calculation$new(type="filter", function_exp="((PRECIP >= 0.5) & roll_sum_rain > 25 & roll_max_dry_spell <= 10) | is.na(x=PRECIP) | is.na(x=roll_sum_rain) | is.na(x=roll_max_dry_spell)", sub_calculations=list(roll_sum_rain, roll_max_dry_spell))
 grouping_by_year <- instatCalculations::instat_calculation$new(type="by", calculated_from=list("observations_unstacked_data"="s_year"))
@@ -114,6 +114,7 @@ data_book$crops_definitions(data_name="observations_unstacked_data", year="s_yea
                             start_check="both", end_day="end_rains")
 
 saveRDS(file="C:/Users/lclem/OneDrive/Documents/MW_data.RDS", object=data_book)
+
 
 epicsawrap::gcs_auth_file(filename="C:/Users/lclem/OneDrive/Documents/GitHub/epicsawrap1/tests/testthat/testdata/epicsa_token.json")
 

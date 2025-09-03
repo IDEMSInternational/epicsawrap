@@ -217,6 +217,17 @@ export_r_instat_to_bucket <- function(data = NULL,
       )
     }
     if ("crop_success" %in% summaries) {
+      if (!is.null(data)){
+        definitions_offset <- get_offset_term("data")
+      } else {
+        warning("Unable to set offset term since `data` is not given. Setting offset as 1.")
+        definitions_offset <- 1
+      }
+      crop_success_data <- crop_success_data %>%
+        dplyr::mutate(plant_day_month = as.Date(plant_day + definitions_offset - 1, origin = "2000-01-01"),
+                      plant_day_month = format(plant_day_month, "%m-%d")) %>%
+        dplyr::select(c(station, plant_day, plant_day_month, dplyr::everything()))
+      
       purrr::map(
         .x = unique_stations,
         .f = ~{station_id <- .x
@@ -227,6 +238,17 @@ export_r_instat_to_bucket <- function(data = NULL,
       )
     }
     if ("start_season" %in% summaries) {
+      if (!is.null(data)){
+        definitions_offset <- get_offset_term("data")
+      } else {
+        warning("Unable to set offset term since `data` is not given. Setting offset as 1.")
+        definitions_offset <- 1
+      }
+      season_start_data <- season_start_data %>%
+        dplyr::mutate(day_month = as.Date(day + definitions_offset - 1, origin = "2000-01-01"),
+                      day_month = format(day_month, "%m-%d")) %>%
+        dplyr::select(c(station, day, day_month, dplyr::everything()))
+      
       purrr::map(
         .x = unique_stations,
         .f = ~{station_id <- .x
@@ -238,5 +260,6 @@ export_r_instat_to_bucket <- function(data = NULL,
     }
   }
   
+  return(crop_success_data)
   return("Uploaded to Bucket")
 }

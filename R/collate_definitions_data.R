@@ -118,7 +118,7 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
   }
   
   # if yes to annual summaries - give the data frame "ghana_by_station_year"
-  if ("annual_rainfall" %in% summaries){
+  #if ("annual_rainfall" %in% summaries){
     annual_summaries <- build_annual_summaries_definitions(data_by_year = definitions_year,
                                                            start_rains_column = start_rains_column,
                                                            start_rains_status_column = start_rains_status_column,
@@ -145,9 +145,8 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
       annual_summaries$end_season$s_start_doy <- definitions_offset
       annual_summaries$annual_rain$s_start_doy <- definitions_offset
     }
-  } else {
-    annual_summaries <- NULL
-  }
+    annual_summaries <- list(annual_summaries)
+  #}
   
   if (any(grepl("_temperature", summaries))){
     # if yes to annual temperature summaries - give the data frame "ghana_by_station_year"
@@ -217,14 +216,13 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
   season_start_summaries <- build_season_start_probabilities(definitions_crop)
   
   # overall:
-  data_list <- c(annual_summaries, temperature_summaries, crop_summaries, season_start_summaries)
+  data_list <- c("annual_summaries" = annual_summaries, temperature_summaries, crop_summaries, season_start_summaries)
   
   # remove anything of length 0 
   # Define a function to check the length of each element
   length_not_zero <- function(element) {
     length(element) > 0
   }
-  
   # Filter the list x to remove elements with length 0
   data_list <- Filter(length_not_zero, data_list)
   
