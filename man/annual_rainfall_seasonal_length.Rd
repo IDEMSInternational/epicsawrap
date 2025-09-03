@@ -43,6 +43,5 @@ daily_data <- data.frame(date = seq(as.Date("2023-01-01"), as.Date("2023-12-31")
                          rain = runif(365, min = 0, max = 10))
 summary_data <- data.frame(year = 2023, start_rains_date = as.Date("2023-04-01"), 
                            end_rains_date = as.Date("2023-10-31"), end_season_date = as.Date("2023-12-31"))
-seasonal_length <- annual_rainfall_seasonal_length(definitions, daily_data, summary_data, data_names, summary_types)
-
+#seasonal_length <- annual_rainfall_seasonal_length(definitions, daily_data, summary_data, data_names, summary_types)
 }
