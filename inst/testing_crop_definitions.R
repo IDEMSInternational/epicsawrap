@@ -29,8 +29,9 @@ group_by <- dplyr::group_by
 data_book$crops_definitions(data_name="ghana", year="year", station="station", rain="rainfall", day="doy",
                             plant_days=c(100, 150, 200),
                             plant_lengths=c(110, 220),
-                            rain_totals=c(370, 400, 500), start_day="start_rain", season_data_name="ghana_by_station_year", end_day="end_rains", start_check="both",
-                            display_start_probabilities = TRUE)
+                            rain_totals=c(370, 400, 500), start_day="start_rain", season_data_name="ghana_by_station_year", end_day="end_rains",
+                            start_check="both")
+                            #display_start_probabilities = TRUE)
 #data_book$crops_definitions(data_name="ghana", year="year", station="station", rain="rainfall", day="doy", plant_days=c(100, 110, 120, 130, 140), plant_lengths=c(110, 115, 120, 125, 130, 135, 140, 145, 150, 155, 160), rain_totals=c(370, 380, 390, 400, 410, 420, 430, 440, 450, 460, 470, 480, 490, 500), start_day="start_rain", season_data_name="ghana_by_station_year", end_day="end_rains", start_check="both")
 #data_book$crops_definitions(data_name="ghana", year="year", station="station", rain="rainfall", day="doy", plant_days=c(100, 110), plant_lengths=c(110, 150), rain_totals=c(370, 500), start_day="start_rain", season_data_name="ghana_by_station_year", end_day="end_rains", start_check="both")
 #data_book$crops_definitions(data_name="ghana", year="year", station="station", rain="rainfall", day="doy", plant_days=c(100), plant_lengths=c(110), rain_totals=c(370), start_day="start_rain", season_data_name="ghana_by_station_year", end_day="end_rains", start_check="both")
@@ -51,6 +52,13 @@ ghana_by_station_year <- data_book$get_data_frame(data_name="ghana_by_station_ye
 
 # we should give crop_def for the season_start_probabilties. that needs station, year, plant day, and plant day condition. 
 
+annual_rain <- reformat_annual_summaries(ghana_by_station_year,
+                                         station_col = "station", 
+                                         year_col = "year",
+                                         start_rains_doy_col = "start_rain",
+                                         end_rains_doy_col = "end_rains")
+
+
 setwd("C:/Users/lclem/OneDrive/Documents/GitHub/epicsawrap_master")
 devtools::load_all()
 # exported_data <- export_r_instat_to_bucket(data_by_year = "ghana_by_station_year",
@@ -68,14 +76,14 @@ devtools::load_all()
 devtools::load_all()
 
 # reading in season start data too:
-export_r_instat_to_bucket(data_by_year = "ghana_by_station_year",
+x <- export_r_instat_to_bucket(data_by_year = "ghana_by_station_year",
                           summaries=c("start_season"),
                           station="station", 
-                          crop_data="crop_prop",
-                          year="year",
-                          season_start_data=crop_def,
+                          crop_data = "crop_prop",
+                          annual_rainfall_data = annual_rain,
+                          crop_success_data = crop_prop,
+                          season_start_data = crop_def,
                           definitions_id="88888",
                           country="internal_tests",
                           include_summary_data = TRUE)
-# TODO: data isn't uploading for our season_start_data.
-# TODO: if I upload both crop_success and start_season, then it works well :) 
+

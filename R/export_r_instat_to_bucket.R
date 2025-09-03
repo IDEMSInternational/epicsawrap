@@ -122,9 +122,18 @@ export_r_instat_to_bucket <- function(data = NULL,
                                       mean_monthly_tmax_column = "mean_tmax",
                                       max_monthly_tmax_column = "max_tmax"){
   
-  timestamp <- format(Sys.time(), format = "%Y%m%d%H%M%S") 
+  timestamp <- format(Sys.time(), format = "%Y%m%d%H%M%S")
+  
+  if (!is.null(data)){
+    definitions_offset <- get_offset_term(data)
+  } else {
+    warning("Unable to set offset term since `data` is not given. Setting offset as 1.")
+    definitions_offset <- 1
+  }
+  
   definitions_data <- collate_definitions_data(data_by_year = data_by_year,
                                                data_by_year_month = data_by_year_month,
+                                               definitions_offset = definitions_offset,
                                                crop_data = crop_data_name,
                                                summaries = summaries,
                                                
@@ -217,6 +226,11 @@ export_r_instat_to_bucket <- function(data = NULL,
       )
     }
     if ("crop_success" %in% summaries) {
+      crop_success_data <- crop_success_data %>%
+        dplyr::mutate(plant_day_month = as.Date(plant_day + definitions_offset - 1, origin = "2000-01-01"),
+                      plant_day_month = format(plant_day_month, "%m-%d")) %>%
+        dplyr::select(c(station, plant_day, plant_day_month, dplyr::everything()))
+      
       purrr::map(
         .x = unique_stations,
         .f = ~{station_id <- .x
@@ -227,6 +241,11 @@ export_r_instat_to_bucket <- function(data = NULL,
       )
     }
     if ("start_season" %in% summaries) {
+      season_start_data <- season_start_data %>%
+        dplyr::mutate(day_month = as.Date(day + definitions_offset - 1, origin = "2000-01-01"),
+                      day_month = format(day_month, "%m-%d")) %>%
+        dplyr::select(c(station, day, day_month, dplyr::everything()))
+      
       purrr::map(
         .x = unique_stations,
         .f = ~{station_id <- .x
@@ -237,6 +256,5 @@ export_r_instat_to_bucket <- function(data = NULL,
       )
     }
   }
-  
   return("Uploaded to Bucket")
 }

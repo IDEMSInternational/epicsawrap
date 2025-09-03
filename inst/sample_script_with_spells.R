@@ -27,7 +27,7 @@ grouping_by_station <- instatCalculations::instat_calculation$new(type="by", cal
 grouping_by_station <- instatCalculations::instat_calculation$new(type="by", calculated_from=list("data_RDS"="station"))
 roll_sum_rain <- instatCalculations::instat_calculation$new(type="calculation", function_exp="RcppRoll::roll_sumr(x=rain, n=3, fill=NA, na.rm=FALSE)", result_name="roll_sum_rain", calculated_from=list("data_RDS"="rain"), manipulations=list(grouping_by_station))
 rain_day <- instatCalculations::instat_calculation$new(type="calculation", function_exp="rain >= 0.85", result_name="rain_day", calculated_from=list("data_RDS"="rain"))
-dry_spell <- instatCalculations::instat_calculation$new(type="calculation", function_exp="rpicsa::spells(x=rain_day == 0)", result_name="dry_spell", sub_calculations=list(rain_day))
+dry_spell <- instatCalculations::instat_calculation$new(type="calculation", function_exp="instatClimatic::spells(x=rain_day == 0)", result_name="dry_spell", sub_calculations=list(rain_day))
 roll_max_dry_spell <- instatCalculations::instat_calculation$new(type="calculation", function_exp="dplyr::lead(x=RcppRoll::roll_maxl(n=21, x=dry_spell, fill=NA))", result_name="roll_max_dry_spell", sub_calculations=list(dry_spell))
 conditions_filter <- instatCalculations::instat_calculation$new(type="filter", function_exp="((rain >= 0.85) & roll_sum_rain > 20 & roll_max_dry_spell <= 9) | is.na(x=rain) | is.na(x=roll_sum_rain) | is.na(x=roll_max_dry_spell)", sub_calculations=list(roll_sum_rain, roll_max_dry_spell))
 grouping_by_year <- instatCalculations::instat_calculation$new(type="by", calculated_from=list("data_RDS"="s_year"))

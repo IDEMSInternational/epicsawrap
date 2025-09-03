@@ -9,6 +9,7 @@
 #'
 #' @param data_by_year The name of the dataset aggregated by year. This is the main source for rainfall and annual temperature definitions.
 #' @param data_by_year_month The name of the dataset aggregated by year and month. Required for monthly temperature summaries.
+#' @param definitions_offset The offset term, which can be found by running the `get_offset_term` function with daily data.
 #' @param crop_data The name of the crop-related data set (e.g., `"crop_def"`), used for crop success and season start definitions.
 #' @param summaries A character vector specifying which summaries to extract. Options include: 
 #' `"annual_rainfall"`, `"annual_temperature"`, `"monthly_temperature"`, `"crop_success"`, `"start_season"`.
@@ -64,6 +65,7 @@
 #' @export
 collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                      data_by_year_month = NULL,
+                                     definitions_offset = 1,
                                      crop_data = "crop_def",
                                      summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "crop_success", "start_season"),
                                      start_rains_column = "start_rains_doy", start_rains_status_column = "start_rain_status",
@@ -94,7 +96,6 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
   # get definitions from calculations
   if (!is.null(data_by_year)){
     definitions_year <- get_r_instat_definitions(data_book$get_calculations(data_by_year))
-    definitions_offset <- get_offset_term(data_by_year)
     
     if (length(names(definitions_year)) != length(unique(names(definitions_year)))){
       # Identify duplicates
@@ -104,10 +105,8 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
       warning(paste0("Some elements are repeated: (", unique_duplicates, "). Taking the most recent version."))
       definitions_year <- definitions_year[!duplicated(definitions_year, fromLast = TRUE)]
     }
-    
   }  else {
     definitions_year <- NULL
-    definitions_offset <- 1 #TODO: what if offset in monthly temp?
   }
 
   definitions_in_raw <- NULL
@@ -118,7 +117,7 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
   }
   
   # if yes to annual summaries - give the data frame "ghana_by_station_year"
-  if ("annual_rainfall" %in% summaries){
+  #if ("annual_rainfall" %in% summaries){
     annual_summaries <- build_annual_summaries_definitions(data_by_year = definitions_year,
                                                            start_rains_column = start_rains_column,
                                                            start_rains_status_column = start_rains_status_column,
@@ -145,9 +144,8 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
       annual_summaries$end_season$s_start_doy <- definitions_offset
       annual_summaries$annual_rain$s_start_doy <- definitions_offset
     }
-  } else {
-    annual_summaries <- NULL
-  }
+    annual_summaries <- list(annual_summaries)
+  #}
   
   if (any(grepl("_temperature", summaries))){
     # if yes to annual temperature summaries - give the data frame "ghana_by_station_year"
@@ -217,14 +215,13 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
   season_start_summaries <- build_season_start_probabilities(definitions_crop)
   
   # overall:
-  data_list <- c(annual_summaries, temperature_summaries, crop_summaries, season_start_summaries)
+  data_list <- c("annual_summaries" = annual_summaries, temperature_summaries, crop_summaries, season_start_summaries)
   
   # remove anything of length 0 
   # Define a function to check the length of each element
   length_not_zero <- function(element) {
     length(element) > 0
   }
-  
   # Filter the list x to remove elements with length 0
   data_list <- Filter(length_not_zero, data_list)
   
