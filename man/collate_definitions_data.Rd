@@ -7,6 +7,7 @@
 collate_definitions_data(
   data_by_year = "ghana_by_station_year",
   data_by_year_month = NULL,
+  definitions_offset = 1,
   crop_data = "crop_def",
   summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature",
     "crop_success", "start_season"),
@@ -47,6 +48,8 @@ collate_definitions_data(
 \item{data_by_year}{The name of the dataset aggregated by year. This is the main source for rainfall and annual temperature definitions.}
 
 \item{data_by_year_month}{The name of the dataset aggregated by year and month. Required for monthly temperature summaries.}
+
+\item{definitions_offset}{The offset term, which can be found by running the \code{get_offset_term} function with daily data.}
 
 \item{crop_data}{The name of the crop-related data set (e.g., \code{"crop_def"}), used for crop success and season start definitions.}
 

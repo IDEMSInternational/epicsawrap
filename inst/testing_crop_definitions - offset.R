@@ -26,11 +26,10 @@ x <- epicsawrap::export_r_instat_to_bucket(summaries=c("annual_rainfall", "crop_
                                       include_summary_data=TRUE, definitions_id="444",
                                       country="mw_test")
 
-
 epicsawrap::get_definitions_data("mw_test", "12343000")
 
 # crop prop
-summaries_crop_success_probabilities_13331011_20250422222855 <- readRDS("C:/Users/lclem/Downloads/summaries_crop_success_probabilities_13331011_20250422222855.rds")
+#summaries_crop_success_probabilities_13331011_20250422222855 <- readRDS("C:/Users/lclem/Downloads/summaries_crop_success_probabilities_13331011_20250422222855.rds")
 
 # check 444 is in the bucket OK
 
