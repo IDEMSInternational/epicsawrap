@@ -7,7 +7,7 @@ epicsawrap::gcs_auth_file(filename="C:/Users/lclem/OneDrive/Documents/GitHub/epi
 
 observations_unstacked_data_by_station_id_s_year <- data_book$get_data_frame(data_name="observations_unstacked_data_by_station_id_s_year")
 
-annual_rain <- epicsawrap::reformat_annual_summaries(data=observations_unstacked_data_by_station_id_s_year, station_col="station_id", year_col="s_year", start_rains_doy_col="start_rain", start_rains_date_col="start_rain_date", end_rains_doy_col="end_rains", end_rains_date_col="end_rains_date")
+annual_rain <- epicsawrap::reformat_annual_summaries(data=observations_unstacked_data_by_station_id_s_year, station_col="station_id", year_col="s_year", start_rains_doy_col="start_rain", start_rains_date_col="start_rain_date", end_season_doy_col = "end_season", end_season_date_col="end_season_date")
 crop_prop <- data_book$get_data_frame(data_name="crop_prop")
 crop_prop <- epicsawrap::reformat_crop_success(data=crop_prop, station_col="station_id", total_rain_col="rain_total", plant_day_col="plant_day", plant_length_col="plant_length",
                                                prop_success_with_start_col = "prop_success_with_start", prop_success_no_start_col = "prop_success_no_start")
