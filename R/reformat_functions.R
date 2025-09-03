@@ -83,6 +83,7 @@ reformat_annual_summaries <- function(data,
            dplyr::across(dplyr::starts_with("n_"), as.double),
     )
   
+  if (!is.null(station_col)) data <- data %>% dplyr::mutate(station = as.character(station))
   return(data)
 }
 
@@ -127,6 +128,7 @@ reformat_crop_success <- function(data, station_col = NULL, total_rain_col, plan
   data$prop_success_with_start <- as.double(data$prop_success_with_start)
   data$prop_success_no_start <- as.double(data$prop_success_no_start)
   
+  if (!is.null(station_col)) data <- data %>% dplyr::mutate(station = as.character(station))
   return(data)
 }
 
@@ -175,6 +177,7 @@ reformat_temperature_summaries <- function(data,
   # if (!is.null(data$year) && !is.factor(data$year)) {
   #   data$year <- as.factor(data$year)
   # }
+  if (!is.null(station_col)) data <- data %>% dplyr::mutate(station = as.character(station))
   return(data)
 }
 
@@ -199,5 +202,6 @@ reformat_season_start <- function(data, station_col = NULL, year_col, plant_day_
     unique() %>%
     dplyr::group_by(station, day = as.integer(day)) %>%
     dplyr::summarise(proportion = sum(plant_day_cond, na.rm = TRUE)/dplyr::n())
+  if (!is.null(station_col)) data <- data %>% dplyr::mutate(station = as.character(station))
   return(data)
 }
