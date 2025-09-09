@@ -12,7 +12,8 @@
 #' # Assuming definition_file is a correctly structured list:
 #' #get_crop_definitions(definition_file)
 build_spells_summaries <- function(spells_data = NULL){
-  spells_definitions <- get_r_instat_definitions(data_book$get_calculations(spells_data))
+  if (is.null(spells_data)) { spells_definitions <- NULL}
+  else spells_definitions <- get_r_instat_definitions(data_book$get_calculations(spells_data))
   
   # Create an empty list
   data_list <- list()
@@ -22,7 +23,7 @@ build_spells_summaries <- function(spells_data = NULL){
   
   # TODO: not working for start/end day in R-Instat at the moment.
   spells_calculation <- spells_definitions$filter$spell[[2]]
-  
+  if (!is.null(spells_calculation)){  
     from <- extract_value(spells_calculation, " >= ")
     to <- extract_value(spells_calculation, " <= ")
     
@@ -45,6 +46,9 @@ build_spells_summaries <- function(spells_data = NULL){
       to <- NA
       sign <- "unknown"
     }
+    
+  }
+
     
   # Loop through each variable in the list
   for (variable in variables_list) {
