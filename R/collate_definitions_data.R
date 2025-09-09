@@ -9,10 +9,11 @@
 #'
 #' @param data_by_year The name of the dataset aggregated by year. This is the main source for rainfall and annual temperature definitions.
 #' @param data_by_year_month The name of the dataset aggregated by year and month. Required for monthly temperature summaries.
+#' @param spells_data Data frame used for spells data (usually `spells`).
 #' @param definitions_offset The offset term, which can be found by running the `get_offset_term` function with daily data.
 #' @param crop_data The name of the crop-related data set (e.g., `"crop_def"`), used for crop success and season start definitions.
 #' @param summaries A character vector specifying which summaries to extract. Options include: 
-#' `"annual_rainfall"`, `"annual_temperature"`, `"monthly_temperature"`, `"crop_success"`, `"start_season"`.
+#' `"annual_rainfall"`, `"annual_temperature"`, `"monthly_temperature"`, `"crop_success"`, `"start_season"`, `"spells"`.
 #' @param start_rains_column Name of the start-of-rains column (e.g., `"start_rains_doy"`).
 #' @param start_rains_status_column Name of the column indicating the start-of-rains success status.
 #' @param end_rains_column Name of the end-of-rains column.
@@ -65,9 +66,10 @@
 #' @export
 collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                      data_by_year_month = NULL,
+                                     spells_data = NULL,
                                      definitions_offset = 1,
                                      crop_data = "crop_def",
-                                     summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "crop_success", "start_season"),
+                                     summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature", "crop_success", "start_season", "spells"),
                                      start_rains_column = "start_rains_doy", start_rains_status_column = "start_rain_status",
                                      end_rains_column = "end_rains_doy", end_rains_status_column = "end_rain_status", end_season_column = "end_season_doy", 
                                      end_season_status_column = "end_season_status", seasonal_length_column = "season_length",
@@ -190,6 +192,12 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
     temperature_summaries$monthly_temperature_summaries[keys] <- lapply(temperature_summaries$monthly[keys], set_doy)
   }
   
+  # spells 
+  if ("spells" %in% summaries){
+    if (is.null(spells_data)) stop("Spells summaries requested but no spells_data file given.")
+  }
+  spells_summaries <- build_spells_summaries(spells_data = spells_data)
+  
   # if yes to crop success then ...
   if ("crop_success" %in% summaries){
     if (!is.null(crop_data)){
@@ -215,7 +223,7 @@ collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
   season_start_summaries <- build_season_start_probabilities(definitions_crop)
   
   # overall:
-  data_list <- c("annual_summaries" = annual_summaries, temperature_summaries, crop_summaries, season_start_summaries)
+  data_list <- c("annual_summaries" = annual_summaries, temperature_summaries, spells_summaries, crop_summaries, season_start_summaries)
   
   # remove anything of length 0 
   # Define a function to check the length of each element

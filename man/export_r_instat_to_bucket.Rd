@@ -8,10 +8,11 @@ export_r_instat_to_bucket(
   data = NULL,
   data_by_year = NULL,
   data_by_year_month = NULL,
+  spells_data = NULL,
   crop_data_name = NULL,
   station = NULL,
   summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature",
-    "crop_success", "start_season"),
+    "crop_success", "start_season", "spells"),
   station_id = NULL,
   definitions_id,
   country,
@@ -21,6 +22,7 @@ export_r_instat_to_bucket(
   monthly_temperature_data = NULL,
   crop_success_data = NULL,
   season_start_data = NULL,
+  spells_data_reformatted = NULL,
   start_rains_column = "start_rains_doy",
   start_rains_status_column = "start_rain_status",
   end_rains_column = "end_rains_doy",
@@ -60,11 +62,13 @@ export_r_instat_to_bucket(
 
 \item{data_by_year_month}{The name of the dataset grouped by year and month (optional). Required for monthly temperature summaries.}
 
+\item{spells_data}{Data frame used for spells data (usually \code{spells}).}
+
 \item{crop_data_name}{The name of the crop data used for crop success and season start probabilities.}
 
 \item{station}{The name of the station column used to split and export data.}
 
-\item{summaries}{A character vector of summaries to include. Options: \code{"annual_rainfall"}, \code{"annual_temperature"}, \code{"monthly_temperature"}, \code{"crop_success"}, \code{"start_season"}.}
+\item{summaries}{A character vector of summaries to include. Options: \code{"annual_rainfall"}, \code{"annual_temperature"}, \code{"monthly_temperature"}, \code{"crop_success"}, \code{"start_season"}, \code{"spells"}.}
 
 \item{station_id}{Character vector of station IDs to process.}
 
@@ -83,6 +87,8 @@ export_r_instat_to_bucket(
 \item{crop_success_data}{Data frame of crop success proportions (usually called \code{crop_prop} in R-Instat).}
 
 \item{season_start_data}{Data frame used for season start probabilities (usually \code{crop_def}).}
+
+\item{spells_data_reformatted}{Data frame used for spells data which is now reformatted by \code{reformat_spells_data()}}
 
 \item{start_rains_column}{Column name for start of rains (DOY).}
 

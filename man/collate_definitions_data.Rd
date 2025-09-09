@@ -7,10 +7,11 @@
 collate_definitions_data(
   data_by_year = "ghana_by_station_year",
   data_by_year_month = NULL,
+  spells_data = NULL,
   definitions_offset = 1,
   crop_data = "crop_def",
   summaries = c("annual_rainfall", "annual_temperature", "monthly_temperature",
-    "crop_success", "start_season"),
+    "crop_success", "start_season", "spells"),
   start_rains_column = "start_rains_doy",
   start_rains_status_column = "start_rain_status",
   end_rains_column = "end_rains_doy",
@@ -49,12 +50,14 @@ collate_definitions_data(
 
 \item{data_by_year_month}{The name of the dataset aggregated by year and month. Required for monthly temperature summaries.}
 
+\item{spells_data}{Data frame used for spells data (usually \code{spells}).}
+
 \item{definitions_offset}{The offset term, which can be found by running the \code{get_offset_term} function with daily data.}
 
 \item{crop_data}{The name of the crop-related data set (e.g., \code{"crop_def"}), used for crop success and season start definitions.}
 
 \item{summaries}{A character vector specifying which summaries to extract. Options include:
-\code{"annual_rainfall"}, \code{"annual_temperature"}, \code{"monthly_temperature"}, \code{"crop_success"}, \code{"start_season"}.}
+\code{"annual_rainfall"}, \code{"annual_temperature"}, \code{"monthly_temperature"}, \code{"crop_success"}, \code{"start_season"}, \code{"spells"}.}
 
 \item{start_rains_column}{Name of the start-of-rains column (e.g., \code{"start_rains_doy"}).}
 

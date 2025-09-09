@@ -205,3 +205,32 @@ reformat_season_start <- function(data, station_col = NULL, year_col, plant_day_
   if (!is.null(station_col)) data <- data %>% dplyr::mutate(station = as.character(station))
   return(data)
 }
+
+#' Reformat Spells data
+#'
+#' This function reformats spells data by renaming columns.
+#' 
+#' @param data A data frame containing the season start data.
+#' @param station_col Name of the column containing station information.
+#' @param date_col Name of the column containing the date that the spell finishes.
+#' @param spells_col Name of the column containing the spell lengths.
+#'
+#' @return The reformatted data frame.
+#' @export
+reformat_spells_data <- function(data, station_col = NULL, date_col, spells_col){
+  
+  # Rename columns
+  data <- data %>%
+    dplyr::rename(
+      station = {{station_col}},
+      date = {{date_col}},
+      spells = {{spells_col}}
+    ) %>%
+    dplyr::select(c(station, date, spells))
+  
+  data$date <- as.Date(data$date)
+  data$spells <- as.integer(data$spells)
+  
+  if (!is.null(station_col)) data <- data %>% dplyr::mutate(station = as.character(station))
+  return(data)
+}
