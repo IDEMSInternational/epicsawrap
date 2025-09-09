@@ -9,7 +9,7 @@
 #' @param data_by_year_month The name of the dataset grouped by year and month (optional). Required for monthly temperature summaries.
 #' @param crop_data_name The name of the crop data used for crop success and season start probabilities.
 #' @param station The name of the station column used to split and export data.
-#' @param summaries A character vector of summaries to include. Options: `"annual_rainfall"`, `"annual_temperature"`, `"monthly_temperature"`, `"crop_success"`, `"start_season"`.
+#' @param summaries A character vector of summaries to include. Options: `"annual_rainfall"`, `"annual_temperature"`, `"monthly_temperature"`, `"crop_success"`, `"start_season"`, `"spells"`.
 #' @param station_id Character vector of station IDs to process.
 #' @param definitions_id A string identifying the definition version (used for filename and metadata tracking).
 #' @param country The ISO country code (e.g., `"GH"` for Ghana).
@@ -19,6 +19,8 @@
 #' @param monthly_temperature_data Data frame of monthly temperature summary data.
 #' @param crop_success_data Data frame of crop success proportions (usually called `crop_prop` in R-Instat).
 #' @param season_start_data Data frame used for season start probabilities (usually `crop_def`).
+#' @param spells_data Data frame used for spells data (usually `spells`).
+#' @param spells_data_reformatted Data frame used for spells data which is now reformatted by `reformat_spells_data()`
 #' @param start_rains_column Column name for start of rains (DOY).
 #' @param start_rains_status_column Column name indicating success status for start of rains.
 #' @param end_rains_column Column name for end of rains (DOY).
@@ -81,13 +83,15 @@
 export_r_instat_to_bucket <- function(data = NULL, 
                                       data_by_year = NULL,
                                       data_by_year_month = NULL,
+                                      spells_data = NULL,
                                       crop_data_name = NULL,
                                       station = NULL,
                                       summaries = c("annual_rainfall",
                                                     "annual_temperature",
                                                     "monthly_temperature",
                                                     "crop_success",
-                                                    "start_season"),
+                                                    "start_season",
+                                                    "spells"),
                                       station_id = NULL,
                                       definitions_id,
                                       country,
@@ -95,7 +99,7 @@ export_r_instat_to_bucket <- function(data = NULL,
                                       
                                       # the different data frames that can be read in
                                       annual_rainfall_data = NULL, annual_temperature_data = NULL, monthly_temperature_data = NULL,
-                                      crop_success_data = NULL, season_start_data = NULL,
+                                      crop_success_data = NULL, season_start_data = NULL, spells_data_reformatted = NULL,
                                       
                                       # from annual_rainfall data
                                       start_rains_column = "start_rains_doy", start_rains_status_column = "start_rain_status",
@@ -133,6 +137,7 @@ export_r_instat_to_bucket <- function(data = NULL,
   
   definitions_data <- collate_definitions_data(data_by_year = data_by_year,
                                                data_by_year_month = data_by_year_month,
+                                               spells_data = spells_data,
                                                definitions_offset = definitions_offset,
                                                crop_data = crop_data_name,
                                                summaries = summaries,
@@ -182,14 +187,15 @@ export_r_instat_to_bucket <- function(data = NULL,
   
   # Ensure unique stations are obtained because we want to repeat for each station
   if (!is.null(data_by_year)) unique_stations <- unique(data_book$get_data_frame(data_by_year)[[station]])
-  else unique_stations <- unique(data_book$get_data_frame(data_by_year_month)[[station]])
-    
+  else if (!is.null(data_by_year_month)) unique_stations <- unique(data_book$get_data_frame(data_by_year_month)[[station]])
+  else if (!is.null(spells_data)) unique_stations <- unique(data_book$get_data_frame(spells_data)[[station]])
+  
   # TODO: need to add in metadata additions
   purrr::map(.x = unique_stations,
              .f = ~{station_id <- .x
              update_metadata_definition_id(country = country, station_id = .x, definition_id = definitions_id, overwrite = FALSE)
              })
-  
+
   if (include_summary_data){
     # function to read summary data from R-Instat into summaries in buckets
     # different file per station:
@@ -225,6 +231,18 @@ export_r_instat_to_bucket <- function(data = NULL,
         }
       )
     }
+    
+    if ("spells" %in% summaries) {
+      purrr::map(
+        .x = unique_stations,
+        .f = ~{station_id <- .x
+        filtered_data <- spells_data_reformatted %>% filter(station == station_id)
+        add_summaries_to_bucket(country = country, station_id = station_id, data = filtered_data,
+                                summary = "spells_summaries", timestamp = timestamp)
+        }
+      )
+    }
+    
     if ("crop_success" %in% summaries) {
       crop_success_data <- crop_success_data %>%
         dplyr::mutate(plant_day_month = as.Date(plant_day + definitions_offset - 1, origin = "2000-01-01"),
