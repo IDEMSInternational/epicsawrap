@@ -261,14 +261,14 @@ get_extreme_rain_counts <- function(definitions_in_raw = NULL,
 #' both `spell_from` and `spell_to` are set to `NA`.
 #'
 #' @examples
-#' definitions_year <- list(
-#'   my_spell = list(
-#'     spell_length = list(
-#'       spell_day = list(NULL, "(rain >= 0.85) & rain <= 2.3")
-#'     )
-#'   )
-#' )
-#' get_longest_spell_definitions(definitions_year, "my_spell")
+#' #definitions_year <- list(
+#' #  my_spell = list(
+#' #    spell_length = list(
+#' #      spell_day = list(NULL, "(rain >= 0.85) & rain <= 2.3")
+#' #    )
+#' #  )
+#' #)
+#' #get_longest_spell_definitions(definitions_year, "my_spell")
 #' # $longest_spell
 #' # $longest_spell$spell_from
 #' # [1] 0.85
