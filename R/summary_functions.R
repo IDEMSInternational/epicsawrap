@@ -523,24 +523,24 @@ season_start_probabilities <- function(country,
       daily <- check_and_rename_variables(daily, data_names)
       if (class(daily$date) != "Date") daily$date <- as.Date(daily$date)
       if (!"year" %in% names(daily)) daily$year <- lubridate::year(daily$date)
-    } else {
-      data_names <- NULL
-      data_names$station <- "station"
-    }
-    season_data <- annual_rainfall_summaries(country = country, station_id = station_id, call = call, summaries = c("start_rains"), override = override)
+      
+          season_data <- annual_rainfall_summaries(country = country, station_id = station_id, call = call, summaries = c("start_rains"), override = override)
     if (is.null(start_dates)){
       start_dates <- definitions$season_start_probabilities$specified_day
       if (length(start_dates) == 0) stop("start_dates parameter missing in definitions file.")
     } else {
       definitions$season_start_probabilities$specified_day <- start_dates
     }
-    
-    summary_data <- rpicsa::probability_season_start(data = season_data[[2]],
+          summary_data <- rpicsa::probability_season_start(data = season_data[[2]],
                                                      station = data_names$station,
                                                      start_rains = "start_rains_doy",
                                                      doy_format = "doy_366", # we calculate this in the start_rains summaries?
                                                      specified_day = as.integer(start_dates))
     list_return[[1]] <- c(season_data[[1]], definitions)
+    } else {
+      data_names <- NULL
+      data_names$station <- "station"
+    }
   }
   list_return[[2]] <- summary_data
   return(list_return)
