@@ -13,11 +13,8 @@ get_bucket_name(
 \item{country}{A character vector specifying the country or countries from which to update the data. Options are \code{"mz"}, \code{"zm"}, \code{"zm_test"}, \code{"ml_test"}, \code{"ke_test"}.}
 }
 \value{
-Returns the name of the bucket for the Malawi or Zambia data.
+Returns the name of the Google Bucket for the data.
 }
 \description{
 Get Bucket Name
-}
-\examples{
-#get_bucket_name("mw")
 }

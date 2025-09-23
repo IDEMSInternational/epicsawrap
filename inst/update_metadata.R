@@ -12,11 +12,11 @@ data_book$import_RDS(data_RDS = mansa_daily)
 data_book$get_data_names()
 
 ghana2 <- data_book$get_data_frame(data_name="data_RDS")
-update_metadata_info(metadata_data = ghana2,
+update_station_metadata(metadata_data = ghana2,
                      station_var = "station",
                      country = "internal_test")
 
-x <- station_metadata(country = "mw",
+x <- get_station_metadata(country = "mw",
                  include_definitions = FALSE)
 
 jsonlite::toJSON(x)
@@ -26,5 +26,5 @@ jsonlite::toJSON(x)
 
 
 # Import Station Metadata from Bucket
-x <- station_metadata(country = "mw",
+x <- get_station_metadata(country = "mw",
                       include_definitions = FALSE)

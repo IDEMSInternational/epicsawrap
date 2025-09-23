@@ -24,6 +24,3 @@ The \code{get_data} function retrieves data from a specified country and file st
 If the \code{save_to} argument is not provided or set to \code{NULL}, the function will parse the data and return it as an R object using the \code{googleCloudStorageR::gcs_parse_rds} function. This is useful when you want to directly work with the data in R, and can be more efficient.
 If the \code{save_to} argument is provided with a valid local path, the function will save the file to the specified location on the disk using the \code{saveToDisk} parameter. This is useful when you want to download the file for further processing or analysis outside of R.
 }
-\examples{
-# TODO
-}

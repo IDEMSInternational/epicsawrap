@@ -3,9 +3,7 @@
 #'
 #' @param country A character vector specifying the country or countries from which to update the data. Options are `"mz"`, `"zm"`, `"zm_test"`, `"ml_test"`, `"ke_test"`.
 #'
-#' @return Returns the name of the bucket for the Malawi or Zambia data.
-#'
-#' @examples #get_bucket_name("mw")
+#' @return Returns the name of the Google Bucket for the data.
 get_bucket_name <- function(country = c("mw", "zm", "zm_test", "ml_test", "mw_test", "ke_test", "internal_tests", "zm_workshops", "mw_workshops")) {
   if (length(country) > 1) stop("'country' must be length 1.")
   country <- match.arg(country)
@@ -33,40 +31,6 @@ resolve_latest_for <- function(country, definition_id) {
     stop("No JSON files found in bucket for '", definition_id, "'. Check country/IDs.", call. = FALSE)
   }
   pick_latest_id(jsons)
-}
-
-#' Update Station Metadata
-#'
-#' @param country A character vector specifying the country or countries from which to update the metadata. Options are defined in `get_bucket_name()` (e.g., `"zm"`, `"mw"`).
-#'
-#' @return This function updates the metadata for the specified station in the specified country.
-update_metadata <- function(country) {
-  filename <- paste0("metadata", ".rds")
-  saveto <- paste0(country, "/", filename)
-  invisible(get_data(country = country,  filename = filename))
-}
-
-#' Get the Summaries Data
-#' 
-#' @description This function updates the summary data for a specific station in the specified country. It retrieves the data from Google Cloud Storage using the `get_data` function.
-#'
-#' @param country A character vector specifying the country or countries from which to get the data. Options are defined in `get_bucket_name()` (e.g., `"zm"`, `"mw"`).
-#' @param station_id A character string specifying the ID of the station for which to get the summary data.
-#' @param summary A character string specifying the summary to retrieve.
-#' 
-#' @details 
-#' The `update_daily_data` function is used to update the daily data for a specific station in the specified country. It internally calls the `get_data` function to retrieve the data from Google Cloud Storage.
-#' The `country` argument is a character vector that allows specifying one or more countries from which to update the data. The data will be updated for Mozambique (`"mz"`) and Zambia (`"zm"`). You can modify this argument to update data for different countries.
-#' The `station_id` argument is a character string that specifies the ID of the station for which to update the daily data. The function will construct the filename by concatenating the `"data/"` directory, the `station_id`, and the `file` extension `".rds"`. The filename will be passed to the `get_data` function to retrieve the data.
-#' The function uses the invisible function to suppress the output of the `get_data` function, ensuring that the data retrieval process is not visible in the console.
-#'
-#' @return This function does not return any value explicitly. It gets the summary data for the specified station in the specified country.
-#' @export
-#'
-#' @examples # todo
-update_summaries_data <- function (country, station_id, summary){
-  filename <- paste0("summaries", "/", summary, "_", station_id, ".rds")
-  invisible(get_data(country = country, filename = filename))
 }
 
 #' Extract the most recent JSON file from a list of filenames
@@ -102,4 +66,3 @@ extract_most_recent_json <- function(files) {
   most_recent_file <- gsub(".json$", "", most_recent_file)
   return(most_recent_file)
 }
-

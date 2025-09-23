@@ -23,7 +23,7 @@ test_that("Correct summaries are calculated for mw_workshop", {
 ### zm_workshops
 # zambia_eastern is giving all of the zambia stuff! Chipata etc etc.
 # chipata is giving Nkhotakota
-station_metadata("zm_workshop")
+get_station_metadata("zm_workshop")
 
 test_that("Correct summaries are calculated for zm_workshop", {
   #  expect_no_error(annual_rainfall_summaries("zm_workshops", "Chipata Met"))
@@ -38,7 +38,7 @@ test_that("Correct summaries are calculated for zm_workshop", {
 })
 
 ### zm_test
-station_metadata("zm_test")
+get_station_metadata("zm_test")
 
 test_that("Correct summaries are calculated for zm_test", {
   # all these stations are actually just the zambia stations from before, from what I can tell.
@@ -64,7 +64,7 @@ test_that("Correct summaries are calculated for zm_test", {
 })
 
 ### ml_test
-station_metadata("ml_test")
+get_station_metadata("ml_test")
 test_that("Correct summaries are calculated for ml_test", {
   expect_no_error(annual_rainfall_summaries("ml_test", "Kasungu"))
   expect_no_error(annual_temperature_summaries("ml_test", "Kasungu"))

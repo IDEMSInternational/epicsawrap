@@ -21,5 +21,4 @@ Get Summaries Data
 }
 \examples{
 #
-
 }

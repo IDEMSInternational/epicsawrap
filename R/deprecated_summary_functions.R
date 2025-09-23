@@ -719,7 +719,7 @@ get_daily_data <- function(country, station_id, call_from = c("climsoft", "googl
   
   # if (call_from == "climsoft"){
   #   # if you call from climsoft
-  #   climsoft_info <- station_metadata(country = country, station_id = station_id)$climsoft_list
+  #   climsoft_info <- get_station_metadata(country = country, station_id = station_id)$climsoft_list
   #   if (is.null(get_climsoft_conn())) stop("Set climsoft connection with set_climsoft_conn() function.")
   #   station_data <- import_from_climsoft(con = get_climsoft_conn(),
   #                                        stations = station_id,
@@ -755,7 +755,7 @@ get_daily_data <- function(country, station_id, call_from = c("climsoft", "googl
 #'
 #' @return A character string representing the definitions ID from the station metadata.
 get_definitions_id_from_metadata <- function(country, station_id) {
-  # station_id_metadata <- station_metadata(country = country, station_id = station_id, include_definitions = FALSE)
+  # station_id_metadata <- get_station_metadata(country = country, station_id = station_id, include_definitions = FALSE)
   # if (nrow(station_id_metadata) == 0) {
   #   warning(paste0(station_id, " not found in metadata. No definition ID given. Returning station_id."))
   #   definitions_id <- station_id
