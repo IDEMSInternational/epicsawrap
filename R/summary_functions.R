@@ -326,7 +326,6 @@ crop_success_probabilities <- function(country,
     list_return[[1]] <- definitions
     
   } else {
-    
     # check bucket for file
     file_name <- get_objects_in_bucket(country, definitions_id, timestamp = timestamp)
     if (nrow(file_name) == 0) {
@@ -336,12 +335,13 @@ crop_success_probabilities <- function(country,
       if (!is.null(timestamp)){
         file <- paste0(definitions_id, ".", timestamp)
       } else {
-        file <- definitions_id 
+        file <- regmatches(file_name$name[length(file_name$name)], regexpr("(?<=/)[^/]+(?=\\.json)", file_name$name[length(file_name$name)], perl=TRUE))
       }
       definitions <- definitions(country = country, definitions_id = definitions_id, summaries = "crops_success", file = file)
     }
     
-    # if we are overriding, then we are overriding for our start_rains definition too, meaning we need to recalculate that
+    if (override){
+          # if we are overriding, then we are overriding for our start_rains definition too, meaning we need to recalculate that
     # Fetch daily data and preprocess
     daily <- get_daily_data(country = country, station_id = station_id, call_from = call)
     
@@ -377,6 +377,8 @@ crop_success_probabilities <- function(country,
                                               start_day = "start_rains_doy",
                                               end_day = "end_rains_doy")
     list_return[[1]] <- c(season_data[[1]], definitions)
+  }
+
   }
   # rename
   list_return[[2]] <- summary_data
@@ -507,7 +509,7 @@ season_start_probabilities <- function(country,
       if (!is.null(timestamp)){
         file <- paste0(definitions_id, ".", timestamp)
       } else {
-        file <- definitions_id 
+        file <- regmatches(file_name$name[length(file_name$name)], regexpr("(?<=/)[^/]+(?=\\.json)", file_name$name[length(file_name$name)], perl=TRUE))
       }
       definitions <- definitions(country = country, definitions_id = definitions_id, summaries = summaries, file = file)
     }
@@ -924,6 +926,7 @@ get_objects_in_bucket <- function(country, station_id, timestamp) {
     file_name <- paste0(station_id, ".", timestamp)
   } else {
     file_name <- station_id
+    #         file <- regmatches(file_name$name[length(file_name$name)], regexpr("(?<=/)[^/]+(?=\\.json)", file_name$name[length(file_name$name)], perl=TRUE))
   }
   bucket_name <- get_bucket_name(country)
   files <- googleCloudStorageR::gcs_list_objects(bucket = bucket_name,
