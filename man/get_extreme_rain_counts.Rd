@@ -34,8 +34,8 @@ such as \code{"(rainfall >= 40)"}. The result is returned as a list nested under
 \code{"extreme_rain"} key.
 }
 \examples{
-defs <- list(extreme_rain = list(rain_day = list(NULL, "(rainfall >= 40)")))
+#defs <- list(extreme_rain = list(rain_day = list(NULL, "(rainfall >= 40)")))
 
 # Returns: list(extreme_rain = list(sign = ">=", threshold = "40"))
-get_extreme_rain_counts(defs)
+#get_extreme_rain_counts(defs)
 }

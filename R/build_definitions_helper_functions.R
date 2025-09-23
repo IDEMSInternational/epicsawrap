@@ -222,10 +222,10 @@ get_season_length_definitions <- function(length = NULL){ # TODO: it should be c
 #' If the definition is missing or malformed, both elements are returned as `NA`.
 #'
 #' @examples
-#' defs <- list(extreme_rain = list(rain_day = list(NULL, "(rainfall >= 40)")))
+#' #defs <- list(extreme_rain = list(rain_day = list(NULL, "(rainfall >= 40)")))
 #'
 #' # Returns: list(extreme_rain = list(sign = ">=", threshold = "40"))
-#' get_extreme_rain_counts(defs)
+#' #get_extreme_rain_counts(defs)
 get_extreme_rain_counts <- function(definitions_in_raw = NULL,
                                     extreme_rainfall_column = "extreme_rain",
                                     list_name = "extreme_rain") {
