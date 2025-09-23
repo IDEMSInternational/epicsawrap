@@ -15,22 +15,22 @@ data_book$split_date(data_name="ghana", col_name="date", month_name=TRUE, s_star
 # Dialog: Column Summaries
 data_book$calculate_summary(data_name="ghana", columns_to_summarise=c("min_temperature","max_temperature"), factors="month_name", store_results=TRUE, na.rm=TRUE, return_output=FALSE, na_type=c("'n_non_miss'"), j=1, na_min_n=10, summaries=c("summary_mean", "summary_min", "summary_max"), silent=TRUE)
 
-collate_definitions_data(data_by_year = "ghana_by_station_year",
-                         data_by_year_month = "ghana_by_month_name",
-                         summaries = c("annual_temperature", "monthly_temperature"),
-                         min_tmin_column = "min_min_temperature" ,
-                         mean_tmin_column = "mean_min_temperature", 
-                         max_tmin_column = "max_min_temperature",
-                         min_tmax_column = "min_max_temperature" ,
-                         mean_tmax_column = "mean_max_temperature", 
-                         max_tmax_column = "max_max_temperature",
-                         min_monthly_tmin_column = "min_min_temperature",
-                         mean_monthly_tmin_column = "mean_min_temperature",
-                         max_monthly_tmin_column = "max_min_temperature",
-                         min_monthly_tmax_column = "min_max_temperature",
-                         mean_monthly_tmax_column = "mean_max_temperature",
-                         max_monthly_tmax_column = "max_max_temperature")
-# 
+# collate_definitions_data(data_by_year = "ghana_by_station_year",
+#                          data_by_year_month = "ghana_by_month_name",
+#                          summaries = c("annual_temperature", "monthly_temperature"),
+#                          min_tmin_column = "min_min_temperature" ,
+#                          mean_tmin_column = "mean_min_temperature", 
+#                          max_tmin_column = "max_min_temperature",
+#                          min_tmax_column = "min_max_temperature" ,
+#                          mean_tmax_column = "mean_max_temperature", 
+#                          max_tmax_column = "max_max_temperature",
+#                          min_monthly_tmin_column = "min_min_temperature",
+#                          mean_monthly_tmin_column = "mean_min_temperature",
+#                          max_monthly_tmin_column = "max_min_temperature",
+#                          min_monthly_tmax_column = "min_max_temperature",
+#                          mean_monthly_tmax_column = "mean_max_temperature",
+#                          max_monthly_tmax_column = "max_max_temperature")
+# # 
 
 epicsawrap::gcs_auth_file(filename="C:/Users/lclem/OneDrive/Documents/GitHub/epicsawrap1/tests/testthat/testdata/epicsa_token.json")
 

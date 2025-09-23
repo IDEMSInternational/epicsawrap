@@ -53,17 +53,6 @@
 #' @details
 #' This function calls sub-functions to parse and interpret definitions from R-Instat's metadata system,
 #' resolving duplicate definitions and offset terms, and integrating additional logic for rainfall and temperature components.
-#'
-#' @examples
-#' \dontrun{
-#' definitions <- collate_definitions_data(
-#'   data_by_year = "ghana_by_station_year",
-#'   crop_data = "crop_def",
-#'   summaries = c("annual_rainfall", "crop_success")
-#' )
-#' }
-#'
-#' @export
 collate_definitions_data <- function(data_by_year = "ghana_by_station_year",
                                      data_by_year_month = NULL,
                                      spells_data = NULL,
