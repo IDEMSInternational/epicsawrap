@@ -27,6 +27,7 @@ station_metadata(
 If \code{include_definitions} is FALSE, the function returns a data frame with metadata for the specified stations. If \code{include_definitions} is \code{TRUE}, it returns a data frame with both metadata and station definitions.
 }
 \description{
+This function is deprecated.
 This function retrieves metadata for weather stations in specified countries.
 }
 \examples{
