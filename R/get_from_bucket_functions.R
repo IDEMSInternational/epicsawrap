@@ -304,3 +304,29 @@ get_station_metadata <- function(country = NULL, station_id = NULL, include_defi
   # }
   return(station_data) 
 }
+
+#' Get Station Metadata
+#'
+#' This function is deprecated.
+#' This function retrieves metadata for weather stations in specified countries.
+#'
+#' @param country A character vector specifying the country or countries from which to get the metadata. Options are defined in `get_bucket_name()` (e.g., `"zm"`, `"mw"`).
+#' @param station_id A character vector specifying the station IDs to filter by. If provided, only metadata for the specified station IDs will be returned.
+#' @param include_definitions_id A logical value indicating whether to include the definitions id. If `TRUE`, definitions_id is given. 
+#' @param include_definitions A logical value indicating whether to include definitions data. If `TRUE`, additional information about station definitions will be included in the output.
+#' @param format A character vector specifying the format of the output. Options are `"wide"` (default), `"long"`, `"nested"`, or `"list"`.
+#' @return If `include_definitions` is FALSE, the function returns a data frame with metadata for the specified stations. If `include_definitions` is `TRUE`, it returns a data frame with both metadata and station definitions.
+#' @export
+#'
+#' @examples
+#' # TODO
+#' 
+#' @seealso
+#' \code{update_metadata} for updating metadata files.
+#'
+#' @importFrom purrr map list_rbind
+#' @importFrom dplyr full_join filter mutate
+#' @importFrom tidyr pivot_longer nest
+station_metadata <- function(country = NULL, station_id = NULL, include_definitions_id = TRUE, include_definitions = FALSE, format = c("wide", "long", "nested", "list")){
+  get_station_metadata(country = country, station_id = station_id, include_definitions_id = include_definitions_id, include_definitions = include_definitions, format = format)
+}
