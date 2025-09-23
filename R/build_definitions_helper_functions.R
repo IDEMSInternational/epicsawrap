@@ -319,13 +319,13 @@ get_longest_spell_definitions <- function(definitions_year, spell_column, list_n
 #' If the required structure or value is missing, both elements default to `NA`.
 #'
 #' @examples
-#' defs <- list(extreme_rain = list(rain_day = list(NULL, "(rainfall >= 40)")))
-#'
-#' # Returns: list(sign = ">=", threshold = "40")
-#' get_rain_counts(defs, "extreme_rain")
-#'
-#' # Returns: list(extreme_rain = list(sign = ">=", threshold = "40"))
-#' get_rain_counts(defs, "extreme_rain", "extreme_rain")
+#'# defs <- list(extreme_rain = list(rain_day = list(NULL, "(rainfall >= 40)")))
+#'#
+#'# # Returns: list(sign = ">=", threshold = "40")
+#'# get_rain_counts(defs, "extreme_rain")
+#'#
+#'# # Returns: list(extreme_rain = list(sign = ">=", threshold = "40"))
+#'# get_rain_counts(defs, "extreme_rain", "extreme_rain")
 get_rain_counts <- function(definitions_in_raw = NULL,
                             rainfall_column = "extreme_rain",
                             list_name = NULL) {
