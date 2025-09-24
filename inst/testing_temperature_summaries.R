@@ -5,6 +5,10 @@ data_book <- DataBook$new()
 
 # Dialog: Import Dataset
 new_RDS <- readRDS(file="C:/Users/lclem/OneDrive/Documents/ghana_example_epicsa.RDS")
+calculation <- instatCalculations::calculation
+get_data_book_output_object_names <- databook:::get_data_book_output_object_names
+get_data_book_scalar_names <- databook:::get_data_book_scalar_names
+overall_label="[Overall]"
 data_book$import_RDS(data_RDS=new_RDS)
 
 rm(new_RDS)
@@ -51,7 +55,15 @@ export_r_instat_to_bucket(data_by_year = "ghana_by_station_year",
                          mean_monthly_tmax_column = "mean_max_temperature",
                          max_monthly_tmax_column = "max_max_temperature",
                          country = "internal_tests",
-                         definitions_id = 110825)
+                         definitions_id = 250924)
+
+devtools::load_all()
+annual_temperature_summaries("internal_tests", "r_data_test_1")
+monthly_temperature_summaries("internal_tests", "r_data_test_1")
+
+annual_temperature_summaries("internal_tests", "Tamale")
+monthly_temperature_summaries("internal_tests", "Saltpond")
+
 
 # 
 # annual_temp <- get_r_instat_definitions(data_book$get_calculations("ghana_by_station_year"))
