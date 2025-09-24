@@ -18,7 +18,7 @@ extremes_summaries(
 
 \item{summaries}{A character vector specifying the names of the summaries to produce.}
 
-\item{override}{A logical argument default \code{FALSE} indicating whether to calculate the summaries still, even if they are stored already in the bucket.}
+\item{override}{Deprecated. A logical argument, always \code{FALSE}. Used to indicate whether to calculate the summaries even if stored in the bucket.}
 }
 \value{
 A data frame containing the extreme data.
