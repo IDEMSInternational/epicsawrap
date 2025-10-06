@@ -71,29 +71,3 @@ update_end_rains <- function(data_frame, data_names, definitions, data_book){
                     min_rainfall = min_rainfall,
                     data_book = data_book)
 }
-
-
-library(rpicsa)
-library(databook)
-
-# 1. Let's set up our data book
-data_book <- DataBook$new()
-
-# 2. Importing in some data for testing (this is stored in the rpicsa package)
-data(daily_niger)
-data_book$import_data(list(daily_niger = daily_niger))
-
-# 3. Read in our definitions data
-definitions <- jsonlite::fromJSON("C:/Users/HP/Downloads/test_json_1.json")
-
-data_names <- list(date = "date", 
-                  station = "station_name", 
-                   year = "year", 
-                   rain = "rain", 
-                   doy = "doy")
-
-update_end_rains(data_frame = "daily_niger", 
-                 data_names = data_names, 
-                 definitions = definitions, 
-                 data_book = data_book)
-            
