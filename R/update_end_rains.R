@@ -10,7 +10,6 @@
 #'
 #' @param data_book The data book object where the data object is stored.
 #'
-#' @return # 
 #' @export
 #' 
 #' @examples
