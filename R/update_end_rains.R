@@ -55,18 +55,18 @@ update_end_rains <- function(data_frame, data_names, definitions, data_book){
   min_rainfall <- as.numeric(end_rains_definitions$min_rainfall)
   interval_length <- as.numeric(end_rains_definitions$interval_length)
   
-  rpicsa::end_rains(data = data_frame,
-                    date_time = data_names$date,
-                    station = data_names$station,
-                    year = data_names$year,
-                    rain = data_names$rain,
-                    doy = data_names$doy,
-                    s_start_month = 1, # this parameter was not in the definitions
-                    drop = TRUE, # this was also not in the definitions
-                    start_day = start_day,
-                    end_day = end_day,
-                    output = output,
-                    interval_length = interval_length,
-                    min_rainfall = min_rainfall,
-                    data_book = data_book)
+  end_rains <- rpicsa::end_rains(data = data_frame,
+                                 date_time = data_names$date,
+                                 station = data_names$station,
+                                 year = data_names$year,
+                                 rain = data_names$rain,
+                                 doy = data_names$doy,
+                                 s_start_month = 1, # this parameter was not in the definitions
+                                 drop = TRUE, # this was also not in the definitions
+                                 start_day = start_day,
+                                 end_day = end_day,
+                                 output = output,
+                                 interval_length = interval_length,
+                                 min_rainfall = min_rainfall,
+                                 data_book = data_book)
 }

@@ -86,23 +86,23 @@ update_seasonal_rain <- function(data_frame, data_names, summary_data_frame, sum
   na_consec <- as_numeric(seasonal_rain_definitions$na_consec)
   na_prop <- as_numeric(seasonal_rain_definitions$na_prop)
   
-  seasonal_rain(summary_data = summary_data_frame, 
-                start_date = summary_data_names$start_date, 
-                end_date = summary_data_names$end_date, 
-                data = data_frame, 
-                date_time = data_names$date, 
-                year = data_names$year, 
-                station = data_names$station, 
-                doy = data_names$doy, 
-                rain = data_names$rain, 
-                s_start_month = 1, # I used the default value because it wasn't in the definitions
-                total_rain = total_rain, 
-                n_rain = n_rain, 
-                rain_day = rain_day, 
-                na_rm = na_rm, 
-                na_prop = na_prop, 
-                na_n = na_n, 
-                na_consec = na_consec, 
-                na_n_non = na_n_non, 
-                data_book = data_book)
+  seasonal_rain <- rpicsa::seasonal_rain(summary_data = summary_data_frame, 
+                                         start_date = summary_data_names$start_date, 
+                                         end_date = summary_data_names$end_date, 
+                                         data = data_frame, 
+                                         date_time = data_names$date, 
+                                         year = data_names$year, 
+                                         station = data_names$station, 
+                                         doy = data_names$doy, 
+                                         rain = data_names$rain, 
+                                         s_start_month = 1, # I used the default value because it wasn't in the definitions
+                                         total_rain = total_rain, 
+                                         n_rain = n_rain, 
+                                         rain_day = rain_day, 
+                                         na_rm = na_rm, 
+                                         na_prop = na_prop, 
+                                         na_n = na_n, 
+                                         na_consec = na_consec, 
+                                         na_n_non = na_n_non, 
+                                         data_book = data_book)
 }

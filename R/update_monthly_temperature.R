@@ -78,21 +78,20 @@ update_monthly_temperature <- function(data_frame, data_names, definitions, data
     to = monthly_temperature_definitions$to
     
     
-    summary_temperature(
-      data=data_frame,
-      date_time=data_names$date,
-      tmin=data_names$tmin,
-      tmax=data_names$tmax,
-      year=data_names$year,
-      month=data_names$month,
-      station=data_names$station,
-      to=to,
-      summaries=c("mean", "min", "max"),
-      na_rm=na_rm,
-      na_prop=na_prop,
-      na_n=na_n,
-      na_consec=na_consec,
-      na_n_non=na_n_non,
-      data_book=data_book
-    )
+    summary_temperature <- rpicsa::summary_temperature(data=data_frame,
+                                                       date_time=data_names$date,
+                                                       tmin=data_names$tmin,
+                                                       tmax=data_names$tmax,
+                                                       year=data_names$year,
+                                                       month=data_names$month,
+                                                       station=data_names$station,
+                                                       to=to,
+                                                       summaries=c("mean", "min", "max"),
+                                                       na_rm=na_rm,
+                                                       na_prop=na_prop,
+                                                       na_n=na_n,
+                                                       na_consec=na_consec,
+                                                       na_n_non=na_n_non,
+                                                       data_book=data_book
+                                                      )
 }
