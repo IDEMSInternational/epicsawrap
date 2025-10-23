@@ -50,9 +50,7 @@ update_seasonal_rain <- function(data_frame, data_names, summary_data_frame, sum
   na_consec <- as_numeric(seasonal_rain_definitions$na_consec)
   na_prop <- as_numeric(seasonal_rain_definitions$na_prop)
   
-  # TODO: Should we run update_end_rains / update_start_rains first here? / have as option? 
-  
-  seasonal_rain(summary_data = summary_data_frame, 
+  seasonal_rain <- rpicsa::seasonal_rain(summary_data = summary_data_frame, 
                 start_date = summary_data_names$start_date, 
                 end_date = summary_data_names$end_date, 
                 data = data_frame, 
