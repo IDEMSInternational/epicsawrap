@@ -16,7 +16,7 @@ update_end_rains(data_frame, data_names, definitions, data_book)
 \item{data_book}{The data book object where the data object is stored.}
 }
 \value{
-TODO
+A data frame in the data book at the year (and station) level containing end of rains data.
 }
 \description{
 Runs the \code{end_rains} function from the \code{rpicsa} package by reading in the parameter values from the
