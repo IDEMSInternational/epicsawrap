@@ -2,7 +2,7 @@
 % Please edit documentation in R/update_end_rains.R
 \name{update_end_rains}
 \alias{update_end_rains}
-\title{Update End of rains}
+\title{Update End of Rains Definition}
 \usage{
 update_end_rains(data_frame, data_names, definitions, data_book)
 }
@@ -15,40 +15,10 @@ update_end_rains(data_frame, data_names, definitions, data_book)
 
 \item{data_book}{The data book object where the data object is stored.}
 }
+\value{
+A data frame in the data book at the year (and station) level containing end of rains data.
+}
 \description{
 Runs the \code{end_rains} function from the \code{rpicsa} package by reading in the parameter values from the
 definitions
-}
-\examples{
-
-library(rpicsa)
-library(databook)
-
-# 1. Let's set up our data book
-data_book <- DataBook$new()
-
-# 2. Importing in some data for testing (this is stored in the rpicsa package)
-data(daily_niger)
-data_book$import_data(list(daily_niger = daily_niger))
-
-# 3. Read in our definitions data
-definitions <- jsonlite::fromJSON("C:/Users/HP/Downloads/test_json_1.json")
-
-# 4. Put in "data_names" the names of all the variables we're going to use from the daily_niger data. 
-# Looking at our rpicsa::annual_rain, this can be
-# station, year, and rain
-data_names <- list(date = "date", 
-                   station = "station_name", 
-                   year = "year", 
-                   rain = "rain", 
-                   doy = "doy")
-
-
-\dontrun{
-  update_end_rains(data_frame = "daily_niger", 
-                   data_names = data_names, 
-                   definitions = definitions, 
-                   data_book = data_book)
-}
-
 }
