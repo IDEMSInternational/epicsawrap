@@ -8,7 +8,7 @@
 #' @param definitions A list containing definitions to be read in.
 #' @param data_book The data book object where the data object is stored.
 #'
-#' @return TODO
+#' @return A data frame in the data book at the year (and station) level containing end of rains data.
 #' @export
 #' 
 update_end_rains <- function(data_frame, data_names, definitions, data_book){
@@ -27,7 +27,7 @@ update_end_rains <- function(data_frame, data_names, definitions, data_book){
   drop <- as.logical(end_rains_definitions$drop)
   if (length(drop) == 0 | is.null(drop)) drop <- FALSE
   
-  rpicsa::end_rains(data = "daily_niger",
+  rpicsa::end_rains(data = data_frame,
                     date_time = data_names$date,
                     station = data_names$station,
                     year = data_names$year,
