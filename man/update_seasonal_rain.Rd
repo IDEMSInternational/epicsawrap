@@ -26,44 +26,9 @@ update_seasonal_rain(
 
 \item{data_book}{The data book object where the data object is stored.}
 }
+\value{
+A data frame in the data book at the year (and station) level containing seasonal rainfall data.
+}
 \description{
 Update Seasonal Rain Data
-}
-\examples{
-library(rpicsa)
-library(databook)
-
-# 1. Let's set up our data book
-data_book <- DataBook$new()
-
-# 2. Importing in some data for testing (this is stored in the rpicsa package)
-data(daily_niger)
-data_book$import_data(list(daily_niger = daily_niger))
-
-# 3. Read in our definitions data
-definitions <- jsonlite::fromJSON("C:/Users/HP/Downloads/test_json_1.json")
-
-# 4. Put in "data_names" the names of all the variables we're going to use from the daily_niger data. 
-# Looking at our rpicsa::annual_rain, this can be
-# station, year, and rain
-data_names <- list(date = "date", 
-                   station = "station_name", 
-                   year = "year", 
-                   rain = "rain", 
-                   doy = "doy")
-                   
-# 5. Defining the "summary_data_names" list
-summary_data_names <- list(start_date = NULL, 
-                           end_date = NULL)              
-
-
-\dontrun{
-  update_seasonal_rain(data_frame = "daily_niger", 
-                       data_names = data_names, 
-                       summary_data_frame = NULL,
-                       summary_data_names = summary_data_names,
-                       definitions = definitions, 
-                       data_book = data_book)
-}
-
 }

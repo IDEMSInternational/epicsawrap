@@ -34,45 +34,9 @@ as_numeric <- function(x){
 #' @param definitions A list containing definitions to be read in.
 #' @param data_book The data book object where the data object is stored.
 #' 
+#' @return A data frame in the data book at the year (and station) level containing seasonal rainfall data.
+#' 
 #' @export
-#'
-#' @examples
-#' library(rpicsa)
-#' library(databook)
-#'
-#' # 1. Let's set up our data book
-#' data_book <- DataBook$new()
-#'
-#' # 2. Importing in some data for testing (this is stored in the rpicsa package)
-#' data(daily_niger)
-#' data_book$import_data(list(daily_niger = daily_niger))
-#' 
-#' # 3. Read in our definitions data
-#' definitions <- jsonlite::fromJSON("C:/Users/HP/Downloads/test_json_1.json")
-#'
-#' # 4. Put in "data_names" the names of all the variables we're going to use from the daily_niger data. 
-#' # Looking at our rpicsa::annual_rain, this can be
-#' # station, year, and rain
-#' data_names <- list(date = "date", 
-#'                    station = "station_name", 
-#'                    year = "year", 
-#'                    rain = "rain", 
-#'                    doy = "doy")
-#'                    
-#' # 5. Defining the "summary_data_names" list
-#' summary_data_names <- list(start_date = NULL, 
-#'                            end_date = NULL)              
-#' 
-#' 
-#' \dontrun{
-#'   update_seasonal_rain(data_frame = "daily_niger", 
-#'                        data_names = data_names, 
-#'                        summary_data_frame = NULL,
-#'                        summary_data_names = summary_data_names,
-#'                        definitions = definitions, 
-#'                        data_book = data_book)
-#' }
-#' 
 update_seasonal_rain <- function(data_frame, data_names, summary_data_frame, summary_data_names,
                                  definitions, data_book){
   seasonal_rain_definitions <- definitions$annual_summaries$seasonal_rain
@@ -86,6 +50,8 @@ update_seasonal_rain <- function(data_frame, data_names, summary_data_frame, sum
   na_consec <- as_numeric(seasonal_rain_definitions$na_consec)
   na_prop <- as_numeric(seasonal_rain_definitions$na_prop)
   
+  # TODO: Should we run update_end_rains / update_start_rains first here? / have as option? 
+  
   seasonal_rain(summary_data = summary_data_frame, 
                 start_date = summary_data_names$start_date, 
                 end_date = summary_data_names$end_date, 
@@ -95,7 +61,7 @@ update_seasonal_rain <- function(data_frame, data_names, summary_data_frame, sum
                 station = data_names$station, 
                 doy = data_names$doy, 
                 rain = data_names$rain, 
-                s_start_month = 1, # I used the default value because it wasn't in the definitions
+                s_start_month = 1, # default value because it isn't in the definitions
                 total_rain = total_rain, 
                 n_rain = n_rain, 
                 rain_day = rain_day, 
