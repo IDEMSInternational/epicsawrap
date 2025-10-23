@@ -15,38 +15,9 @@ update_start_rains(data_frame, data_names, definitions, data_book)
 
 \item{data_book}{The data book object where the data object is stored.}
 }
+\value{
+A data frame in the data book at the year (and station) level containing start of rains data.
+}
 \description{
 Update Start Rains
-}
-\examples{
-library(rpicsa)
-library(databook)
-
-# 1. Let's set up our data book
-data_book <- DataBook$new()
-
-# 2. Importing in some data for testing (this is stored in the rpicsa package)
-data(daily_niger)
-data_book$import_data(list(daily_niger = daily_niger))
-
-# 3. Read in our definitions data
-definitions <- jsonlite::fromJSON("C:/Users/HP/Downloads/test_json_1.json")
-
-# 4. Put in "data_names" the names of all the variables we're going to use from the daily_niger data. 
-# Looking at our rpicsa::annual_rain, this can be
-# station, year, and rain
-data_names <- list(date = "date", 
-                   rain = "rain",
-                   year = "year", 
-                   doy = "doy",
-                   station = "station_name")
-
-
-\dontrun{
-  update_start_rains(data_frame = "daily_niger", 
-                     data_names = data_names, 
-                     definitions = definitions, 
-                     data_book = data_book)
-}
-
 }
