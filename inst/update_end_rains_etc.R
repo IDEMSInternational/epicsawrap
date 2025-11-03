@@ -286,11 +286,15 @@ data_names <- list(date = "date",
                    station = "station_name")
 
 update_start_rains(data_frame = "daily_niger",
-                     data_names = data_names,
-                     definitions = definitions,
-                     data_book = data_book)
+                   data_names = data_names,
+                   definitions = definitions,
+                   data_book = data_book)
 
 
+
+
+### CROPS #############
+crop_success_definition <- definitions$crops_success
 
 
 
