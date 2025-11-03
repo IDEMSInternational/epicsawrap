@@ -24,8 +24,6 @@ update_monthly_temperature <- function(data_frame, data_names, definitions, data
     na_n <- as_numeric(monthly_temperature_definitions$na_n)
     na_consec <- as_numeric(monthly_temperature_definitions$na_consec)
     na_n_non <- as_numeric(monthly_temperature_definitions$na_n_non)
-    to = monthly_temperature_definitions$to
-    
     
     summary_temperature <- rpicsa::summary_temperature(data=data_frame,
                                                        date_time=data_names$date,
@@ -34,7 +32,6 @@ update_monthly_temperature <- function(data_frame, data_names, definitions, data
                                                        year=data_names$year,
                                                        month=data_names$month,
                                                        station=data_names$station,
-                                                       to=to,
                                                        summaries=summaries,
                                                        na_rm=na_rm,
                                                        na_prop=na_prop,
