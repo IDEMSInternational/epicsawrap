@@ -10,8 +10,16 @@
 #' @export
 update_annual_temperature <- function(data_frame, data_names, definitions, data_book){
     
-    annual_temperature_definitions <- definitions$annual_temperature_summaries$min_tmin
-  
+    annual_temperature_definitions <- definitions$annual_temperature_summaries
+    
+    definitions_to_get <- names(annual_temperature_definitions)
+
+    summaries <- c("min", "max", "mean")[c(
+      any(grepl("^min_",  definitions_to_get)),
+      any(grepl("^max_",  definitions_to_get)),
+      any(grepl("^mean_", definitions_to_get))
+    )]
+    
     na_rm <- as_logical(annual_temperature_definitions$na_rm)
     na_prop <- as_numeric(annual_temperature_definitions$na_prop)
     na_n <- as_numeric(annual_temperature_definitions$na_n)
@@ -27,7 +35,7 @@ update_annual_temperature <- function(data_frame, data_names, definitions, data_
                                                        month = data_names$month,
                                                        station = data_names$station,
                                                        to = to,
-                                                       summaries = c("mean", "min", "max"),
+                                                       summaries = summaries,
                                                        na_rm = na_rm,
                                                        na_prop = na_prop,
                                                        na_n = na_n,
