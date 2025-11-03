@@ -9,8 +9,8 @@ ghana_by_year_example <- readRDS("testdata/data_by_year_example.rds")
 zambia_by_year_example <- readRDS("testdata/zambia_by_year_example.rds")
 
 # Test cases
-test_that("get_start_rains_definitions returns correct structure with start_rains", {
-  result <- get_start_rains_definitions(ghana_by_year_example$start_rains)
+test_that("create_start_rains_definitions returns correct structure with start_rains", {
+  result <- create_start_rains_definitions(ghana_by_year_example$start_rains)
   expect_true("start_rains" %in% names(result))
   expect_true(all(c("start_day", "end_day", "threshold", "total_rainfall", 
                     "over_days", "amount_rain", "proportion", "prob_rain_day", 
@@ -18,14 +18,14 @@ test_that("get_start_rains_definitions returns correct structure with start_rain
                     "dry_period", "max_rain", "period_interval", "period_max_dry_days") %in% names(result$start_rains)))
 })
 
-test_that("get_start_rains_definitions returns NA for missing variables", {
-  result <- get_start_rains_definitions(NULL)
+test_that("create_start_rains_definitions returns NA for missing variables", {
+  result <- create_start_rains_definitions(NULL)
   expect_true("start_rains" %in% names(result))
   expect_true(all(is.na(unlist(result$start_rains))))
 })
 
-test_that("get_start_rains_definitions extracts correct values", {
-  result <- get_start_rains_definitions(ghana_by_year_example$start_rain)
+test_that("create_start_rains_definitions extracts correct values", {
+  result <- create_start_rains_definitions(ghana_by_year_example$start_rain)
   expect_equal(result$start_rains$start_day, 1)
   expect_equal(result$start_rains$end_day, 366)
   expect_equal(result$start_rains$threshold, 0.85)
@@ -38,20 +38,20 @@ test_that("get_start_rains_definitions extracts correct values", {
 ########## end_rains
 
 # Test cases
-test_that("get_end_rains_definitions returns correct structure with end_rains", {
-  result <- get_end_rains_definitions(ghana_by_year_example$end_rains)
+test_that("create_end_rains_definitions returns correct structure with end_rains", {
+  result <- create_end_rains_definitions(ghana_by_year_example$end_rains)
   expect_true("end_rains" %in% names(result))
   expect_true(all(c("start_day", "end_day", "output", "min_rainfall", "interval_length") %in% names(result$end_rains)))
 })
 
-test_that("get_end_rains_definitions returns NA for missing variables", {
-  result <- get_end_rains_definitions(NULL)
+test_that("create_end_rains_definitions returns NA for missing variables", {
+  result <- create_end_rains_definitions(NULL)
   expect_true("end_rains" %in% names(result))
   expect_true(all(is.na(unlist(result$end_rains))))
 })
 
-test_that("get_end_rains_definitions extracts correct values", {
-  result <- get_end_rains_definitions(ghana_by_year_example$end_rains)
+test_that("create_end_rains_definitions extracts correct values", {
+  result <- create_end_rains_definitions(ghana_by_year_example$end_rains)
   expect_equal(result$end_rains$start_day, 1)
   expect_equal(result$end_rains$end_day, 366)
   expect_equal(result$end_rains$output, "both")
@@ -59,7 +59,7 @@ test_that("get_end_rains_definitions extracts correct values", {
   expect_equal(result$end_rains$interval_length, 1)
 })
 
-test_that("get_end_rains_definitions handles different structures correctly", {
+test_that("create_end_rains_definitions handles different structures correctly", {
   end_rains <- list(
     filter = list(
       "[[1]]" = "(roll_sum_rain > 10) | is.na(x=roll_sum_rain)",
@@ -70,7 +70,7 @@ test_that("get_end_rains_definitions handles different structures correctly", {
     ),
     filter_2 = "doy >= 1 & doy <= 366"
   )
-  result <- get_end_rains_definitions(end_rains)
+  result <- create_end_rains_definitions(end_rains)
   expect_equal(result$end_rains$start_day, 1)
   expect_equal(result$end_rains$end_day, 366)
   expect_equal(result$end_rains$output, "both")
@@ -81,7 +81,7 @@ test_that("get_end_rains_definitions handles different structures correctly", {
 ########## temperature summaries
 
 # Test cases
-test_that("get_end_rains_definitions returns correct structure with end_rains", {
+test_that("create_end_rains_definitions returns correct structure with end_rains", {
   result <- build_total_temperature_summaries(data_by_year = ghana_by_year_example,
                                                 min_tmin_column = "min_min_temperature", mean_tmin_column = "mean_min_temperature",
                                                 max_tmin_column = "max_min_temperature", min_tmax_column = "min_max_temperature",
@@ -109,8 +109,8 @@ test_that("get_end_rains_definitions returns correct structure with end_rains", 
 })
 
 ### season length
-test_that("get_season_length_definitions returns correct structure with length", {
-  result <- get_season_length_definitions(length = ghana_by_year_example$length)
+test_that("create_season_length_definitions returns correct structure with length", {
+  result <- create_season_length_definitions(length = ghana_by_year_example$length)
   expect_true("seasonal_length" %in% names(result))
   expect_true(all(c("end_type") %in% names(result$seasonal_length)))
   expect_equal(result$seasonal_length$end_type, "rains")
@@ -119,14 +119,14 @@ test_that("get_season_length_definitions returns correct structure with length",
 
 # end_season ------------------------------------------------------
 # Test cases
-test_that("get_end_season_definitions returns correct structure with end_season", {
-  result <- get_end_season_definitions(zambia_by_year_example$end_season)
+test_that("create_end_season_definitions returns correct structure with end_season", {
+  result <- create_end_season_definitions(zambia_by_year_example$end_season)
   expect_true("end_season" %in% names(result))
   expect_true(all(c("start_day", "end_day", "water_balance_max", "capacity", "evaporation", "evaporation_value") %in% names(result$end_season)))
 })
 
-test_that("get_end_season_definitions extracts correct values", {
-  result <- get_end_season_definitions(zambia_by_year_example$end_season)
+test_that("create_end_season_definitions extracts correct values", {
+  result <- create_end_season_definitions(zambia_by_year_example$end_season)
   expect_equal(result$end_season$start_day, 245)
   expect_equal(result$end_season$end_day, 366)
   expect_equal(result$end_season$water_balance_max, 0.5)
@@ -135,14 +135,14 @@ test_that("get_end_season_definitions extracts correct values", {
   expect_equal(result$end_season$evaporation_value, 5)
 })
 
-test_that("get_end_season_definitions returns NA for missing variables", {
-  result <- get_end_season_definitions(NULL)
+test_that("create_end_season_definitions returns NA for missing variables", {
+  result <- create_end_season_definitions(NULL)
   expect_true("end_season" %in% names(result))
   expect_true(all(is.na(unlist(result$end_season))))
 })
 
-test_that("get_end_rains_definitions throws error for end_season", {
-  expect_error(get_end_rains_definitions(zambia_by_year_example$end_season))
+test_that("create_end_rains_definitions throws error for end_season", {
+  expect_error(create_end_rains_definitions(zambia_by_year_example$end_season))
 })
 
 # TO TEST:
