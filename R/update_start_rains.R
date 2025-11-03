@@ -39,7 +39,7 @@ update_start_rains <- function(data_frame, data_names, definitions, data_book){
   period_max_dry_days <- as.numeric(start_rains_definitions$period_max_dry_days)
   
   output <- start_rains_definitions$output
-  if (is.null(output) || output == "both") output <- c("doy", "date", "status")
+  if (is.null(output) || identical(output, "status") || identical(output, c("doy", "date", "status"))) output <- c("doy", "date", "status")
   s_start_doy <- as.numeric(start_rains_definitions$s_start_doy)
   s_start_month <- as.numeric(format(as.Date(s_start_doy, origin = "2020-12-31"), "%m"))   # picking a non-leap-year
   drop <- as_logical(start_rains_definitions$drop)
@@ -58,11 +58,11 @@ update_start_rains <- function(data_frame, data_names, definitions, data_book){
                                      drop = drop,
                                      output = output,
                                      total_rainfall_over_days = total_rainfall_over_days,
-                                     total_rainfall_comparison = "amount", # No value in defintions file. Default used.
+                                     total_rainfall_comparison = total_rainfall_comparison,
                                      amount_rain = amount_rain,
                                      prob_rain_day = prob_rain_day,
-                                     evaporation_variable = data_names$evaporation_variable,# TODO: add this into data_names file
-                                     fraction = evaporation_fraction, # No value in defintions file. Default used.
+                                     evaporation_variable = data_names$evaporation_variable,
+                                     fraction = evaporation_fraction,
                                      number_rain_days = number_rain_days,
                                      min_rain_days = min_rain_days,
                                      rain_day_interval = rain_day_interval,
