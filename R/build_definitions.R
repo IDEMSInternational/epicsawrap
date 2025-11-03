@@ -80,17 +80,17 @@ build_annual_summaries_definitions <- function(data_name, data_by_year,
   extreme_rain_counts <- NULL
   extreme_tmin_counts <- NULL
   extreme_tmax_counts <- NULL
-  if (!is.null(start_rains_column)) start_of_rains <- get_start_rains_definitions(data_by_year[[start_rains_column]])
-  if (!is.null(end_rains_column)) end_rains <- get_end_rains_definitions(data_by_year[[end_rains_column]])
-  if (!is.null(end_season_column)) end_season <- get_end_season_definitions(data_by_year[[end_season_column]])
-  if (!is.null(seasonal_length_column)) seasonal_length <- get_season_length_definitions(data_by_year[[seasonal_length_column]])
+ if (!is.null(start_rains_column)) start_of_rains <- create_start_rains_definitions(data_by_year[[start_rains_column]])
+ if (!is.null(end_rains_column)) end_rains <- create_end_rains_definitions(data_by_year[[end_rains_column]])
+ if (!is.null(end_season_column)) end_season <- create_end_season_definitions(data_by_year[[end_season_column]])
+ if (!is.null(seasonal_length_column)) seasonal_length <- create_season_length_definitions(data_by_year[[seasonal_length_column]])
 
-  if (!is.null(start_rains_status_column) && !is.null(data_by_year[[start_rains_status_column]])) start_of_rains$start_rains$include_status <- TRUE
-  if (!is.null(end_rains_status_column) && !is.null(data_by_year[[end_rains_status_column]])) end_rains$end_rains$include_status <- TRUE
-  if (!is.null(end_season_status_column) && !is.null(data_by_year[[end_season_status_column]])) end_season$end_season$include_status <- TRUE
+ if (!is.null(start_rains_status_column) && !is.null(data_by_year[[start_rains_status_column]])) start_of_rains$start_rains$include_status <- TRUE
+ if (!is.null(end_rains_status_column) && !is.null(data_by_year[[end_rains_status_column]])) end_rains$end_rains$include_status <- TRUE
+ if (!is.null(end_season_status_column) && !is.null(data_by_year[[end_season_status_column]])) end_season$end_season$include_status <- TRUE
   
   # for annual rainfall / rainy days in year:
-  total_rain_counts <- get_total_rain_counts(data_by_year,
+  total_rain_counts <- create_total_rain_counts(data_by_year,
                                              annual_total_rain_col = annual_total_rain_col,
                                              seasonal_total_rain_col = seasonal_total_rain_col,
                                              annual_rainday_col = annual_rainday_col,
