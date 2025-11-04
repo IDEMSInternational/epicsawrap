@@ -9,7 +9,8 @@ update_spells(
   data_names,
   summary_data_frame,
   definitions,
-  data_book
+  data_book,
+  element = c("longest_rain_spell", "longest_tmin_spell", "longest_tmax_spell")
 )
 }
 \arguments{
@@ -20,6 +21,8 @@ update_spells(
 \item{definitions}{A list containing definitions to be read in.}
 
 \item{data_book}{The data book object where the data object is stored.}
+
+\item{element}{Determines the specific variant of the definitions to use.}
 
 \item{summary_data}{A data frame of the computed summaries.}
 }

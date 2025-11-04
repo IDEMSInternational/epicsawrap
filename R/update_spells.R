@@ -5,12 +5,20 @@
 #' @param summary_data A data frame of the computed summaries.
 #' @param definitions A list containing definitions to be read in.
 #' @param data_book The data book object where the data object is stored.
+#' @param element Determines the specific variant of the definitions to use.
 #' 
 #' @return A data frame in the data book at the year (and station) level containing spells data.
 #' @export
 
-update_spells <- function(data_frame, data_names, summary_data_frame, definitions, data_book){
-    spells_definitions <- definitions$annual_summaries$longest_rain_spell
+update_spells <- function(data_frame, data_names, summary_data_frame, definitions, data_book,
+                          element = c("longest_rain_spell", "longest_tmin_spell", "longest_tmax_spell")){
+    element <- match.arg(element)
+    spells_definitions <- dplyr::case_match(
+        element,
+        "longest_rain_spell" ~ definitions$annual_summaries$longest_rain_spell,
+        "longest_tmin_spell" ~ definitions$annual_summaries$longest_tmin_spell,
+        "longest_tmax_spell" ~ definitions$annual_summaries$longest_tmax_spell
+    )
     
     direction = as.character(spells_definitions$direction)
     value = as.numeric(spells_definitions$value)
