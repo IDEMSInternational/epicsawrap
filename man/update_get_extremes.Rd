@@ -4,7 +4,13 @@
 \alias{update_get_extremes}
 \title{Update Get Extremes}
 \usage{
-update_get_extremes(data_frame, data_names, definitions, data_book)
+update_get_extremes(
+  data_frame,
+  data_names,
+  definitions,
+  data_book,
+  element = c("extreme_rain", "extreme_tmin", "extreme_tmax")
+)
 }
 \arguments{
 \item{data_frame}{A data frame containing the columns specified in \code{data_names}.}
@@ -14,6 +20,8 @@ update_get_extremes(data_frame, data_names, definitions, data_book)
 \item{definitions}{A list containing definitions to be read in.}
 
 \item{data_book}{The data book object where the data object is stored.}
+
+\item{element}{Determines the specific variant of the definitions to use.}
 }
 \value{
 A data frame in the data book at the year (and station) level containing extremes data.
