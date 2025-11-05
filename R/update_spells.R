@@ -3,7 +3,7 @@
 #' @param data_frame            A data frame (or name) containing daily data.
 #' @param data_names            A list with element names for daily data:
 #'   \code{date}, \code{year}, \code{station}, \code{doy}, \code{rain}.
-#' @param seasonal_data_frame   A data frame (or name) containing seasonal windows.
+#' @param summary_data_frame   A data frame (or name) containing seasonal windows.
 #' @param seasonal_data_names   A list with element names for seasonal data:
 #'   \code{start_day}, \code{end_day}. If these are not given, then values from
 #'   the definitions file are used.
@@ -17,7 +17,7 @@
 #' 
 #' @return A data frame in the data book at the year (and station) level containing spells data.
 #' @export
-update_spells <- function(data_frame, data_names, seasonal_data_frame = NULL,
+update_spells <- function(data_frame, data_names, summary_data_frame = NULL,
                           seasonal_data_names = NULL, definitions,
                           element = c("rain", "tmin", "tmax"), data_book){
     element <- match.arg(element)

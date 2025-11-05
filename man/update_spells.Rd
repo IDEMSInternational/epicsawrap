@@ -7,7 +7,7 @@
 update_spells(
   data_frame,
   data_names,
-  seasonal_data_frame = NULL,
+  summary_data_frame = NULL,
   seasonal_data_names = NULL,
   definitions,
   element = c("rain", "tmin", "tmax"),
@@ -20,7 +20,7 @@ update_spells(
 \item{data_names}{A list with element names for daily data:
 \code{date}, \code{year}, \code{station}, \code{doy}, \code{rain}.}
 
-\item{seasonal_data_frame}{A data frame (or name) containing seasonal windows.}
+\item{summary_data_frame}{A data frame (or name) containing seasonal windows.}
 
 \item{seasonal_data_names}{A list with element names for seasonal data:
 \code{start_day}, \code{end_day}. If these are not given, then values from
