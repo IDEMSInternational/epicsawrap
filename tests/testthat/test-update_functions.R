@@ -425,7 +425,7 @@ test_that("update_spells computes longest spells and writes spells_filter", {
   nm_tmax <- list(date_time = "date", element = "tmax", year = "year", doy = "doy", station = "station_name")
   
   suppressWarnings(
-    update_spells("daily_niger", nm_tmax, "daily_niger", NULL, defs, data_book, element = "longest_tmax_spell")
+    update_spells("daily_niger", nm_tmax, "daily_niger", NULL, defs, data_book, element = "tmax")
   )
   
   spell_values <- data_book$get_data_frame("daily_niger_by_station_name_year")$spells
@@ -441,7 +441,7 @@ test_that("update_spells computes longest spells and writes spells_filter", {
   nm_tmin <- list(date_time = "date", element = "tmin", year = "year", doy = "doy", station = "station_name")
   
   suppressWarnings(
-    update_spells("daily_niger", nm_tmin, "daily_niger", NULL, defs, data_book, element = "longest_tmin_spell")
+    update_spells("daily_niger", nm_tmin, "daily_niger", NULL, defs, data_book, element = "tmin")
   )
   spell_values <- data_book$get_data_frame("daily_niger_by_station_name_year")$spells
   
@@ -458,7 +458,7 @@ test_that("update_spells computes longest spells and writes spells_filter", {
   nm_rain <- list(date_time = "date", element = "rain", year = "year", doy = "doy", station = "station_name")
   
   suppressWarnings(
-    update_spells("daily_niger", nm_rain, "daily_niger", NULL, defs, data_book, element = "longest_rain_spell")
+    update_spells("daily_niger", nm_rain, "daily_niger", NULL, defs, data_book, element = "rain")
   )
   
   spell_values <- data_book$get_data_frame("daily_niger_by_station_name_year")$spells
