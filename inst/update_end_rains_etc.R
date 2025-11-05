@@ -9,7 +9,6 @@ data_book <- DataBook$new()
 data(daily_niger)
 data_book$import_data(list(daily_niger = daily_niger))
 
-
 # 3. Read in our definitions data
 definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_1.json")
 
@@ -165,7 +164,12 @@ data_book$import_data(list(daily_niger = daily_niger))
 
 # 3. Read in our definitions data
 definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_1.json")
-
+definitions$monthly_temperature_summaries$max_tmin$to <- NULL
+definitions$monthly_temperature_summaries$min_tmin$to <- NULL
+definitions$monthly_temperature_summaries$mean_tmin$to <- NULL
+definitions$monthly_temperature_summaries$max_tmax$to <- NULL
+definitions$monthly_temperature_summaries$min_tmax$to <- NULL
+definitions$monthly_temperature_summaries$mean_tmax$to <- NULL
 # 4. Put in "data_names" the names of all the variables we're going to use from the daily_niger data.
 # Looking at our rpicsa::annual_rain, this can be
 # station, year, and rain
@@ -181,7 +185,7 @@ update_monthly_temperature(data_frame = "daily_niger",
                             definitions = definitions,
                             data_book = data_book)
 
-data_book$get_data_frame("daily_niger_by_station_name_month")
+data_book$get_data_frame("daily_niger_by_station_name_year_month")
 
 #############################################################
 
@@ -200,13 +204,13 @@ data_book$add_key("daily_niger", c("date", "station_name"), "key")
 
 # 3. Read in our definitions data
 definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_1.json")
-
-definitions$annual_summaries$end_season$start_day <- 1
-definitions$annual_summaries$end_season$end_day <- 200
-definitions$annual_summaries$end_season$capacity <- 50
-definitions$annual_summaries$end_season$water_balance_max <- 100
-definitions$annual_summaries$end_season$evaporation_value <- 5
-definitions$annual_summaries$end_season$reducing_value <- 0.5
+# 
+# definitions$annual_summaries$end_season$start_day <- 1
+# definitions$annual_summaries$end_season$end_day <- 200
+# definitions$annual_summaries$end_season$capacity <- 50
+# definitions$annual_summaries$end_season$water_balance_max <- 100
+# definitions$annual_summaries$end_season$evaporation_value <- 5
+# definitions$annual_summaries$end_season$reducing_value <- 0.5
 
 # 4. Put in "data_names" the names of all the variables we're going to use from the daily_niger data.
 # Looking at our rpicsa::annual_rain, this can be
@@ -266,16 +270,13 @@ data_book <- DataBook$new()
 
 # 2. Importing in some data for testing (this is stored in the rpicsa package)
 data(daily_niger)
+daily_niger$var <- 5
 data_book$import_data(list(daily_niger = daily_niger))
 
 # 3. Read in our definitions data
-definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_1.json")
+#definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_1.json")
+definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_2.json")
 
-# temp add random numbers in here. Fixed it in rpicsa that this is not needed after next sync. 
-definitions$annual_summaries$start_rains$prob_rain_day <- 0.8
-definitions$annual_summaries$start_rains$period_interval <- 3
-definitions$annual_summaries$start_rains$period_max_dry_days <- 1
-definitions$annual_summaries$start_rains$max_rain <- 3
 # 4. Put in "data_names" the names of all the variables we're going to use from the daily_niger data.
 # Looking at our rpicsa::annual_rain, this can be
 # station, year, and rain
@@ -283,7 +284,8 @@ data_names <- list(date = "date",
                    rain = "rain",
                    year = "year",
                    doy = "doy",
-                   station = "station_name")
+                   station = "station_name",
+                   evaporation_variable = "var")
 
 update_start_rains(data_frame = "daily_niger",
                    data_names = data_names,
@@ -291,11 +293,42 @@ update_start_rains(data_frame = "daily_niger",
                    data_book = data_book)
 
 
-
-
 ### CROPS #############
 crop_success_definition <- definitions$crops_success
 
+### GET EXTREMES ####################################################################
+library(databook)
+data_book <- DataBook$new()
+definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_2.json")
+data(daily_niger)
+data_book$import_data(list(daily_niger = daily_niger))
 
+data_names <- list(date_time = "date",
+                   element = "rain",
+                   year = "year",
+                   station = "station_name")
+update_get_extremes(data_frame = "daily_niger",
+                   data_names = data_names,
+                   definitions = definitions,
+                   data_book = data_book,
+                   element = "extreme_rain")
+data_book$get_data_frame("daily_niger_by_station_name_year")
 
+data_names <- list(date_time = "date",
+                   element = "tmin",
+                   year = "year",
+                   station = "station_name")
+update_get_extremes(data_frame = "daily_niger",
+                    data_names = data_names,
+                    definitions = definitions,
+                    data_book = data_book,
+                    element = "extreme_tmax")
+data_book$get_data_frame("daily_niger_by_station_name_year")
+
+update_get_extremes(data_frame = "daily_niger",
+                    data_names = data_names,
+                    definitions = definitions,
+                    data_book = data_book,
+                    element = "extreme_tmax")
+data_book$get_data_frame("daily_niger_by_station_name_year")
 
