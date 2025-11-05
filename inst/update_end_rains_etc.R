@@ -9,7 +9,6 @@ data_book <- DataBook$new()
 data(daily_niger)
 data_book$import_data(list(daily_niger = daily_niger))
 
-
 # 3. Read in our definitions data
 definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_1.json")
 
@@ -266,16 +265,13 @@ data_book <- DataBook$new()
 
 # 2. Importing in some data for testing (this is stored in the rpicsa package)
 data(daily_niger)
+daily_niger$var <- 5
 data_book$import_data(list(daily_niger = daily_niger))
 
 # 3. Read in our definitions data
-definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_1.json")
+#definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_1.json")
+definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_2.json")
 
-# temp add random numbers in here. Fixed it in rpicsa that this is not needed after next sync. 
-definitions$annual_summaries$start_rains$prob_rain_day <- 0.8
-definitions$annual_summaries$start_rains$period_interval <- 3
-definitions$annual_summaries$start_rains$period_max_dry_days <- 1
-definitions$annual_summaries$start_rains$max_rain <- 3
 # 4. Put in "data_names" the names of all the variables we're going to use from the daily_niger data.
 # Looking at our rpicsa::annual_rain, this can be
 # station, year, and rain
@@ -283,14 +279,13 @@ data_names <- list(date = "date",
                    rain = "rain",
                    year = "year",
                    doy = "doy",
-                   station = "station_name")
+                   station = "station_name",
+                   evaporation_variable = "var")
 
 update_start_rains(data_frame = "daily_niger",
                    data_names = data_names,
                    definitions = definitions,
                    data_book = data_book)
-
-
 
 
 ### CROPS #############
