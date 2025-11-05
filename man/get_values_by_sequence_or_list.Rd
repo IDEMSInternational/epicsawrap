@@ -2,22 +2,34 @@
 % Please edit documentation in R/update_crop_definitions.R
 \name{get_values_by_sequence_or_list}
 \alias{get_values_by_sequence_or_list}
-\title{Get Values by Sequence or List
-
-This function returns a sequence of values from the specified property in the \code{definitions}}
+\title{Get values from a vector or a {from, to, by} list}
 \usage{
 get_values_by_sequence_or_list(definitions, property)
 }
 \arguments{
-\item{definitions}{A list containing data or metadata properties from which to extract values.}
+\item{definitions}{A list holding definition data.}
 
-\item{property}{A character string giving the name of the property to retrieve from the definitions object.}
+\item{property}{Character scalar; name of the property inside \code{definitions}.}
 }
 \value{
-A vector (sequence) of values corresponding to the requested property.
+A numeric vector (possibly length 0) or \code{NULL} if not present.
 }
 \description{
-Get Values by Sequence or List
+Convenience extractor for definition entries that may be stored either as a
+numeric vector or as a list with elements \code{from}, \code{to}, and \code{by}.
+}
+\details{
+If \code{definitions[[property]]} is a list with \code{from}/\code{to}/\code{by}, this returns
+the full numeric sequence \code{seq(from, to, by)}. If it is a vector, it returns
+that vector coerced to numeric. If the property is \code{NULL} or missing, returns
+\code{NULL}.
+}
+\examples{
+defs <- list(planting_dates = list(from = 150, to = 240, by = 15))
+get_values_by_sequence_or_list(defs, "planting_dates")
+#> 150 165 180 195 210 225 240
 
-This function returns a sequence of values from the specified property in the \code{definitions}
+defs2 <- list(planting_length = c(60, 75, 90))
+get_values_by_sequence_or_list(defs2, "planting_length")
+#> 60 75 90
 }

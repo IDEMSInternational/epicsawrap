@@ -1,13 +1,48 @@
+################# START RAINS =========================================================
+
 library(rpicsa)
 library(databook)
-devtools::load_all()
 
 # 1. Let's set up our data book
 data_book <- DataBook$new()
 
 # 2. Importing in some data for testing (this is stored in the rpicsa package)
 data(daily_niger)
+daily_niger$var <- 5
 data_book$import_data(list(daily_niger = daily_niger))
+
+# 3. Read in our definitions data
+#definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_1.json")
+definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_2.json")
+
+# 4. Put in "data_names" the names of all the variables we're going to use from the daily_niger data.
+# Looking at our rpicsa::annual_rain, this can be
+# station, year, and rain
+data_names <- list(date = "date",
+                   rain = "rain",
+                   year = "year",
+                   doy = "doy",
+                   station = "station_name",
+                   evaporation_variable = "var")
+
+
+update_start_rains(data_frame = "daily_niger",
+                   data_names = data_names,
+                   definitions = definitions,
+                   data_book = data_book)
+
+############ END RAINS '#####################################################
+# 
+# library(rpicsa)
+# library(databook)
+# devtools::load_all()
+# 
+# # 1. Let's set up our data book
+# data_book <- DataBook$new()
+# 
+# # 2. Importing in some data for testing (this is stored in the rpicsa package)
+# data(daily_niger)
+# data_book$import_data(list(daily_niger = daily_niger))
 
 # 3. Read in our definitions data
 definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_1.json")
@@ -23,30 +58,15 @@ data_names <- list(date = "date",
 
 daily_niger <- data_book$get_data_frame("daily_niger")
 
-rpicsa::end_rains(data = "daily_niger",
-                    date_time = data_names$date,
-                    station = data_names$station,
-                    year = data_names$year,
-                    rain = data_names$rain,
-                    doy = data_names$doy,
-                    s_start_month = 1,
-                    drop = FALSE,
-                    start_day = 121,
-                    end_day = 300,
-                    output = c("doy", "date", "status"),
-                    interval_length = 1,
-                    min_rainfall = 20,
-                    data_book = data_book)
+update_end_rains("daily_niger", data_names, definitions, data_book)
 
-daily_niger <- data_book$get_data_frame("daily_niger")
-
-suppressWarnings(end_rains(data = "daily_niger",
-                           date_time = "date",
-                           station = "station_name",
-                           rain = "rain",
-                           start_day = 121,
-                           end_day = 300,
-                           data_book = data_book))
+# suppressWarnings(end_rains(data = "daily_niger",
+#                            date_time = "date",
+#                            station = "station_name",
+#                            rain = "rain",
+#                            start_day = 121,
+#                            end_day = 300,
+#                            data_book = data_book))
 
 
 ### Seasonal Rain ====================================================================
@@ -80,11 +100,11 @@ summary_data_names <- list(start_date = NULL,
                            end_date = NULL)
 
 update_seasonal_rain(data_frame = "daily_niger",
-                       data_names = data_names,
-                       summary_data_frame = NULL,
-                       summary_data_names = summary_data_names,
-                       definitions = definitions,
-                       data_book = data_book)
+                     data_names = data_names,
+                     summary_data_frame = NULL,
+                     summary_data_names = summary_data_names,
+                     definitions = definitions,
+                     data_book = data_book)
 
 # Testing seasonal rain "raw"
 library(databook)
@@ -141,9 +161,9 @@ data_names <- list(date = "date",
                    station = "station_name")
 
 update_annual_temperature(data_frame = "daily_niger",
-                            data_names = data_names,
-                            definitions = definitions,
-                            data_book = data_book)
+                          data_names = data_names,
+                          definitions = definitions,
+                          data_book = data_book)
 
 data_book$get_data_frame("daily_niger_by_station_name_year")
 
@@ -181,9 +201,9 @@ data_names <- list(date = "date",
                    station = "station_name")
 
 update_monthly_temperature(data_frame = "daily_niger",
-                            data_names = data_names,
-                            definitions = definitions,
-                            data_book = data_book)
+                           data_names = data_names,
+                           definitions = definitions,
+                           data_book = data_book)
 
 data_book$get_data_frame("daily_niger_by_station_name_year_month")
 
@@ -205,12 +225,12 @@ data_book$add_key("daily_niger", c("date", "station_name"), "key")
 # 3. Read in our definitions data
 definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_1.json")
 # 
-# definitions$annual_summaries$end_season$start_day <- 1
-# definitions$annual_summaries$end_season$end_day <- 200
-# definitions$annual_summaries$end_season$capacity <- 50
-# definitions$annual_summaries$end_season$water_balance_max <- 100
-# definitions$annual_summaries$end_season$evaporation_value <- 5
-# definitions$annual_summaries$end_season$reducing_value <- 0.5
+definitions$annual_summaries$end_season$start_day <- 1
+definitions$annual_summaries$end_season$end_day <- 200
+definitions$annual_summaries$end_season$capacity <- 50
+definitions$annual_summaries$end_season$water_balance_max <- 100
+definitions$annual_summaries$end_season$evaporation_value <- 5
+definitions$annual_summaries$end_season$reducing_value <- 0.5
 
 # 4. Put in "data_names" the names of all the variables we're going to use from the daily_niger data.
 # Looking at our rpicsa::annual_rain, this can be
@@ -221,9 +241,9 @@ data_names <- list(date = "date",
                    doy = "doy",
                    station = "station_name")
 update_end_season(data_frame = "daily_niger",
-                     data_names = data_names,
-                     definitions = definitions,
-                     data_book = data_book)
+                  data_names = data_names,
+                  definitions = definitions,
+                  data_book = data_book)
 data_book$get_data_frame("daily_niger_by_station_name_year")
 
 
@@ -260,41 +280,102 @@ data_book$get_data_frame("daily_niger_by_station_name_year")
 
 
 
-################# START RAINS =========================================================
 
-library(rpicsa)
-library(databook)
+### CROPS #############
+# library(databook)
+# data_book <- DataBook$new()
+# definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_2.json")
+# data(daily_niger)
+# data_book$import_data(list(daily_niger = daily_niger))
 
-# 1. Let's set up our data book
-data_book <- DataBook$new()
-
-# 2. Importing in some data for testing (this is stored in the rpicsa package)
-data(daily_niger)
-daily_niger$var <- 5
-data_book$import_data(list(daily_niger = daily_niger))
-
-# 3. Read in our definitions data
-#definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_1.json")
-definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_2.json")
-
-# 4. Put in "data_names" the names of all the variables we're going to use from the daily_niger data.
-# Looking at our rpicsa::annual_rain, this can be
-# station, year, and rain
-data_names <- list(date = "date",
-                   rain = "rain",
+data_names <- list(date_time = "date",
+                   element = "rain",
                    year = "year",
                    doy = "doy",
                    station = "station_name",
-                   evaporation_variable = "var")
+                   rain = "rain")
 
-update_start_rains(data_frame = "daily_niger",
-                   data_names = data_names,
-                   definitions = definitions,
-                   data_book = data_book)
+daily_niger_by_station_name_year <- (data_book$get_data_frame("daily_niger_by_station_name_year"))
 
+seasonal_data_names <- list(station = "station_name",
+                            year = "year",
+                            start_day = "start_rain",
+                            end_day = "end_rains")
 
-### CROPS #############
-crop_success_definition <- definitions$crops_success
+# 1. With crop success != seasonal start
+definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_2.json")
+update_crops_definitions(data_frame = "daily_niger",
+                         data_names = data_names,
+                         seasonal_data_frame = "daily_niger_by_station_name_year",
+                         seasonal_data_names = seasonal_data_names,
+                         definitions = definitions,
+                         data_book = data_book)
+# TODO: crop_prop6 should run like 
+# data_book$delete_dataframes(c("crop_def", "crop_def1", "crop_def2", "crop_def3",
+#                               "crop_def4",  "crop_def5",  "crop_def6", "crop_def7",
+#                               "crop_def8",  "crop_def9",
+#                               "crop_prop", "crop_prop1", "crop_prop2", "crop_prop3",
+#                               "crop_prop4", "crop_prop5", "crop_prop6", "crop_prop7"))
+data_book$get_data_names() # crop_def3, crop_prop3
+crop_def <- data_book$get_data_frame("crop_def")
+unique(crop_def$plant_day)
+unique(crop_def$plant_length)
+unique(crop_def$rain_total)
+crop_prop <- (data_book$get_data_frame("crop_prop"))
+unique(crop_prop$plant_day)
+unique(crop_prop$plant_length)
+unique(crop_prop$rain_total)
+
+# 2. With crop success == seasonal start
+definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_2.json")
+definitions$season_start_probabilities <- definitions$crops_success
+definitions$season_start_probabilities$definition_props <- TRUE
+definitions$season_start_probabilities$return_crops_table <- FALSE
+update_crops_definitions(data_frame = "daily_niger",
+                         data_names = data_names,
+                         seasonal_data_frame = "daily_niger_by_station_name_year",
+                         seasonal_data_names = seasonal_data_names,
+                         definitions = definitions,
+                         data_book = data_book)
+data_book$get_data_names() # crop_def3, crop_prop3
+crop_def <- data_book$get_data_frame("crop_def1")
+unique(crop_def$plant_day)
+unique(crop_def$plant_length)
+unique(crop_def$rain_total)
+crop_prop <- (data_book$get_data_frame("crop_prop1"))
+unique(crop_prop$plant_day)
+unique(crop_prop$plant_length)
+unique(crop_prop$rain_total)
+
+# 3. With crop success TRUE and = seasonal start FALSE
+definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_2.json")
+definitions$season_start_probabilities$definition_props <- FALSE
+update_crops_definitions(data_frame = "daily_niger",
+                         data_names = data_names,
+                         seasonal_data_frame = "daily_niger_by_station_name_year",
+                         seasonal_data_names = seasonal_data_names,
+                         definitions = definitions,
+                         data_book = data_book)
+data_book$get_data_names() # crop_def3, crop_prop3
+crop_def <- data_book$get_data_frame("crop_def2")
+unique(crop_def$plant_day)
+unique(crop_def$plant_length)
+unique(crop_def$rain_total)
+
+# 4. With crop success FALSE and = seasonal start TRUE
+definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_2.json")
+definitions$crops_success$return_crops_table <- FALSE
+update_crops_definitions(data_frame = "daily_niger",
+                         data_names = data_names,
+                         seasonal_data_frame = "daily_niger_by_station_name_year",
+                         seasonal_data_names = seasonal_data_names,
+                         definitions = definitions,
+                         data_book = data_book)
+data_book$get_data_names() # crop_def3, crop_prop3
+crop_prop <- (data_book$get_data_frame("crop_prop"))
+unique(crop_prop$plant_day)
+unique(crop_prop$plant_length)
+unique(crop_prop$rain_total)
 
 ### GET EXTREMES ####################################################################
 library(databook)
@@ -308,10 +389,10 @@ data_names <- list(date_time = "date",
                    year = "year",
                    station = "station_name")
 update_get_extremes(data_frame = "daily_niger",
-                   data_names = data_names,
-                   definitions = definitions,
-                   data_book = data_book,
-                   element = "extreme_rain")
+                    data_names = data_names,
+                    definitions = definitions,
+                    data_book = data_book,
+                    element = "extreme_rain")
 data_book$get_data_frame("daily_niger_by_station_name_year")
 
 data_names <- list(date_time = "date",
