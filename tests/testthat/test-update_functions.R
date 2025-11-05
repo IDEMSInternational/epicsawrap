@@ -28,11 +28,12 @@ test_that("update_start_rains populates start_rain outputs", {
                      doy = "doy",
                      station = "station_name",
                      evaporation_variable = "var")
-
+  
+  defs$annual_summaries$start_rains$output <- "doy"
 
   suppressWarnings(update_start_rains(data_frame = "daily_niger",
                      data_names = data_names,
-                     definitions = definitions,
+                     definitions = defs,
                      data_book = data_book))
 
   by <- data_book$get_data_frame("daily_niger_by_station_name_year")
