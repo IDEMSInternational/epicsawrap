@@ -487,9 +487,3 @@ update_spells(data_frame = "daily_niger",
               data_book = data_book,
               element = "longest_rain_spell")
 data_book$get_data_frame("daily_niger_by_station_name_year")
-
-
-
-
-
-

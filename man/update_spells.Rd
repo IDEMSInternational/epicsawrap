@@ -7,11 +7,11 @@
 update_spells(
   data_frame,
   data_names,
-  summary_data_frame = NULL,
+  seasonal_data_frame = NULL,
   seasonal_data_names = NULL,
   definitions,
-  data_book,
-  element = c("longest_rain_spell", "longest_tmin_spell", "longest_tmax_spell")
+  element = c("rain", "tmin", "tmax"),
+  data_book
 )
 }
 \arguments{
@@ -19,6 +19,8 @@ update_spells(
 
 \item{data_names}{A list with element names for daily data:
 \code{date}, \code{year}, \code{station}, \code{doy}, \code{rain}.}
+
+\item{seasonal_data_frame}{A data frame (or name) containing seasonal windows.}
 
 \item{seasonal_data_names}{A list with element names for seasonal data:
 \code{start_day}, \code{end_day}. If these are not given, then values from
@@ -29,10 +31,10 @@ the definitions file are used.}
 \code{$annual_summaries$longest_tmin_spell} or
 \code{$annual_summaries$longest_tmax_spell}.}
 
+\item{element}{Which element to apply the spells to. One of \code{"rain"}, \code{"tmin"}, or \code{"tmax"}.}
+
 \item{data_book}{The data book object forwarded to
 \code{rpicsa::crops_definitions()}.}
-
-\item{seasonal_data_frame}{A data frame (or name) containing seasonal windows.}
 }
 \value{
 A data frame in the data book at the year (and station) level containing spells data.

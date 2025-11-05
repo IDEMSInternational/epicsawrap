@@ -11,22 +11,23 @@
 #'   \code{$annual_summaries$longest_rain_spell} or
 #'   \code{$annual_summaries$longest_tmin_spell} or
 #'   \code{$annual_summaries$longest_tmax_spell}.
+#' @param element Which element to apply the spells to. One of `"rain"`, `"tmin"`, or `"tmax"`.
 #' @param data_book             The data book object forwarded to
 #'   \code{rpicsa::crops_definitions()}.
 #' 
 #' @return A data frame in the data book at the year (and station) level containing spells data.
 #' @export
 
-update_spells <- function(data_frame, data_names, summary_data_frame = NULL,
-                          seasonal_data_names = NULL, definitions, data_book,
-                          element = c("longest_rain_spell", "longest_tmin_spell", "longest_tmax_spell")){
+update_spells <- function(data_frame, data_names, seasonal_data_frame = NULL,
+                          seasonal_data_names = NULL, definitions,
+                          element = c("rain", "tmin", "tmax"), data_book){
     element <- match.arg(element)
     
     spells_definitions <- switch(
         element,
-        longest_rain_spell = definitions$annual_summaries$longest_rain_spell,
-        longest_tmin_spell = definitions$annual_summaries$longest_tmin_spell,
-        longest_tmax_spell = definitions$annual_summaries$longest_tmax_spell,
+        rain = definitions$annual_summaries$longest_rain_spell,
+        tmin = definitions$annual_summaries$longest_tmin_spell,
+        tmax = definitions$annual_summaries$longest_tmax_spell,
         stop("Unknown spell length definition: ", element)
     )
     
