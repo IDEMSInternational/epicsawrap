@@ -7,38 +7,38 @@ expect_has_cols <- function(df, cols) {
 
 # test-epicsa-workflows.R
 # ---- START RAINS -----------------------------------------------------------
-# test_that("update_start_rains populates start_rain outputs", {
-#   
-#   # 1. Let's set up our data book
-#   data_book <- DataBook$new()
-#   
-#   # 2. Importing in some data for testing (this is stored in the rpicsa package)
-#   data(daily_niger)
-#   daily_niger$var <- 5
-#   daily_niger <- daily_niger %>% dplyr::filter(station_name == "Agades")
-#   data_book$import_data(list(daily_niger = daily_niger))
-#   
-#   # 3. Get the definitinos data
-#   defs <- jsonlite::read_json("testdata/test_json_2.json")
-# 
-#   # 4. Apply
-#   data_names <- list(date = "date",
-#                      rain = "rain",
-#                      year = "year",
-#                      doy = "doy",
-#                      station = "station_name",
-#                      evaporation_variable = "var")
-#   
-#   
-#   suppressWarnings(update_start_rains(data_frame = "daily_niger",
-#                      data_names = data_names,
-#                      definitions = definitions,
-#                      data_book = data_book))
-#   
-#   by <- data_book$get_data_frame("daily_niger_by_station_name_year")
-#   expect_s3_class(by, "data.frame")
-#   expect_has_cols(by, c("start_rain", "start_rain_date", "start_rain_status"))
-# })
+test_that("update_start_rains populates start_rain outputs", {
+
+  # 1. Let's set up our data book
+  data_book <- DataBook$new()
+
+  # 2. Importing in some data for testing (this is stored in the rpicsa package)
+  data(daily_niger)
+  daily_niger$var <- 5
+  daily_niger <- daily_niger %>% dplyr::filter(station_name == "Agades")
+  data_book$import_data(list(daily_niger = daily_niger))
+
+  # 3. Get the definitinos data
+  defs <- jsonlite::read_json("testdata/test_json_2.json")
+
+  # 4. Apply
+  data_names <- list(date = "date",
+                     rain = "rain",
+                     year = "year",
+                     doy = "doy",
+                     station = "station_name",
+                     evaporation_variable = "var")
+
+
+  suppressWarnings(update_start_rains(data_frame = "daily_niger",
+                     data_names = data_names,
+                     definitions = definitions,
+                     data_book = data_book))
+
+  by <- data_book$get_data_frame("daily_niger_by_station_name_year")
+  expect_s3_class(by, "data.frame")
+  expect_has_cols(by, c("start_rain", "start_rain_date", "start_rain_status"))
+})
 
 # ----------------------------------------------------------------------
 test_that("update_end_rains populates end_rains outputs", {
