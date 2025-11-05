@@ -11,8 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}     # <-- add this if your repo is private
-      GCS_AUTH_JSON: ${{ secrets.GCS_AUTH_JSON }}     # <-- raw JSON (not base64)
 
     steps:
       - uses: actions/checkout@v3
@@ -26,35 +24,25 @@ jobs:
           extra-packages: any::covr
           needs: coverage
 
-      - name: Write GCS auth JSON
-        shell: bash
+      - name: Decode GCS Auth JSON
         run: |
           mkdir -p ./tests/testthat/testdata
-          # write exactly as provided, no extra newline
-          printf '%s' "$GCS_AUTH_JSON" > ./tests/testthat/testdata/epicsa_token.json
-          chmod 600 ./tests/testthat/testdata/epicsa_token.json
-          # (optional) sanity check JSON is valid
-          python - <<'PY'
-import json,sys
-json.load(open("./tests/testthat/testdata/epicsa_token.json"))
-print("Auth JSON looks valid.")
-PY
+          echo "${{ secrets.GCS_AUTH_JSON }}" | base64 --decode > ./tests/testthat/testdata/epicsa_token.json
 
       - name: Test coverage
-        shell: Rscript {0}
         run: |
           covr::codecov(
-            token = Sys.getenv("CODECOV_TOKEN"),  # picked up automatically if set
             quiet = FALSE,
             clean = FALSE,
             install_path = file.path(Sys.getenv("RUNNER_TEMP"), "package")
           )
+        shell: Rscript {0}
 
       - name: Show testthat output
         if: always()
-        shell: bash
         run: |
           find ${{ runner.temp }}/package -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
 
       - name: Upload test results
         if: failure()
