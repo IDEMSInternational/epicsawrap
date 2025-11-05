@@ -20,7 +20,6 @@ test_that("update_start_rains populates start_rain outputs", {
 
   # 3. Get the definitinos data
   defs <- jsonlite::read_json("testdata/test_json_2.json")
-  defs$annual_summaries$start_rains$output <- as.character(defs$annual_summaries$start_rains$output)
 
   # 4. Apply
   data_names <- list(date = "date",
