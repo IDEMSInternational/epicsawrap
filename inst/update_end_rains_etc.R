@@ -417,44 +417,71 @@ data_book$get_data_frame("daily_niger_by_station_name_year")
 
 
 ### SPELLS ####################################################################
-# library(databook)
-# data_book <- DataBook$new()
-definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_2.json")
-# data(daily_niger)
-# data_book$import_data(list(daily_niger = daily_niger))
+# Initialising R (e.g Loading R packages)
+data_book <- DataBook$new()
 
+data("daily_niger")
+
+data_book$import_data(data_tables=list(daily_niger=daily_niger))
+
+# 1. tmax > 30
 data_names <- list(date_time = "date",
-                   element = "rain",
+                   element = "tmax",
                    year = "year",
                    doy = "doy",
-                   station = "station_name",
-                   rain = "rain")
+                   station = "station_name")
 
-daily_niger_by_station_name_year <- (data_book$get_data_frame("daily_niger_by_station_name_year"))
-
-seasonal_data_names <- list(day_from = "start_rain",
-                            day_to = "end_rains")
-
-# issue in our less/greater --- are they the right way????
-
-definitions$annual_summaries$longest_tmin_spell$direction <- "less" 
-definitions$annual_summaries$longest_tmin_spell$value <- 40
-definitions$annual_summaries$longest_tmin_spell$value_lb <- 40
+definitions$annual_summaries$longest_tmax_spell$direction <- "greater" 
+definitions$annual_summaries$longest_tmax_spell$value <- 30
+definitions$annual_summaries$longest_tmax_spell$end_day <- 366
 
 update_spells(data_frame = "daily_niger",
               data_names = data_names,
-              summary_data_frame = "daily_niger_by_station_name_year",
-              seasonal_data_names = seasonal_data_names,
+              summary_data_frame = "daily_niger",
+              seasonal_data_names = NULL,
+              definitions = definitions,
+              data_book = data_book,
+              element = "longest_tmax_spell")
+data_book$get_data_frame("daily_niger_by_station_name_year")
+
+
+# 2. tmin < 20
+data_names <- list(date_time = "date",
+                   element = "tmin",
+                   year = "year",
+                   doy = "doy",
+                   station = "station_name")
+
+definitions$annual_summaries$longest_tmin_spell$direction <- "less" 
+definitions$annual_summaries$longest_tmin_spell$value <- 20
+definitions$annual_summaries$longest_tmin_spell$end_day <- 366
+
+update_spells(data_frame = "daily_niger",
+              data_names = data_names,
+              summary_data_frame = "daily_niger",
+              seasonal_data_names = NULL,
               definitions = definitions,
               data_book = data_book,
               element = "longest_tmin_spell")
 data_book$get_data_frame("daily_niger_by_station_name_year")
 
 
+# 3. rain between 10 and 30
+data_names <- list(date_time = "date",
+                   element = "rain",
+                   year = "year",
+                   doy = "doy",
+                   station = "station_name")
+
+definitions <- jsonlite::fromJSON("C:/Users/lclem/Downloads/test_json_2.json")
+definitions$annual_summaries$longest_rain_spell$direction <- "greater" 
+definitions$annual_summaries$longest_rain_spell$value <- 0.85
+definitions$annual_summaries$longest_rain_spell$end_day <- 366
+definitions$annual_summaries$longest_rain_spell$s_start_doy <- 1
 
 update_spells(data_frame = "daily_niger",
               data_names = data_names,
-              summary_data_frame = "daily_niger_by_station_name_year",
+              summary_data_frame = "daily_niger",
               seasonal_data_names = NULL,
               definitions = definitions,
               data_book = data_book,
@@ -462,11 +489,7 @@ update_spells(data_frame = "daily_niger",
 data_book$get_data_frame("daily_niger_by_station_name_year")
 
 
-update_spells(data_frame = "daily_niger",
-              data_names = data_names,
-              summary_data_frame = "daily_niger_by_station_name_year",
-              seasonal_data_names = NULL,
-              definitions = definitions,
-              data_book = data_book,
-              element = "longest_tmax_spell")
-data_book$get_data_frame("daily_niger_by_station_name_year")
+
+
+
+
