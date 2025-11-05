@@ -39,7 +39,11 @@ update_start_rains <- function(data_frame, data_names, definitions, data_book){
   period_max_dry_days <- as.numeric(start_rains_definitions$period_max_dry_days)
   
   output <- start_rains_definitions$output
-  if (is.null(output) || identical(output, "status") || identical(output, c("doy", "date", "status"))) output <- c("doy", "date", "status")
+  if (is.null(output) || identical(output, "status") || identical(output, c("doy", "date", "status"))){
+    output <- c("doy", "date", "status")
+  } else if (is.list(output)) {
+    output <- as.character(output)
+  }
   s_start_doy <- as.numeric(start_rains_definitions$s_start_doy)
   s_start_month <- as.numeric(format(as.Date(s_start_doy, origin = "2020-12-31"), "%m"))   # picking a non-leap-year
   drop <- as_logical(start_rains_definitions$drop)

@@ -1,0 +1,271 @@
+{
+  "annual_summaries": {
+    "start_rains": {
+      "start_day": 1,
+      "end_day": 366,
+      "threshold": 0.85,
+      "total_rainfall": true,
+      "over_days": 3,
+      "amount_rain": null,
+      "proportion": false,
+      "prob_rain_day": null,
+      "evaporation": true,
+      "evaporation_fraction": 0.5,
+      "number_rain_days": false,
+      "min_rain_days": null,
+      "rain_day_interval": null,
+      "dry_spell": true,
+      "spell_max_dry_days": 9,
+      "spell_interval": 21,
+      "dry_period": false,
+      "max_rain": null,
+      "period_interval": null,
+      "period_max_dry_days": null,
+      "s_start_doy": 183,
+      "output": ["doy", "date", "status"]
+    },
+    "end_rains": {
+      "start_day": 275,
+      "end_day": 121,
+      "output": "both",
+      "min_rainfall": 10,
+      "interval_length": 1,
+      "s_start_doy": 183
+    },
+    "end_season": {
+      "start_day": null,
+      "end_day": null,
+      "water_balance_max": null,
+      "capacity": null,
+      "evaporation": null,
+      "evaporation_value": null,
+      "s_start_doy": 1
+    },
+    "seasonal_length": {
+      "end_type": null
+    },
+    "annual_rain": {   
+      "total_rain": true,
+      "n_rain": true,
+      "rain_day": 0.85,
+      "na_rm": null,
+      "na_n": null,
+      "na_n_non": null,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 183
+    },
+    "seasonal_rain": {
+      "total_rain": null,
+      "n_rain": null,
+      "rain_day": null,
+      "na_rm": null,
+      "na_n": null,
+      "na_n_non": null,
+      "na_consec": null,
+      "na_prop": null
+    },
+    "extreme_rain": {
+      "na_rm": true,
+      "na_n": 1,
+      "na_n_non": null,
+      "na_consec": null,
+      "na_prop": null,
+      "direction": "greater",
+      "value_lb": null,
+      "value": 50
+    },
+    "extreme_tmin": {
+      "na_rm": true,
+      "na_n": 1,
+      "na_n_non": null,
+      "na_consec": null,
+      "na_prop": null,
+      "direction": "less",
+      "value_lb": null,
+      "value": 30
+    },
+    "extreme_tmax": {
+      "na_rm": true,
+      "na_n": 1,
+      "na_n_non": null,
+      "na_consec": null,
+      "na_prop": null,
+      "direction": "between",
+      "value_lb": 25,
+      "value": 30
+    },
+    "longest_rain_spell":{
+       "direction": "outer",
+       "value": 10,
+       "value_lb": 20,
+       "start_day": 1,
+       "end_day": 183, 
+       "s_start_doy": 183,
+       "return_max_spell": true,
+       "return_all_spells": false
+    }, 
+    "longest_tmin_spell":{
+       "direction": "outer",
+       "value": 10,
+       "value_lb": 20,
+       "start_day": 1,
+       "end_day": 183, 
+       "s_start_doy": 183,
+       "return_max_spell": true,
+       "return_all_spells": false
+    },
+    "longest_tmax_spell":{
+       "direction": "outer",
+       "value": 10,
+       "value_lb": 20,
+       "start_day": 1,
+       "end_day": 183, 
+       "s_start_doy": 183,
+       "return_max_spell": true,
+       "return_all_spells": false
+    }
+  },
+  "annual_temperature_summaries": {
+    "min_tmin": {
+      "to": "annual",
+      "na_rm": null,
+      "na_n": null,
+      "na_n_non": null,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 1
+    },
+    "mean_tmin": {
+      "to": "annual",
+      "na_rm": null,
+      "na_n": null,
+      "na_n_non": null,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 1
+    },
+    "max_tmin": {
+      "to": "annual",
+      "na_rm": null,
+      "na_n": null,
+      "na_n_non": null,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 1
+    },
+    "min_tmax": {
+      "to": "annual",
+      "na_rm": null,
+      "na_n": null,
+      "na_n_non": null,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 1
+    },
+    "mean_tmax": {
+      "to": "annual",
+      "na_rm": null,
+      "na_n": null,
+      "na_n_non": null,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 1
+    },
+    "max_tmax": {
+      "to": "annual",
+      "na_rm": null,
+      "na_n": null,
+      "na_n_non": null,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 1
+    }
+  },
+  "monthly_temperature_summaries": {
+    "min_tmin": {
+      "to": "monthly",
+      "na_rm": "TRUE",
+      "na_n": null,
+      "na_n_non": 10,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 1
+    },
+    "mean_tmin": {
+      "to": "monthly",
+      "na_rm": "TRUE",
+      "na_n": null,
+      "na_n_non": 10,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 1
+    },
+    "max_tmin": {
+      "to": "monthly",
+      "na_rm": "TRUE",
+      "na_n": null,
+      "na_n_non": 10,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 1
+    },
+    "min_tmax": {
+      "to": "monthly",
+      "na_rm": "TRUE",
+      "na_n": null,
+      "na_n_non": 10,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 1
+    },
+    "mean_tmax": {
+      "to": "monthly",
+      "na_rm": "TRUE",
+      "na_n": null,
+      "na_n_non": 10,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 1
+    },
+    "max_tmax": {
+      "to": "monthly",
+      "na_rm": "TRUE",
+      "na_n": null,
+      "na_n_non": 10,
+      "na_consec": null,
+      "na_prop": null,
+      "s_start_doy": 1
+    }
+  },
+  "crops_success": {
+    "water_requirements": [370, 400, 500],
+    "planting_dates": {
+      "from": 100,
+      "to": 200,
+      "by": 50
+    },
+    "planting_length": [110, 220],
+    "s_start_month": 183,
+    "start_check": "TRUE",
+    "return_crops_table": "TRUE",
+    "definition_props": "FALSE"
+  },
+  "season_start_probabilities": {
+    "water_requirements": {
+      "from": 350,
+      "to": 500,
+      "by": 50
+    },
+    "planting_dates": 150,
+    "planting_length": {
+      "from": 110,
+      "to": 220,
+      "by": 100
+    },
+    "s_start_month": 183,
+    "start_check": "TRUE",
+    "return_crops_table": "FALSE",
+    "definition_props": "TRUE"
+  }
+}
