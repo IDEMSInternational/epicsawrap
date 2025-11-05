@@ -119,22 +119,7 @@ get_values_by_sequence_or_list <- function(definitions, property) {
 #'   \code{$season_start_probabilities} if both blocks exist and differ.
 #'
 #' @examples
-#' \dontrun{
-#' defs <- list(
-#'   crops_success = list(
-#'     s_start_month =  "2021-01-01",
-#'     start_check = TRUE,
-#'     return_crops_table = TRUE,
-#'     water_requirements = list(from = 100, to = 200, by = 25),
-#'     planting_dates     = c(150, 165, 180),
-#'     planting_length    = c(60, 75, 90)
-#'   )
-#' )
-#' update_crops_definitions(daily_df, list(date="date", year="year", station="id",
-#'                          doy="doy", rain="rain"),
-#'                          seasonal_df, list(start_day="s_day", end_day="e_day"),
-#'                          defs, data_book)
-#' }
+#' # TODO
 #' @export
 update_crops_definitions <- function(data_frame, data_names,
                                      seasonal_data_frame, seasonal_data_names,
