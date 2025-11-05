@@ -28,6 +28,8 @@ jobs:
         run: echo "${{ secrets.GCS_AUTH_JSON }}" | base64 --decode > ./tests/testthat/testdata/epicsa_token.json
 
       - name: Test coverage
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: |
           covr::codecov(
             quiet = FALSE,
