@@ -1,5 +1,9 @@
 library(databook)
 library(rpicsa)
+expect_has_cols <- function(df, cols) {
+  expect_true(all(cols %in% names(df)),
+              info = paste("Missing columns:", paste(setdiff(cols, names(df)), collapse = ", ")))
+}
 
 # test-epicsa-workflows.R
 # ---- START RAINS -----------------------------------------------------------
