@@ -1,6 +1,8 @@
+library(databook)
+library(rpicsa)
+
 # test-epicsa-workflows.R
 # ---- START RAINS -----------------------------------------------------------
-
 test_that("update_start_rains populates start_rain outputs", {
   
   # 1. Let's set up our data book
