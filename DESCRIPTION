@@ -1,6 +1,6 @@
 Package: epicsawrap
 Title: A set of EPICSA functions for use with R-Instat
-Version: 0.0.6
+Version: 0.0.7
 Authors@R: c(
     person("Lily", "Clements", , "lily@idems.international", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-8864-0552")),
     person("Emmanuel", "Afrifa", , "", role = c("aut"), comment = c(ORCID = "0009-0002-1978-8611")))
