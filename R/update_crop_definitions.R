@@ -12,14 +12,6 @@
 #' @param property    Character scalar; name of the property inside `definitions`.
 #'
 #' @return A numeric vector (possibly length 0) or `NULL` if not present.
-#' @examples
-#' defs <- list(planting_dates = list(from = 150, to = 240, by = 15))
-#' get_values_by_sequence_or_list(defs, "planting_dates")
-#' #> 150 165 180 195 210 225 240
-#'
-#' defs2 <- list(planting_length = c(60, 75, 90))
-#' get_values_by_sequence_or_list(defs2, "planting_length")
-#' #> 60 75 90
 get_values_by_sequence_or_list <- function(definitions, property) {
   if (is.null(definitions) || is.null(definitions[[property]])) return(NULL)
   obj <- definitions[[property]]

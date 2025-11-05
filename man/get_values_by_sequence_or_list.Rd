@@ -24,12 +24,3 @@ the full numeric sequence \code{seq(from, to, by)}. If it is a vector, it return
 that vector coerced to numeric. If the property is \code{NULL} or missing, returns
 \code{NULL}.
 }
-\examples{
-defs <- list(planting_dates = list(from = 150, to = 240, by = 15))
-get_values_by_sequence_or_list(defs, "planting_dates")
-#> 150 165 180 195 210 225 240
-
-defs2 <- list(planting_length = c(60, 75, 90))
-get_values_by_sequence_or_list(defs2, "planting_length")
-#> 60 75 90
-}

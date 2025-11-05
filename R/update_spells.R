@@ -17,7 +17,6 @@
 #' 
 #' @return A data frame in the data book at the year (and station) level containing spells data.
 #' @export
-
 update_spells <- function(data_frame, data_names, seasonal_data_frame = NULL,
                           seasonal_data_names = NULL, definitions,
                           element = c("rain", "tmin", "tmax"), data_book){
