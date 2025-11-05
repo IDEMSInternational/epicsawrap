@@ -6,8 +6,8 @@
 #' @return A list representation of end rains definitions.
 #' @examples
 #' # Example usage:
-#' #get_end_rains_definitions(end_rains)
-get_end_rains_definitions <- function(end_rains = NULL){
+#' #create_end_rains_definitions(end_rains)
+create_end_rains_definitions <- function(end_rains = NULL){
   # Create an empty list
   data_list <- list()
   data_list[["end_rains"]] <- list()
@@ -42,8 +42,8 @@ get_end_rains_definitions <- function(end_rains = NULL){
 #' @return A list representation of end season definitions.
 #' @examples
 #' # Example usage:
-#' #get_end_season_definitions(end_season)
-get_end_season_definitions <- function(end_season = NULL){
+#' #create_end_season_definitions(end_season)
+create_end_season_definitions <- function(end_season = NULL){
   # Create an empty list
   data_list <- list()
   data_list[["end_season"]] <- list()
@@ -93,8 +93,8 @@ get_end_season_definitions <- function(end_season = NULL){
 #'
 #' @examples
 #' # Example usage:
-#' #get_start_rains_definitions(start_rains)
-get_start_rains_definitions <- function(start_rains = NULL){
+#' #create_start_rains_definitions(start_rains)
+create_start_rains_definitions <- function(start_rains = NULL){
   # Create an empty list
   data_list <- list()
   data_list[["start_rains"]] <- list()
@@ -154,7 +154,7 @@ get_start_rains_definitions <- function(start_rains = NULL){
   # Loop through each variable in the list
   for (variable in variables_list) {
     # Check if the variable exists and is not NA
-    if (exists(variable) && !is.na(get(variable))) {
+    if (exists(variable) && any(!is.na(get(variable)) | !is.null(get(variable)))) {
       # Retrieve the variable's value
       variable_value <- get(variable)
       
@@ -180,8 +180,8 @@ get_start_rains_definitions <- function(start_rains = NULL){
 #' @return A list representation of season length definitions.
 #' @examples
 #' # Example usage:
-#' #get_season_length_definitions(length)
-get_season_length_definitions <- function(length = NULL){ # TODO: it should be called "season" not "end_season"
+#' #create_season_length_definitions(length)
+create_season_length_definitions <- function(length = NULL){
   # Create an empty list
   data_list <- list()
   variables_list <- c("end_type")
@@ -437,7 +437,7 @@ get_temp_summaries <- function(temp_summary_name, data, to = c("annual", "monthl
 #' }
 #' If `definitions_in_raw` and `rain_days_name` are provided, the function calls 
 #' [get_rain_counts()] on the raw metadata to retrieve the rain-day threshold.
-get_total_rain_counts <- function(data_by_year = NULL,
+create_total_rain_counts <- function(data_by_year = NULL,
                                   annual_total_rain_col = NULL, seasonal_total_rain_col = NULL,
                                   annual_rainday_col = NULL, seasonal_rainday_col = NULL,
                                   definitions_in_raw = NULL, rain_days_name = NULL){
