@@ -11,7 +11,9 @@ update_end_season <- function(data_frame, data_names, definitions, data_book){
   
     end_season_definitions <- definitions$annual_summaries$end_season
     start_day <- as_numeric(end_season_definitions$start_day)
+    if (is.null(start_day)) start_day <- 1
     end_day <- as_numeric(end_season_definitions$end_day)
+    if (is.null(end_day)) end_day <- 366
     capacity <- as_numeric(end_season_definitions$capacity)
     water_balance_max <- as_numeric(end_season_definitions$water_balance_max)
     evaporation <- end_season_definitions$evaporation
