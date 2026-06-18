@@ -22,6 +22,7 @@ Imports:
     purrr (>= 1.00),
     rlang,
     RMySQL,
+    RPostgres,
     rpicsa,
     stringr,
     tidyr
