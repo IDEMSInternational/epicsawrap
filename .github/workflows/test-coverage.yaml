@@ -25,7 +25,9 @@ jobs:
           needs: coverage
 
       - name: Decode GCS Auth JSON
-        run: echo "${{ secrets.GCS_AUTH_JSON }}" | base64 --decode > ./tests/testthat/testdata/epicsa_token.json
+        run: |
+          mkdir -p ./tests/testthat/testdata
+          echo "${{ secrets.GCS_AUTH_JSON }}" | base64 --decode > ./tests/testthat/testdata/epicsa_token.json
 
       - name: Test coverage
         run: |
