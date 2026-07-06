@@ -115,7 +115,7 @@ export_to_database <- function(con,
   # TODO: do we need to do a check for stations in the summary and crop data frames?
   
   # internal helper: write a large data frame in chunks
-  write_in_chunks <- function(con, data, table_name, chunk_size = 100) {
+  write_in_chunks <- function(con, data, table_name, chunk_size = 50) {
     for (i in seq(1, nrow(data), by = chunk_size)) {
       chunk <- data[i:min(i + chunk_size - 1, nrow(data)), ]
       DBI::dbWriteTable(conn      = con,
