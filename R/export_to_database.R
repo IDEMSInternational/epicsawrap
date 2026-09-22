@@ -66,7 +66,11 @@ export_to_database <- function(con,
       append    = TRUE,
       row.names = FALSE
     )
-    print("Successfully sent station metadata to database")
+    message(
+      "Successfully sent ",
+      nrow(station_metadata),
+      " rows of station metadata to database"
+    )
   }
   
   # 2. send up definition 
@@ -78,7 +82,11 @@ export_to_database <- function(con,
       append    = TRUE,               # append to existing table
       row.names = FALSE
     )
-    print("Successfully sent definition data to database")
+    message(
+      "Successfully sent ",
+      nrow(definition_data),
+      " rows of definition data to database"
+    )
   }
   
   # 3. send summary station metadata
@@ -109,30 +117,36 @@ export_to_database <- function(con,
       append    = TRUE,
       row.names = FALSE
     )
-    print("Successfully sent summary station metadata to database")
+    message(
+      "Successfully sent ",
+      nrow(summary_station_metadata),
+      " rows of summary station metadata to database"
+    )
   }
   
-  # TODO: do we need to do a check for stations in the summary and crop data frames?
-  
-  # internal helper: write a large data frame in chunks
-  write_in_chunks <- function(con, data, table_name, chunk_size = 50) {
-    for (i in seq(1, nrow(data), by = chunk_size)) {
-      chunk <- data[i:min(i + chunk_size - 1, nrow(data)), ]
-      DBI::dbWriteTable(conn      = con,
-                        name      = table_name,
-                        value     = chunk,
-                        append    = TRUE,
-                        row.names = FALSE)
-      cat("Sent rows", i, "to", min(i + chunk_size - 1, nrow(data)),
-          "of", nrow(data), "\n")
-    }
+  # Internal helper: write data in one bulk operation
+  write_data <- function(con, data, table_name) {
+    
+    DBI::dbAppendTable(
+      conn = con,
+      name = table_name,
+      value = data,
+      copy = TRUE
+    )
+    
+    message(
+      "Successfully sent ",
+      nrow(data),
+      " rows of ",
+      table_name,
+      " to database"
+    )
   }
   
   # 4. send summary_data
   if (!is.null(summary_data)){
     tryCatch({
-      write_in_chunks(con, summary_data, "summary")
-      print("Successfully sent summary data to database")
+      write_data(con, summary_data, "summary")
     }, error = function(e) {
       stop("Failed to write summary data: ", conditionMessage(e))
     })
@@ -141,8 +155,7 @@ export_to_database <- function(con,
   # 5. send crop data
   if (!is.null(crop_data)){
     tryCatch({
-      write_in_chunks(con, crop_data, "crop")
-      print("Successfully sent crop data to database")
+      write_data(con, crop_data, "crop")
     }, error = function(e) {
       stop("Failed to write crop data: ", conditionMessage(e))
     })
