@@ -66,7 +66,7 @@ export_to_database <- function(con,
       append    = TRUE,
       row.names = FALSE
     )
-    message(
+    print(
       "Successfully sent ",
       nrow(station_metadata),
       " rows of station metadata to database"
@@ -82,7 +82,7 @@ export_to_database <- function(con,
       append    = TRUE,               # append to existing table
       row.names = FALSE
     )
-    message(
+    print(
       "Successfully sent ",
       nrow(definition_data),
       " rows of definition data to database"
@@ -117,7 +117,7 @@ export_to_database <- function(con,
       append    = TRUE,
       row.names = FALSE
     )
-    message(
+    print(
       "Successfully sent ",
       nrow(summary_station_metadata),
       " rows of summary station metadata to database"
@@ -134,7 +134,7 @@ export_to_database <- function(con,
       copy = TRUE
     )
     
-    message(
+    print(
       "Successfully sent ",
       nrow(data),
       " rows of ",
