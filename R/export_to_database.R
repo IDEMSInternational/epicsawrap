@@ -66,11 +66,11 @@ export_to_database <- function(con,
       append    = TRUE,
       row.names = FALSE
     )
-    print(
+    print(paste0(
       "Successfully sent ",
       nrow(station_metadata),
       " rows of station metadata to database"
-    )
+    ))
   }
   
   # 2. send up definition 
@@ -82,11 +82,11 @@ export_to_database <- function(con,
       append    = TRUE,               # append to existing table
       row.names = FALSE
     )
-    print(
+    print(paste0(
       "Successfully sent ",
       nrow(definition_data),
       " rows of definition data to database"
-    )
+    ))
   }
   
   # 3. send summary station metadata
@@ -95,6 +95,9 @@ export_to_database <- function(con,
     # fetch existing stations from db and check all stations in
     # summary_station_metadata are present before writing
     imported_station_from_db <- DBI::dbReadTable(conn = con, name = "station")
+    
+    summary_station_metadata <- summary_station_metadata %>% 
+      dplyr::filter(!is.na(station_id))
     
     missing_stations <- setdiff(
       summary_station_metadata$station_id,
@@ -117,11 +120,11 @@ export_to_database <- function(con,
       append    = TRUE,
       row.names = FALSE
     )
-    print(
+    print(paste0(
       "Successfully sent ",
       nrow(summary_station_metadata),
       " rows of summary station metadata to database"
-    )
+    ))
   }
   
   # Internal helper: write data in one bulk operation
@@ -134,13 +137,13 @@ export_to_database <- function(con,
       copy = TRUE
     )
     
-    print(
+    print(paste0(
       "Successfully sent ",
       nrow(data),
       " rows of ",
       table_name,
       " to database"
-    )
+    ))
   }
   
   # 4. send summary_data
