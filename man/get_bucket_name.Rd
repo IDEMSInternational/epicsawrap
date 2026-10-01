@@ -5,8 +5,8 @@
 \title{Get Bucket Name}
 \usage{
 get_bucket_name(
-  country = c("mw", "zm", "zm_test", "ml_test", "mw_test", "ke_test", "internal_tests",
-    "zm_workshops", "mw_workshops")
+  country = c("mw", "zm", "zw", "zm_test", "ml_test", "mw_test", "ke_test",
+    "internal_tests", "zm_workshops", "mw_workshops")
 )
 }
 \arguments{
