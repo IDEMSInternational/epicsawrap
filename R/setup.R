@@ -8,7 +8,7 @@
 #' @export
 #'
 #' @examples #TODO
-setup <- function(dir, countries = c("mw", "zm", "zm_test")) {
+setup <- function(dir, countries = c("mw", "zm", "zm_test", "zw")) {
   if (!dir.exists(dir)) dir.create(dir)
   setwd(dir)
   for (i in seq_along(countries)) {

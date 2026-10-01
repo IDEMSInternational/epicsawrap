@@ -4,11 +4,12 @@
 #' @param country A character vector specifying the country or countries from which to update the data. Options are `"mz"`, `"zm"`, `"zm_test"`, `"ml_test"`, `"ke_test"`.
 #'
 #' @return Returns the name of the Google Bucket for the data.
-get_bucket_name <- function(country = c("mw", "zm", "zm_test", "ml_test", "mw_test", "ke_test", "internal_tests", "zm_workshops", "mw_workshops")) {
+get_bucket_name <- function(country = c("mw", "zm", "zw", "zm_test", "ml_test", "mw_test", "ke_test", "internal_tests", "zm_workshops", "mw_workshops")) {
   if (length(country) > 1) stop("'country' must be length 1.")
   country <- match.arg(country)
   if (country == "mw") return("malawi_data")
   else if (country == "zm") return("zambia_data")
+  else if (country == "zw") return("zimbabwe_summaries")
   else if (country == "zm_test") return("zambia_test_data")
   else if (country == "ml_test") return("malawi_test_data")
   else if (country == "mw_test") return("malawi_test_data")
