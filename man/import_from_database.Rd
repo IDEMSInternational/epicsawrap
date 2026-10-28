@@ -11,7 +11,10 @@ import_from_database(
   summary_station_metadata = FALSE,
   summary_data = FALSE,
   crop_data = FALSE,
-  station_id = NULL
+  station_id = NULL,
+  summary_type = NULL,
+  definition_id = NULL,
+  latest = TRUE
 )
 }
 \arguments{
@@ -25,7 +28,9 @@ database, as created by \code{DBI::dbConnect()}.}
 \code{FALSE}.}
 
 \item{summary_station_metadata}{Logical. Read the
-\code{summary_station_metadata} table? Default \code{FALSE}.}
+\code{summary_station_metadata} table? Default \code{FALSE}. This table is
+filtered by \code{station_id} and \code{summary_type} only, so that all
+available definitions remain visible.}
 
 \item{summary_data}{Logical. Read the \code{summary} table? Default
 \code{FALSE}.}
@@ -34,7 +39,19 @@ database, as created by \code{DBI::dbConnect()}.}
 
 \item{station_id}{Character vector or \code{NULL}. If supplied, only rows
 with these \code{station_id} values are returned from the tables that have
-a \code{station_id} column. Default \code{NULL} (all rows).}
+a \code{station_id} column. Default \code{NULL} (all stations).}
+
+\item{summary_type}{Character vector or \code{NULL}. If supplied, only these
+summary types (as in \code{summary_station_metadata$summary_type}) are
+used. Default \code{NULL} (all summary types).}
+
+\item{definition_id}{Character vector or \code{NULL}. The specific
+\code{definition_id}(s) to return. Overrides \code{latest}. Default
+\code{NULL}.}
+
+\item{latest}{Logical. When \code{definition_id} is \code{NULL}, return only
+the most recent definition for each station and summary type? Default
+\code{TRUE}.}
 }
 \value{
 A named list of data frames, with one element per requested table,
@@ -45,9 +62,22 @@ Prints a confirmation message for each table read.
 }
 \description{
 Reads one or more tables from a PostgreSQL database; the counterpart of
-\code{\link{export_to_database}}. Each \code{*} argument is a logical flag
-that selects whether the corresponding table is read. Assumes an active
-database connection object created by \code{DBI::dbConnect()}.
+\code{\link{export_to_database}}. Each data argument is a logical flag that
+selects whether the corresponding table is read. Assumes an active database
+connection object created by \code{DBI::dbConnect()}.
+}
+\details{
+The \code{definition}, \code{summary} and \code{crop} tables all carry a
+\code{definition_id}. Which definition is returned is decided as follows:
+\enumerate{
+\item If \code{definition_id} is given, only rows with those
+\code{definition_id}s are returned.
+\item Otherwise, if \code{latest = TRUE}, the \code{summary_station_metadata}
+table is used to find the most recent \code{definition_id} (by
+\code{time_stamp}) for each \code{station_id} and \code{summary_type},
+and only rows with those \code{definition_id}s are returned.
+\item Otherwise (\code{latest = FALSE}) all definitions are returned.
+}
 }
 \note{
 Ensure the connection is closed after use with
@@ -64,13 +94,23 @@ con <- DBI::dbConnect(
   port     = 5432
 )
 
+# Most recent definition for each station and summary type
 db_data <- import_from_database(
-  con              = con,
-  station_metadata = TRUE,
-  summary_data     = TRUE,
-  station_id       = "ST01"
+  con          = con,
+  summary_data = TRUE,
+  crop_data    = TRUE,
+  station_id   = "CHIPAT01"
 )
-db_data$summary_data
+
+# A specific definition
+db_data <- import_from_database(
+  con           = con,
+  summary_data  = TRUE,
+  definition_id = "dfFlJMjefmbjgR0l"
+)
+
+# Every definition
+db_data <- import_from_database(con, summary_data = TRUE, latest = FALSE)
 
 DBI::dbDisconnect(con)
 }
